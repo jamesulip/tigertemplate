@@ -1,10 +1,12 @@
+/* eslint-disable no-unused-vars */
+
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import axios from 'axios';
-
+import {initialize} from './general'
 try {
   window.Popper = require('popper.js').default;
   window.$ = window.jQuery = require('jquery');
@@ -14,15 +16,10 @@ try {
 }
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
-
 Vue.config.productionTip = false;
 
-import VueAxios from 'vue-axios'
-Vue.use(VueAxios, axios)
-axios.defaults.baseURL = '127.0.0.1:8000/cors/auth/me';
 
-import './general.js'
-
+initialize(store,router)
 new Vue({
   router,
   store,

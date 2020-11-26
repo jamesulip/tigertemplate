@@ -7,6 +7,12 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
+  "eslintConfig": {
+    "rules": {
+      "no-console": "off",
+      "no-unused-vars": "off"
+    }
+},
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "admin-lte": "^3.0.5",

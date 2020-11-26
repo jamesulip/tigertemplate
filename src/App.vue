@@ -1,7 +1,5 @@
 <template>
-  <body class="sidebar-mini layout-fixed">
-    <home/>
-  </body>  
+    <router-view/>
 </template>
 <style src="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"></style>
 <style lang="scss">
@@ -10,10 +8,11 @@
 
 </style>
 <script>
-
 export default {
   components:{
-    home:()=>import('./views/Home')
-  }   
+  } ,  
+  mounted() {
+    document.body.classList.add('sidebar-min', 'layout-fixed')
+  },
 }
 </script>
