@@ -7,7 +7,7 @@
             <slot name="title">
                 {{routeName}}
             </slot>
-            <span class="right badge badge-danger">New</span>
+            <!-- <span class="right badge badge-danger">New</span> -->
           </p>
         </router-link>
    

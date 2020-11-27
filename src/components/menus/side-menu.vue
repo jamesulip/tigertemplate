@@ -9,10 +9,10 @@
           Home
         </div>
       </menu_item>
-      <menu_item :to="{name:'test'}" :routeName="'test'" >
+      <menu_item :to="{name:'delegate'}" :routeName="'delegate'" >
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
-          Home
+          Delegate Project
         </div>
       </menu_item>
 

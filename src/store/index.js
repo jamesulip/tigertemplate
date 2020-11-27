@@ -29,5 +29,10 @@ export default new Vuex.Store({
     },
   },
   actions: {},
-  modules: {}
+  modules: {},
+  getters: {
+    currentUser: state => {
+      return state.currentUser
+    }
+  }
 });

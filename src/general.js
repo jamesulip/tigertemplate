@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
+window.axios = axios;
+window.axios.defaults.baseURL = 'http://127.0.0.1:8000';
 export function initialize(store,router){
 
     router.beforeEach((to, from, next) => {
@@ -22,6 +23,7 @@ export function initialize(store,router){
     }
 }
 export function setAuthorization(token) {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
+    
+    window.axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
 }
 

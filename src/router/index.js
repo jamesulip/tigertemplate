@@ -21,15 +21,15 @@ const routes = [
       {
         path: 'home',
         name: "home",
-        component: main,
+        component: ()=>import('../pages/home.vue'),
         meta: {
             requiresAuth: true
         }
       },
       {
-        path: 'home',
-        name: "home",
-        component: main,
+        path: 'delegate',
+        name: "delegate",
+        component: ()=>import('../pages/delegate.vue'),
         meta: {
             requiresAuth: true
         }
