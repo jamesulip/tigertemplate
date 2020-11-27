@@ -18,6 +18,15 @@ Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
 
+Vue.mixin({
+  methods: {
+    getInitial: function (name) {
+      var initials = name.match(/\b\w/g) || [];
+      initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+      return initials;
+    },
+  },
+})
 
 initialize(store,router)
 new Vue({

@@ -20,12 +20,13 @@
         <div class="sidebar">
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-              <img src="https://adminlte.io/themes/dev/AdminLTE/dist/img/user2-160x160.jpg"
-                class="img-circle elevation-2" alt="User Image">
-            </div>
+         
+              <!-- <img :src="''"
+                class="img-circle elevation-2" alt="User Image"> -->
+                 <b-avatar button style="    width: 40px;height: 40px;" variant="primary" :text="getInitial($store.state.currentUser.name)" class="align-baseline"></b-avatar>
+           
             <div class="info">
-              <a href="#" class="d-block">Alexander Pierce</a>
+              <a href="#" class="d-block">{{$store.state.currentUser.name}}</a>
             </div>
           </div>
 
@@ -37,18 +38,10 @@
         <!-- /.sidebar -->
       </aside>
 
-      <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        
-        
-        <!-- /.content-header -->
-
-        <!-- Main content -->
         <div class="content">
           <router-view/>
         </div>
-        <!-- /.content -->
       </div>
   
 
