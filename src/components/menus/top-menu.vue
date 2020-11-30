@@ -16,11 +16,18 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   methods: {
     logout(){
-       this.$store.commit('logout');
-                this.$router.push('/login');
+        axios.post(`cors/auth/logout`)
+        .then(res => {
+          this.$store.commit('logout');
+          this.$router.push('/login');
+        })
+        .catch(err => {
+          console.error(err); 
+        })
     }
   },
 }

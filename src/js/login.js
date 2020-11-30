@@ -2,13 +2,15 @@
 
 import axios from 'axios'
 
-
+import {setAuthorization} from '../general.js'
 export const myLoginRoutine = user => new Promise ((resolve, reject) => {
     axios({url: 'cors/auth/login', data: user, method: 'POST' })
       .then(resp => {
       
         localStorage.setItem('user-token', resp.data.access_token) // store the token in localstorage
-        localStorage.setItem('user', JSON.stringify( resp.data.user)) // store the token in localstorage
+        localStorage.setItem('user', JSON.stringify( resp.data.user)) // store the token in localstorage\
+
+        setAuthorization( resp.data.access_token)
         resolve(resp)
       })
     .catch(err => {

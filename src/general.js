@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
 window.axios = axios;
-window.axios.defaults.baseURL = 'http://127.0.0.1:8000';
+window.axios.defaults.baseURL = 'http://jarvis2.test/';
 export function initialize(store,router){
 
     router.beforeEach((to, from, next) => {
@@ -17,8 +17,19 @@ export function initialize(store,router){
         }
 
     });
+     
+ 
+    axios.interceptors.response.use(null, (error) => {
+        if (error.response.status == 401) {
+            store.commit('logout');
+            router.push('/login');
+        }
+
+        return Promise.reject(error);
+    });
 
     if (store.getters.currentUser) {
+        console.log(store.getters.currentUser.token)
         setAuthorization(store.getters.currentUser.token);
     }
 }
