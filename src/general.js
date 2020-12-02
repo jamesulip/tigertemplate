@@ -24,12 +24,11 @@ export function initialize(store,router){
             store.commit('logout');
             router.push('/login');
         }
-
         return Promise.reject(error);
     });
 
     if (store.getters.currentUser) {
-        console.log(store.getters.currentUser.token)
+     
         setAuthorization(store.getters.currentUser.token);
     }
 }

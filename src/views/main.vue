@@ -22,7 +22,9 @@
 
       <div class="content-wrapper">
         <div class="content">
+          <!-- <b-overlay :show="$store.getters.loadingState" rounded="sm"> -->
           <router-view/>
+          <!-- </b-overlay> -->
         </div>
       </div>
   

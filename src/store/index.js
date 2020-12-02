@@ -12,7 +12,8 @@ export default new Vuex.Store({
   state: {
     currentUser: user,
     isLoggedIn: false,
-    user: null
+    user: null,
+    page_loading:true
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -28,12 +29,19 @@ export default new Vuex.Store({
         state.isLoggedIn = false;
         state.currentUser = null;
     },
+    setLoading(state,payload) {
+      
+     state.page_loading=payload
+    },
   },
   actions: {},
   modules: {},
   getters: {
     currentUser: state => {
       return state.currentUser
+    },
+    loadingState: state => {
+      return state.page_loading
     }
   }
 });
