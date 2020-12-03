@@ -32,6 +32,11 @@ Vue.mixin({
 })
 
 initialize(store,router)
+
+
+
+Vue.component('loading1', require('./components/loaders/loading1.vue').default);
+
 new Vue({
   router,
   store,

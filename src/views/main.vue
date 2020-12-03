@@ -36,6 +36,7 @@
 
 <script>
 /* eslint-disable  */
+
 export default {
   components:{
     sideMenu:()=>import('../components/menus/side-menu.vue'),

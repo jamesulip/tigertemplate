@@ -37,7 +37,9 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
+            <b-overlay :show="loading" rounded="xs" spinner-small> 
             <button type="submit" @click="login()" class="btn btn-primary btn-block">Sign In</button>
+            </b-overlay>
           </div>
           <!-- /.col -->
         </div>
@@ -51,6 +53,7 @@
       <p class="mb-0">
         <a href="register.html" class="text-center">Register a new membership</a>
       </p>
+      
     </div>
     <!-- /.login-card-body -->
   </div>
@@ -67,15 +70,19 @@ export default {
             auth:{
                 email:'erine.atordido@tigergraphics.com.ph',
                 password:'erinemariele'
-            }
+            },
+            loading:false
         }
     },
 
     methods: {
         login(){
+          this.loading = true
                 myLoginRoutine(this.auth).then((x) => {
                     this.$store.commit("loginSuccess", x.data);
                     this.$router.push('/')
+                }).catch(x=>{
+                  this.loading = false
                 })
         }
     },
