@@ -27,6 +27,14 @@ const routes = [
         }
       },
       {
+        path: 'projects',
+        name: "projects",
+        component: ()=>import('../pages/projects.vue'),
+        meta: {
+            requiresAuth: true
+        }
+      },
+      {
         path: 'delegate',
         name: "delegate",
         component: ()=>import('../pages/delegate.vue'),

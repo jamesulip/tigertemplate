@@ -16,7 +16,8 @@
                                     <b-avatar style="width:25px;height:25px" variant="info"
                                         src="https://placekitten.com/300/300" class="mr-2">
                                     </b-avatar>
-                                    <span class="mr-auto text-truncate"  v-b-tooltip.hover.bottom="des.name">{{des.name}}</span>
+                                    <span class="mr-auto text-truncate"
+                                        v-b-tooltip.hover.bottom="des.name">{{des.name}}</span>
                                     <b-badge>{{des.count_count}}</b-badge>
                                 </b-list-group-item>
                             </b-list-group>
@@ -39,7 +40,7 @@
                             </a>
                         </div>
                     </div>
-                    <loading1 v-if="loading.projectLoading"/>
+                    <loading1 v-if="loading.projectLoading" />
                     <div class="card-body  p-0" style="min-height:600px">
                         <table class="table table-hover table-head-fixed table-condensed table-sm  table-valign-middle">
                             <thead>
@@ -48,15 +49,17 @@
                                     <th>Number</th>
                                     <th>Project Name</th>
                                     <th>Company</th>
+                                    <th>Status</th>
                                     <th>Delegated</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 <tr v-for="proj in projects.data" :key="`projects-${proj.ID}`" style="cursor:pointer"
-                                    @contextmenu.prevent="event=>openContext(event,proj)" :class="{'table-active':proj.selected}">
+                                    @contextmenu.prevent="event=>openContext(event,proj)" @click="x=>{proj.selected= !proj.selected;$forceUpdate()}"
+                                    :class="{'table-active':proj.selected}">
                                     <td>
-                                        <b-form-checkbox id="checkbox-1" v-model="proj.selected" name="checkbox-1"
+                                        <b-form-checkbox :id="`checkbox-${proj.ID}`" v-model="proj.selected" :name="`checkbox-${proj.ID}`"
                                             :value="true" :unchecked-value="false">
 
                                         </b-form-checkbox>
@@ -64,13 +67,31 @@
                                     <td scope="row">{{proj.project.TYPE}}#{{proj.project.NUM}}</td>
                                     <td>{{proj.details.s_projname}}</td>
                                     <td>{{proj.details.client2.com_name}} </td>
-                                    <td >
-                                        <b-avatar style="width:25px;height:25px" variant="info"
-                                            src="https://placekitten.com/300/300" class="mr-2">
-                                        </b-avatar> <div class="text-truncate d-inline-block" style="max-width: 150px;"> {{proj.employees2.ln}}</div>
+                                    <td>
+                                        {{proj.Status}}
+                                    </td>
+                                    <td class="align-middle text-truncate text-capitalize" style="max-width: 100px;">
+                                        <div v-if="proj.employees2"
+                                            v-b-tooltip.hover.bottom="proj.employees2?proj.employees2.ln:'Pending'" class="text-truncate">
+                                            <b-avatar style="width:25px;height:25px" variant="info"
+                                                src="https://placekitten.com/300/300" class="mr-2">
+                                            </b-avatar>{{proj.employees2?proj.employees2.ln:'Pending'}}
+                                        </div>
+                                        <div v-else>
+                                            <span class="badge badge-danger">To delegate</span>
+                                        </div>
                                     </td>
                                 </tr>
-
+                                <!-- -->
+                                <tr v-if="projects.data && !Boolean(projects.data.length)">
+                                    <td colspan="5" class="text-md-center">
+                                        <b-icon-envelope font-scale="5" variant="secondary" />
+                                        <span class="d-block">No Project</span>
+                                        <a @click="loadproject()" class="d-block">
+                                            <b-icon-arrow-clockwise></b-icon-arrow-clockwise>reload
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -78,12 +99,18 @@
 
             </div>
         </div>
+        <!-- <b-icon-envolope></b-icon-envolope> -->
 
         <vue-context ref="menu" v-slot="{ data }">
             <template v-if="designers">
                 <li @click.prevent="delegate(data,des)" v-for="des in designers" :key="`dess-${des.id}`">
+                    <a class="text-capitalize">
+                        {{des.name.toLowerCase()}}
+                    </a>
+                </li>
+                <li @click="delegate(data,null)" class="bg-danger">
                     <a>
-                        {{des.name}}
+                        <b-icon-trash ></b-icon-trash> Remove Delegation
                     </a>
                 </li>
             </template>
@@ -107,6 +134,11 @@
                 }
             }
         },
+        computed:{
+            selected_projects(){
+                return this.projects.data.filter(x=>x.selected)
+            }
+        },
         mounted() {
 
             this.loadproject();
@@ -122,8 +154,8 @@
             delegate(data, user) {
                 this.loading.designersLoading = true
                 axios.put(`cors/delegate`, {
-                        finihserEmp: user.employee_id,
-                        proj: this.projects.data.filter(x => x.selected).map(x => x.ID),
+                        finihserEmp: user?user.employee_id:null,
+                        proj: this.selected_projects.map(x => x.ID),
                         type: "delegate"
                     })
                     .then(res => {
