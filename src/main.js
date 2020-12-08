@@ -8,7 +8,6 @@ import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
 
 
-
 import {initialize} from './general'
 try {
   window.Popper = require('popper.js').default;
@@ -30,6 +29,7 @@ Vue.mixin({
     },
   },
 })
+
 
 initialize(store,router)
 

@@ -4,7 +4,7 @@ import {
   getLocalUser
 } from '../js/login'
 Vue.use(Vuex);
-
+import axios from 'axios'
 
 const user = getLocalUser();
 export default new Vuex.Store({
@@ -13,7 +13,9 @@ export default new Vuex.Store({
     currentUser: user,
     isLoggedIn: false,
     user: null,
-    page_loading:true
+    page_loading:true,
+    current_job:[],
+    selected_project:{}
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -30,11 +32,31 @@ export default new Vuex.Store({
         state.currentUser = null;
     },
     setLoading(state,payload) {
-      
      state.page_loading=payload
     },
+    set_selected_project(state,payload) {
+      state.selected_project=payload
+     },
+    
   },
-  actions: {},
+  actions: {
+    set_current_job(state){
+      return new Promise( (resolutionFunc,rejectionFunc) => {
+          axios.get(`cors/current_project`)
+          .then(res => {
+            state.state.current_job = res.data
+            console.log('ss',state.current_job)
+            resolutionFunc(res.data)
+          })
+          .catch(err => {
+              console.error(err); 
+              rejectionFunc(err)
+          })
+      });
+
+
+    }
+  },
   modules: {},
   getters: {
     currentUser: state => {
@@ -42,6 +64,9 @@ export default new Vuex.Store({
     },
     loadingState: state => {
       return state.page_loading
+    },
+    getCurrentJob: state => {
+      return state.current_job
     }
   }
 });

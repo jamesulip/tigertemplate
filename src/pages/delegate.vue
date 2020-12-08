@@ -31,14 +31,7 @@
                 <div class="card">
                     <div class="card-header border-0">
                         <h3 class="card-title">Products</h3>
-                        <div class="card-tools">
-                            <a href="#" class="btn btn-tool btn-sm">
-                                <i class="fas fa-download"></i>
-                            </a>
-                            <a href="#" class="btn btn-tool btn-sm">
-                                <i class="fas fa-bars"></i>
-                            </a>
-                        </div>
+                       
                     </div>
                     <loading1 v-if="loading.projectLoading" />
                     <div class="card-body  p-0" style="min-height:600px">
