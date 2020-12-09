@@ -1,6 +1,6 @@
 <template>
     <b-overlay rounded opacity="0.6" spinner-small spinner-variant="secondary" :show="loading">
-        <b-button-group size="sm">
+        <b-button-group :size="size">
             <b-button variant="info" @click="updateStatus(Project,'Working on it')"
                 :disabled="btnIcon(Project.Status,'dis_en','play')||false">
                 <b-icon-play-fill></b-icon-play-fill>
@@ -15,7 +15,7 @@
             </b-button>
         </b-button-group>
 
-        <b-modal centered title="Start Project" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
+        <b-modal centered :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
             @ok="updateStatusText()">
             <b-form-group>
                 <label for="">Message</label>
@@ -26,21 +26,11 @@
                 Start
             </div>
         </b-modal>
-        <b-modal centered title="Start Project" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
-            @ok="updateStatusText()">
-            <b-form-group>
-                <label for="">Message</label>
-                <textarea v-model="message.content" cols="30" rows="3" class="form-control"></textarea>
-            </b-form-group>
-            <div slot="modal-ok">
-                <b-icon-play-fill></b-icon-play-fill>
-                Start
-            </div>
-        </b-modal>
+        
 
-        <b-modal centered title="Start Project" v-model="modal.jo_done" header-class="bg-info disabled" button-size="sm">
-            <div>Done</div>
-        </b-modal>
+      
+        <fileList ref="filelist" v-model="modal.jo_done"/> 
+        
 
     </b-overlay>
 </template>
@@ -49,9 +39,21 @@
     import {
         updateStatus,
         btnIcon
-    } from '../js/update.js'
+    } from '../js/update.js';
+    import fileList from './fileslist.vue'
     export default {
-        props: ['Project'],
+        props: {
+            'Project':{
+                type: Object ,
+            },
+            size: {
+                type: String,
+                default: 'sm'
+            },
+        },
+        components:{
+            fileList,
+        },
         data() {
             return {
                 loading: false,
@@ -86,12 +88,11 @@
                     if(status=='Done'){
                         this.modal.jo_done = true
                     }
-                    if (x && x.ID == project.ID) {
+                    else if (x && x.ID == project.ID) {
                         this.modal.start = true
-                        // alert('play with current project and prject not equal')
+                      
                     } else if (x && x.ID != project.ID) {
-                        //  this.modal.start = true
-                        // alert('play with current project and prject equal')
+                    
                         this.confirmChangeJob(xx)
                     } else if (!x) {
                         this.modal.start = true

@@ -67,6 +67,9 @@ export default new Vuex.Store({
     },
     getCurrentJob: state => {
       return state.current_job
+    },
+    getSelected_project: state => {
+      return state.selected_project
     }
   }
 });

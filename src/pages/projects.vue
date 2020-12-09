@@ -10,6 +10,9 @@
                 <div class="card-body" v-if="$store.getters.getCurrentJob.project">
                     Currently working on <span class="badge badge-primary p-1 badge-pill px-2"><a role="button"
                         @click="current_project_modal=true">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span> 
+                        <div class="float-right">
+                          <updateButton :size="`xs`" :key="`btnupdate-${$store.getters.getCurrentJob.ID}`" :Project="$store.getters.getCurrentJob" @saved="loadProjects()"/>
+                          </div>
                 </div>
                 <loading1 v-if="loading"/>
                 <div class="card-body  p-0" style="min-height:600px">
@@ -30,7 +33,7 @@
                         <tbody>
                             <tr v-for="(Project, index) in projects.data" :key="index">
                                 <td>
-                                    <updateButton :Project="Project" @saved="loadProjects()"/>
+                                    <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project" @saved="loadProjects()"/>
                                 </td>
                                 <td>
                                     <p class="h3 font-weight-bold m-0">{{Project.project.TYPE}}</p>
