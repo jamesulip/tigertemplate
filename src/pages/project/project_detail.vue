@@ -45,9 +45,10 @@
 
 <script>
     export default {
+        props:['projectDetails'],
         data() {
             return {
-                projectDetails: this.$store.getters.getCurrentJob
+                // projectDetails: this.$store.getters.getCurrentJob
             }
         },
     }

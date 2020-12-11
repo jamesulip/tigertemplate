@@ -15,7 +15,7 @@
             </b-button>
         </b-button-group>
 
-        <b-modal centered :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
+        <b-modal centered ok-only :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
             @ok="updateStatusText()">
             <b-form-group>
                 <label for="">Message</label>

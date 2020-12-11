@@ -9,7 +9,7 @@
                 </div>
                 <div class="card-body" v-if="$store.getters.getCurrentJob.project">
                     Currently working on <span class="badge badge-primary p-1 badge-pill px-2"><a role="button"
-                        @click="current_project_modal=true">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span> 
+                        @click="x=>{selected_view =$store.getters.getCurrentJob;current_project_modal=true}">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span> 
                         <div class="float-right">
                           <updateButton :size="`xs`" :key="`btnupdate-${$store.getters.getCurrentJob.ID}`" :Project="$store.getters.getCurrentJob" @saved="loadProjects()"/>
                           </div>
@@ -34,6 +34,7 @@
                             <tr v-for="(Project, index) in projects.data" :key="index">
                                 <td>
                                     <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project" @saved="loadProjects()"/>
+                                   
                                 </td>
                                 <td>
                                     <p class="h3 font-weight-bold m-0">{{Project.project.TYPE}}</p>
@@ -59,7 +60,11 @@
                                 <td>
                                     <i class="fa fa-history" aria-hidden="true"></i>
                                 </td>
-                                <td></td>
+                                <td>
+                                    <a role="button" class="text-info" @click="x=>{selected_view =Project;current_project_modal=true}">
+                                    <b-icon-info-circle ></b-icon-info-circle>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -69,8 +74,8 @@
         <b-modal v-model="send" hide-backdrop content-class="shadow">
 
         </b-modal>
-        <b-modal size="lg" ok-only v-model="current_project_modal"   content-class="shadow">
-            <project_detail v-if="current_project_modal" />
+        <b-modal size="lg" ok-only v-model="current_project_modal" :title="`${project_name(selected_view)}`"   content-class="shadow">
+            <project_detail v-if="current_project_modal" :projectDetails="selected_view"/>
         </b-modal>
     </div>
 </template>
@@ -91,7 +96,8 @@
                 send: false,
                 // current_job:this.$store.getters.getCurrentJob,
                 current_project_modal: false,
-                loading:true
+                loading:true,
+                selected_view:{}
             }
         },
         mounted() {
@@ -130,6 +136,10 @@
                 .catch(err => {
                     console.error(err);
                 })
+            },
+            project_name(project){
+                if(project.project)
+                return   `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
             },
             updateStatus(Project) {
                 updateStatus(Project)
