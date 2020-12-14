@@ -35,6 +35,14 @@ const routes = [
         }
       },
       {
+        path: 'trail',
+        name: "trail",
+        component: ()=>import('../views/trail/trail.vue'),
+        meta: {
+            requiresAuth: true
+        }
+      },
+      {
         path: 'delegate',
         name: "delegate",
         component: ()=>import('../pages/delegate.vue'),
