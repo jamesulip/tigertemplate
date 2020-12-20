@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="form-group">
-            <dl class="row">
+            <dl class="row" v-if="projectDetails">
                 <div class="col-md-6 border-right">
                     <dt class="col-sm-4">Date In:</dt>
                     <dd class="col-sm-8">{{projectDetails.project.created_at}}</dd>
@@ -44,12 +44,28 @@
 </template>
 
 <script>
+  /* eslint-disable */
     export default {
-        props:['projectDetails'],
+        props:['project','load'],
         data() {
             return {
-                // projectDetails: this.$store.getters.getCurrentJob
+                projectDetails: null
             }
         },
+        mounted(){
+            this.projectDetails = this.project
+            if(this.load){
+                axios.get(``)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            }
+        },
+        methods:{
+
+        }
     }
 </script>

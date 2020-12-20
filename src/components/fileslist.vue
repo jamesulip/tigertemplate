@@ -86,10 +86,13 @@
         methods: {
             save() {
                 var proj = this.$store.getters.getSelected_project
-                axios.post('/insertTally', {
+                axios.post('cors/insertTally', {
                     projectID: proj.project.DETAILID,
                     tally: this.files.files
+                }).then(x=>{
+                    this.$emit('sent',x)
                 })
+                
             },
             show() {
                 this.loading = true

@@ -126,7 +126,7 @@
             <table class="table table-hover table-sm  table-striped">
               <tbody>
                 <template v-for="(trail, index) in page.data">
-                  <tr :key="index">
+                  <tr :key="index" role="button" @click="openTrail(trail)">
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" value="" id="check1">
@@ -165,7 +165,7 @@
                       </div>
                     </td> -->
                     <td class="mailbox-name">
-                        <span class="badge badge-secondary" v-for="(item, index) in trail.project" :key="index">{{item.TYPE}}#{{item.NUM}}</span>
+                        <span class="badge badge-secondary mx-1" v-for="(item, index) in trail.project" :key="index">{{item.TYPE}}#{{item.NUM}}</span>
                     </td>
                     <td class="mailbox-subject">
                       <div class="col-md-12">
@@ -264,6 +264,9 @@
         })
     },
     methods: {
+      openTrail(){
+        
+      },
       noDulp(text) {
         var names = text.map(function (elem) {
           if (elem.userl)

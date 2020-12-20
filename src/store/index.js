@@ -15,7 +15,8 @@ export default new Vuex.Store({
     user: null,
     page_loading:true,
     current_job:[],
-    selected_project:{}
+    selected_project:{},
+    my_projects:[]
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     },
     set_selected_project(state,payload) {
       state.selected_project=payload
+     },
+     set_my_projects(state,payload) {
+      state.my_projects=payload
      },
     
   },
@@ -70,6 +74,9 @@ export default new Vuex.Store({
     },
     getSelected_project: state => {
       return state.selected_project
+    },
+    get_my_projects: state => {
+      return state.my_projects
     }
   }
 });

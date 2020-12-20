@@ -1,6 +1,6 @@
 <template>
-    <div class="pt-3">
-        <div class="col-md-12">
+    <div class="pt-3 container-fluid row">
+        <div class="col-md-9 ">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
@@ -9,13 +9,14 @@
                 </div>
                 <div class="card-body" v-if="$store.getters.getCurrentJob.project">
                     Currently working on <span class="badge badge-primary p-1 badge-pill px-2"><a role="button"
-                        @click="x=>{selected_view =$store.getters.getCurrentJob;current_project_modal=true}">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span> 
-                        <div class="float-right">
-                          <updateButton :size="`xs`" :key="`btnupdate-${$store.getters.getCurrentJob.ID}`" :Project="$store.getters.getCurrentJob" @saved="loadProjects()"/>
-                          </div>
+                            @click="x=>{selected_view =$store.getters.getCurrentJob;current_project_modal=true}">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span>
+                    <div class="float-right">
+                        <updateButton :size="`xs`" :key="`btnupdate-${$store.getters.getCurrentJob.ID}`"
+                            :Project="$store.getters.getCurrentJob" @saved="loadProjects()" />
+                    </div>
                 </div>
-                <loading1 v-if="loading"/>
-                <div class="card-body  p-0" style="min-height:600px">
+                <loading1 v-if="loading" />
+                <div class="card-body  p-0 table-responsive" style="min-height:600px">
                     <table
                         class="table table-hover  table-head-fixed table-striped table-condensed table-sm  table-valign-middle">
                         <thead>
@@ -33,8 +34,9 @@
                         <tbody>
                             <tr v-for="(Project, index) in projects.data" :key="index">
                                 <td>
-                                    <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project" @saved="loadProjects()"/>
-                                   
+                                    <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project"
+                                        @saved="loadProjects()" />
+
                                 </td>
                                 <td>
                                     <p class="h3 font-weight-bold m-0">{{Project.project.TYPE}}</p>
@@ -61,8 +63,9 @@
                                     <i class="fa fa-history" aria-hidden="true"></i>
                                 </td>
                                 <td>
-                                    <a role="button" class="text-info" @click="x=>{selected_view =Project;current_project_modal=true}">
-                                    <b-icon-info-circle ></b-icon-info-circle>
+                                    <a role="button" class="text-info"
+                                        @click="x=>{selected_view =Project;current_project_modal=true}">
+                                        <b-icon-info-circle></b-icon-info-circle>
                                     </a>
                                 </td>
                             </tr>
@@ -71,75 +74,100 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title p-0">
+                        My Activity
+                    </h4>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-sm table-striped table-valign-middle log">
+                        
+                        <tbody>
+                            <tr v-for="(l,i) in mylogs" :key="`o${i}`">
+                                <td >
+                                  <span v-html="l.text"></span><br>
+                                  <span class="text-muted">{{l.created_at}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
         <b-modal v-model="send" hide-backdrop content-class="shadow">
 
         </b-modal>
-        <b-modal size="lg" ok-only v-model="current_project_modal" :title="`${project_name(selected_view)}`"   content-class="shadow">
-            <project_detail v-if="current_project_modal" :projectDetails="selected_view"/>
+        <b-modal size="lg" ok-only v-model="current_project_modal" :title="`${project_name(selected_view)}`"
+            content-class="shadow">
+            <project_detail v-if="current_project_modal" :project="selected_view" />
         </b-modal>
     </div>
 </template>
-
+<style scoped>
+    .log td{
+        font-size: .750rem;
+    }
+</style>
 <script>
-// import Loading1 from '../components/loaders/loading1.vue'
+    // import Loading1 from '../components/loaders/loading1.vue'
     /* eslint-disable */
-  
+
     export default {
         components: {
-            project_detail: () => import('./project/project_detail.vue'),
+            // project_detail: () => import('./project/project_detail.vue'),
             updateButton: () => import('../components/updatebutton.vue')
-                
+
         },
         data() {
             return {
                 projects: [],
+                mylogs: [],
                 send: false,
                 // current_job:this.$store.getters.getCurrentJob,
                 current_project_modal: false,
-                loading:true,
-                selected_view:{}
+                loading: true,
+                selected_view: {}
             }
         },
         mounted() {
             this.loadProjects()
-            this.$store.dispatch('set_current_job').then(x=>{
-               console.log(x)
+            this.$store.dispatch('set_current_job').then(x => {
             })
         },
-        computed:{
-            // selectedproj(){
-         
-            //     var selected_project = this.$store.getters.getCurrentJob
-            //     if(selected_project.project)
-            //     return {
-            //         project_name: `${selected_project.project.TYPE}#${selected_project.project.NUM}`,
-            //         version:selected_project.project.VERSION,
-            //         loaded:true
-            //     }
-            //     else
-            //         return {
-            //             project_name:null,
-            //             version:null
-            //         }
-              
-               
-            // }
+        computed: {
+       
         },
         methods: {
-            loadProjects(){
+            loadLogs() {
+                axios.get(`cors/jarvis_projectlog/current`)
+                    .then(res => {
+                        this.mylogs = res.data
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+            loadProjects() {
                 this.loading = true
                 axios.get(`cors/MyProject?page=&type=all`)
-                .then(res => {
-                    this.projects = res.data
-                    this.loading = false
-                })
-                .catch(err => {
-                    console.error(err);
-                })
+                    .then(res => {
+                        this.projects = res.data
+                        this.loading = false
+                        this.$store.commit('set_my_projects',res.data)
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+
+                    this.loadLogs()
             },
-            project_name(project){
-                if(project.project)
-                return   `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
+            project_name(project) {
+                if (project.project)
+                    return `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
             },
             updateStatus(Project) {
                 updateStatus(Project)

@@ -9,50 +9,57 @@ import register from '../views/Register.vue'
 Vue.use(VueRouter);
 
 const routes = [
-  
+
   {
     path: "/",
     name: "home",
     component: main,
     meta: {
-        requiresAuth: true
+      requiresAuth: true
     },
-    children:[
-      {
+    children: [{
         path: 'home',
         name: "home",
-        component: ()=>import('../pages/home.vue'),
+        component: () => import('../pages/home.vue'),
         meta: {
-            requiresAuth: true
+          requiresAuth: true
         }
       },
       {
         path: 'projects',
         name: "projects",
-        component: ()=>import('../pages/projects.vue'),
+        component: () => import('../pages/projects.vue'),
         meta: {
-            requiresAuth: true
+          requiresAuth: true
         }
       },
       {
         path: 'trail',
         name: "trail",
-        component: ()=>import('../views/trail/trail.vue'),
+        component: () => import('../views/trail/trail.vue'),
         meta: {
-            requiresAuth: true
+          requiresAuth: true
         }
       },
       {
         path: 'delegate',
         name: "delegate",
-        component: ()=>import('../pages/delegate.vue'),
+        component: () => import('../pages/delegate.vue'),
         meta: {
-            requiresAuth: true
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'history',
+        name: "history",
+        component: () => import('../pages/history.vue'),
+        meta: {
+          requiresAuth: true
         }
       },
     ]
   },
-  
+
   {
     path: "/login",
     name: "login",
@@ -63,8 +70,8 @@ const routes = [
     name: "register",
     component: register,
   },
-  
-  
+
+
 ];
 
 const router = new VueRouter({

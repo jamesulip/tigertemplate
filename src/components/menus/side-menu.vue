@@ -21,6 +21,12 @@
           Delegate Project
         </div>
       </menu_item>
+      <menu_item :to="{name:'history'}" :routeName="'history'" >
+        <div slot="title">
+          <i class="nav-icon fas fa-th"></i>
+          History
+        </div>
+      </menu_item>
 
     </ul>
   </nav>

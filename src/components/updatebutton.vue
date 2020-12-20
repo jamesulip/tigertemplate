@@ -29,7 +29,7 @@
         
 
       
-        <fileList ref="filelist" v-model="modal.jo_done"/> 
+        <fileList @sent="x=>{updateStatusText(x,'Done')}" ref="filelist" v-model="modal.jo_done"/> 
         
 
     </b-overlay>
