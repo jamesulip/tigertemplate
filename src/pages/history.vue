@@ -6,13 +6,14 @@
                     <div class="card-header">
                         <h4>History</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body px-0">
                         <div class="table-responsive" id="proTeamScroll" tabindex="2"
                             style="height: 400px; overflow: hidden; outline: none;">
-                            <table class="table table-striped table-sm">
+                            <table class="table table-striped table-sm table-condensed">
                                 <thead>
                                     <tr>
-                                        <th>Type</th>
+                                        <th></th>
+                                        <th class="pl-2">Type</th>
                                         <th>Project Number</th>
                                         <th>Version</th>
                                         <th>Project Name/Client</th>
@@ -24,7 +25,10 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="(item, index) in projects.data" :key="index">
-                                        <td>
+                                        <td> 
+                                            <b-button variant="link" @click="loadModal(item.detailID)"><b-icon-eye></b-icon-eye>  Show</b-button>
+                                        </td>
+                                        <td class="pl-2">
                                             <span class="h3 font-weight-bold m-0"> {{item.project2.TYPE}}</span>
                                            </td>
                                         <td>{{item.project2.NUM}}</td>
@@ -57,6 +61,10 @@
                 </div>
             </div>
         </div>
+         <b-modal size="lg" ok-only v-model="current_project_modal" 
+            content-class="shadow">
+             <project_detail ref="detailModal"  :load="true"/>
+        </b-modal>
     </div>
 </template>
 
@@ -67,7 +75,8 @@ import moment from 'moment'
         data() {
             return {
                 projects: {},
-                current_page: 0
+                current_page: 0,
+                current_project_modal:false
             }
         },
         filters:{
@@ -76,11 +85,17 @@ import moment from 'moment'
             }
         },
         mounted() {
+            
             this.changePage(`cors/MyProject/History`)
             
             
         },
         methods: {
+            loadModal(id){
+                console.log(this.$refs)
+                this.current_project_modal = true
+                // this.$refs.detailModal.load_details(id)
+            },
             date_duration(){
 
             },

@@ -46,26 +46,27 @@
 <script>
   /* eslint-disable */
     export default {
-        props:['project','load'],
+        props:['project','load','project_id'],
         data() {
             return {
                 projectDetails: null
             }
         },
         mounted(){
-            this.projectDetails = this.project
-            if(this.load){
-                axios.get(``)
-                .then(res => {
-                    console.log(res)
-                })
-                .catch(err => {
-                    console.error(err); 
-                })
-            }
+            if(!this.load && this.project)
+                this.projectDetails = this.project
         },
         methods:{
-
+            load_details(id){
+                        axios.get(`cors/projectDetail/${id}`)
+                        .then(res => {
+                            this.projectDetails = res.data
+                        })
+                        .catch(err => {
+                            console.error(err); 
+                        })
+                    
+            }
         }
     }
 </script>
