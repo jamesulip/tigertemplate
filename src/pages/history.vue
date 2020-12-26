@@ -9,10 +9,10 @@
                     <div class="card-body px-0">
                         <div class="table-responsive" id="proTeamScroll" tabindex="2"
                             style="height: 400px; overflow: hidden; outline: none;">
-                            <table class="table table-striped table-sm table-condensed">
+                            <table class="table table-striped table-sm table-condensed table-hover  ">
                                 <thead>
                                     <tr>
-                                        <th></th>
+                                       
                                         <th class="pl-2">Type</th>
                                         <th>Project Number</th>
                                         <th>Version</th>
@@ -24,10 +24,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in projects.data" :key="index">
-                                        <td> 
-                                            <b-button variant="link" @click="loadModal(item.detailID)"><b-icon-eye></b-icon-eye>  Show</b-button>
-                                        </td>
+                                    <tr v-for="(item, index) in projects.data" :key="index" role="button"  @click="x=>{selID=item.detailID;current_project_modal=true}">
+                                       
                                         <td class="pl-2">
                                             <span class="h3 font-weight-bold m-0"> {{item.project2.TYPE}}</span>
                                            </td>
@@ -61,9 +59,9 @@
                 </div>
             </div>
         </div>
-         <b-modal size="lg" ok-only v-model="current_project_modal" 
+        <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" 
             content-class="shadow">
-             <project_detail ref="detailModal"  :load="true"/>
+             <project_detail ref="detailModal" :project_id="selID" :load="true"/>
         </b-modal>
     </div>
 </template>
@@ -76,7 +74,8 @@ import moment from 'moment'
             return {
                 projects: {},
                 current_page: 0,
-                current_project_modal:false
+                current_project_modal:false,
+                selID:null
             }
         },
         filters:{
@@ -92,9 +91,9 @@ import moment from 'moment'
         },
         methods: {
             loadModal(id){
-                console.log(this.$refs)
+              
                 this.current_project_modal = true
-                // this.$refs.detailModal.load_details(id)
+               this.$refs.detailModal.load_details(id)
             },
             date_duration(){
 

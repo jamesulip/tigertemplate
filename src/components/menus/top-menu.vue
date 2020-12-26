@@ -17,9 +17,9 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-item-dropdown right>
           <template #button-content>
-              <img src="https://adminlte.io/themes/dev/AdminLTE/dist/img/user2-160x160.jpg"
-              class="user-image img-circle elevation-2 mr-2" style="width:2rem" alt="User Image">
-            <span class="d-none d-md-inline">Alexander Pierce</span>
+              <!-- <img src="https://adminlte.io/themes/dev/AdminLTE/dist/img/user2-160x160.jpg"
+              class="user-image img-circle elevation-2 mr-2" style="width:2rem" alt="User Image"> -->
+            <span class="d-none d-md-inline">{{$store.state.currentUser.name}}</span>
           </template>
           <b-dropdown-item href="#">Profile</b-dropdown-item>
           <b-dropdown-item @click="logout()">Sign Out</b-dropdown-item>

@@ -74,6 +74,9 @@
                                             <span class="badge badge-danger">To delegate</span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <b-button variant="link" size="sm" @click.prevent="x=>{selID=proj.detailID;current_project_modal=true}">view</b-button>
+                                    </td>
                                 </tr>
                                 <!-- -->
                                 <tr v-if="projects.data && !Boolean(projects.data.length)">
@@ -108,6 +111,11 @@
                 </li>
             </template>
         </vue-context>
+
+        <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" 
+            content-class="shadow">
+             <project_detail ref="detailModal" :project_id="selID" :load="true"/>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -124,7 +132,9 @@
                 loading: {
                     projectLoading: true,
                     designersLoading: true
-                }
+                },
+                current_project_modal:false,
+                selID:null
             }
         },
         computed:{
@@ -139,6 +149,11 @@
         },
 
         methods: {
+             loadModal(id){
+              
+                this.current_project_modal = true
+               this.$refs.detailModal.load_details(id)
+            },
             openContext($event, proj) {
                 proj.selected = true
                 this.$refs.menu.open($event, proj)

@@ -58,7 +58,7 @@
             return {
                 files: {},
                 open: false,
-                loading:false
+                loading:true
             }
         },
         computed: {
@@ -85,11 +85,14 @@
         },
         methods: {
             save() {
+                this.loading= true
                 var proj = this.$store.getters.getSelected_project
                 axios.post('cors/insertTally', {
                     projectID: proj.project.DETAILID,
                     tally: this.files.files
+                    
                 }).then(x=>{
+                    this.loading= false
                     this.$emit('sent',x)
                 })
                 
