@@ -49,7 +49,7 @@
                             <tbody>
 
                                 <tr v-for="proj in projects.data" :key="`projects-${proj.ID}`" style="cursor:pointer"
-                                    @contextmenu.prevent="event=>openContext(event,proj)" @click="x=>{proj.selected= !proj.selected;$forceUpdate()}"
+                                    @contextmenu.prevent="event=>openContext(event,proj)" @click.prevent="x=>{proj.selected= !proj.selected;$forceUpdate()}"
                                     :class="{'table-active':proj.selected}">
                                     <td>
                                         <b-form-checkbox :id="`checkbox-${proj.ID}`" v-model="proj.selected" :name="`checkbox-${proj.ID}`"
