@@ -9,10 +9,10 @@
           Job Trail
         </div>
       </menu_item>
-       <menu_item :to="{name:'projects'}" :routeName="'projects'" >
+       <menu_item :to="{name:'clients'}" :routeName="'clients'" >
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
-          Projects
+          Clients
         </div>
       </menu_item>
       <menu_item :to="{name:'delegate'}" :routeName="'delegate'" >
