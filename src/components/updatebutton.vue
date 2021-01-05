@@ -1,41 +1,72 @@
 <template>
-    <b-overlay rounded opacity="0.6" spinner-small spinner-variant="secondary" :show="loading">
-        <b-button-group :size="size">
-            <b-button variant="info" @click="updateStatus(Project,'Working on it')"
-                :disabled="btnIcon(Project.Status,'dis_en','play')||false">
-                <b-icon-play-fill></b-icon-play-fill>
-            </b-button>
-            <b-button variant="warning" @click="updateStatus(Project,'Paused')"
-                :disabled="btnIcon(Project.Status,'dis_en','pause')||false">
-                <b-icon-pause-fill></b-icon-pause-fill>
-            </b-button>
-            <b-button variant="success" @click="updateStatus(Project,'Done')"
-                :disabled="btnIcon(Project.Status,'dis_en','done')||false">
-                <b-icon-flag-fill></b-icon-flag-fill>
-            </b-button>
-        </b-button-group>
+  <b-overlay
+    rounded
+    opacity="0.6"
+    spinner-small
+    spinner-variant="secondary"
+    :show="loading"
+  >
+    <b-button-group :size="size">
+      <b-button
+        variant="info"
+        @click="updateStatus(Project, 'Working on it')"
+        :disabled="btnIcon(Project.Status, 'dis_en', 'play') || false"
+      >
+        <b-icon-play-fill></b-icon-play-fill>
+      </b-button>
+      <b-button
+        variant="warning"
+        @click="updateStatus(Project, 'Paused')"
+        :disabled="btnIcon(Project.Status, 'dis_en', 'pause') || false"
+      >
+        <b-icon-pause-fill></b-icon-pause-fill>
+      </b-button>
+      <b-button
+        variant="success"
+        @click="updateStatus(Project, 'Done')"
+        :disabled="btnIcon(Project.Status, 'dis_en', 'done') || false"
+      >
+        <b-icon-flag-fill></b-icon-flag-fill>
+      </b-button>
+    </b-button-group>
 
-        <b-modal centered ok-only :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
-            @ok="updateStatusText()">
-            <b-form-group>
-                <label for="">Message</label>
-                <textarea v-model="message.content" cols="30" rows="3" class="form-control"></textarea>
-            </b-form-group>
-            <div slot="modal-ok">
-                <b-icon-play-fill></b-icon-play-fill>
-                Start
-            </div>
-        </b-modal>
-        
+    <b-modal
+      centered
+      ok-only
+      :title="`Start Project ${message.content}`"
+      v-model="modal.start"
+      header-class="bg-info disabled"
+      button-size="sm"
+      @ok="updateStatusText()"
+    >
+      <b-form-group>
+        <label for="">Message</label>
+        <textarea
+          v-model="message.content"
+          cols="30"
+          rows="3"
+          class="form-control"
+        ></textarea>
+      </b-form-group>
+      <div slot="modal-ok">
+        <b-icon-play-fill></b-icon-play-fill>
+        Start
+      </div>
+    </b-modal>
 
-      
-        <fileList @sent="x=>{updateStatusText(x,'Done')}" ref="filelist" v-model="modal.jo_done"/> 
-        
-
-    </b-overlay>
+    <fileList
+      @sent="
+        x => {
+          updateStatusText(x, 'Done');
+        }
+      "
+      ref="filelist"
+      v-model="modal.jo_done"
+    />
+  </b-overlay>
 </template>
 <script>
-    /* eslint-disable */
+/* eslint-disable */
     import {
         updateStatus,
         btnIcon

@@ -1,6 +1,5 @@
 <template>
-
-  <div class="row mt-3">
+  <div class="content pt-4 p-0">
     <!-- <div class="col-md-3">
           <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
 
@@ -89,7 +88,11 @@
 
           <div class="card-tools">
             <div class="input-group input-group-sm">
-              <input type="text" class="form-control" placeholder="Search Mail">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search Mail"
+              />
               <div class="input-group-append">
                 <div class="btn btn-primary">
                   <i class="fas fa-search"></i>
@@ -103,20 +106,36 @@
         <div class="card-body p-0">
           <div class="mailbox-controls">
             <!-- Check all button -->
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+            <button
+              type="button"
+              class="btn btn-default btn-sm checkbox-toggle"
+            >
+              <i class="far fa-square"></i>
             </button>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fas fa-reply"></i></button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i></button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="far fa-trash-alt"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="fas fa-reply"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="fas fa-share"></i>
+              </button>
             </div>
             <!-- /.btn-group -->
-            <button type="button" class="btn btn-default btn-sm"><i class="fas fa-sync-alt"></i></button>
+            <button type="button" class="btn btn-default btn-sm">
+              <i class="fas fa-sync-alt"></i>
+            </button>
             <div class="float-right">
               1-50/200
               <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
               </div>
               <!-- /.btn-group -->
             </div>
@@ -129,12 +148,11 @@
                   <tr :key="index" role="button" @click="openTrail(trail)">
                     <td>
                       <div class="icheck-primary">
-                        <input type="checkbox" value="" id="check1">
+                        <input type="checkbox" value="" id="check1" />
                         <label for="check1"></label>
                       </div>
                     </td>
-                    <td class="mailbox-star"><a href="#"></a>
-                    </td>
+                    <td class="mailbox-star"><a href="#"></a></td>
                     <!-- <td class="mailbox-name">
                       <div v-if="Boolean(trail.email.lastcomment2.length)" class="">
                         <b-avatar-group size="sm">
@@ -165,24 +183,32 @@
                       </div>
                     </td> -->
                     <td class="mailbox-name">
-                        <span class="badge badge-secondary mx-1" v-for="(item, index) in trail.project" :key="index">{{item.TYPE}}#{{item.NUM}}</span>
+                      <span
+                        class="badge badge-secondary mx-1"
+                        v-for="(item, index) in trail.project"
+                        :key="index"
+                        >{{ item.TYPE }}#{{ item.NUM }}</span
+                      >
                     </td>
                     <td class="mailbox-subject">
                       <div class="col-md-12">
                         <div class="d-flex content-subject">
                           <div class="m-title col-md-3">
-                            <b>{{trail.email.title}}</b>
+                            <b>{{ trail.email.title }}</b>
                           </div>
                           <div class="col-md-9 m-content">
-                          <span>
-                            -
-                            {{strippedContent(trail.email.lastcomment2,'contents') || trail.from.name}}
-
-                          </span>
+                            <span>
+                              -
+                              {{
+                                strippedContent(
+                                  trail.email.lastcomment2,
+                                  "contents"
+                                ) || trail.from.name
+                              }}
+                            </span>
                           </div>
                         </div>
                       </div>
-
                     </td>
                     <td class="mailbox-attachment"></td>
                     <td class="mailbox-date">5 mins ago</td>
@@ -198,20 +224,36 @@
         <div class="card-footer p-0">
           <div class="mailbox-controls">
             <!-- Check all button -->
-            <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="far fa-square"></i>
+            <button
+              type="button"
+              class="btn btn-default btn-sm checkbox-toggle"
+            >
+              <i class="far fa-square"></i>
             </button>
             <div class="btn-group">
-              <button type="button" class="btn btn-default btn-sm"><i class="far fa-trash-alt"></i></button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fas fa-reply"></i></button>
-              <button type="button" class="btn btn-default btn-sm"><i class="fas fa-share"></i></button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="far fa-trash-alt"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="fas fa-reply"></i>
+              </button>
+              <button type="button" class="btn btn-default btn-sm">
+                <i class="fas fa-share"></i>
+              </button>
             </div>
             <!-- /.btn-group -->
-            <button type="button" class="btn btn-default btn-sm"><i class="fas fa-sync-alt"></i></button>
+            <button type="button" class="btn btn-default btn-sm">
+              <i class="fas fa-sync-alt"></i>
+            </button>
             <div class="float-right">
               1-50/200
               <div class="btn-group">
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
-                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
               </div>
               <!-- /.btn-group -->
             </div>
@@ -223,29 +265,28 @@
     </div>
     <!-- /.col -->
   </div>
-
 </template>
 <style scoped>
-  .m-content{
-        overflow: hidden;
-      max-width: 800px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-  }
-  .mailbox-date {
-    width: 1%;
-    white-space: nowrap;
-  }
-  .content-subject{
-    font-size: .875rem;
-  }
-  .item-avatar {
-    margin: -6px;
-    padding-left: 10px;
-  }
+.m-content {
+  overflow: hidden;
+  max-width: 800px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.mailbox-date {
+  width: 1%;
+  white-space: nowrap;
+}
+.content-subject {
+  font-size: 0.875rem;
+}
+.item-avatar {
+  margin: -6px;
+  padding-left: 10px;
+}
 </style>
 <script>
-  /* eslint-disable */
+/* eslint-disable */
   export default {
     data() {
       return {

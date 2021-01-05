@@ -3,14 +3,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import main from "../views/main.vue";
-import Login from '../views/Login.vue'
-import register from '../views/Register.vue'
+import Login from "../views/Login.vue";
+import register from "../views/Register.vue";
 
 Vue.use(VueRouter);
 
-const routes = [
-
-  {
+const routes = [{
     path: "/",
     name: "home",
     component: main,
@@ -18,60 +16,89 @@ const routes = [
       requiresAuth: true
     },
     children: [{
-        path: 'home',
+        path: "home",
         name: "home",
-        component: () => import('../pages/home.vue'),
+        component: () => import("../pages/home.vue"),
         meta: {
           requiresAuth: true
         }
       },
+
+
+
+
       {
-        path: 'clients',
-        name: "clients",
-        component: () => import('../pages/clients.vue'),
+        path: "clients",
+        component: () => import("../pages/clients/clients.vue"),
         meta: {
           requiresAuth: true
-        }
+        },
+        children: [{
+            path: "",
+            name: "clients",
+            component: () => import("../pages/clients/clients_list.vue"),
+            meta: {
+              requiresAuth: true
+            },
+          },
+          {
+            path: ":id",
+            name: "client_view",
+            component: () => import("../pages/clients/clients_view.vue"),
+            meta: {
+              requiresAuth: true
+            }
+          }
+        ]
       },
+
+
+
+
+
       {
-        path: 'trail',
+        path: "trail",
         name: "trail",
-        component: () => import('../views/trail/trail.vue'),
+        component: () => import("../views/trail/trail.vue"),
         meta: {
           requiresAuth: true
         }
       },
       {
-        path: 'delegate',
+        path: "delegate",
         name: "delegate",
-        component: () => import('../pages/delegate.vue'),
+        component: () => import("../pages/delegate.vue"),
         meta: {
           requiresAuth: true
         }
       },
       {
-        path: 'history',
+        path: "history",
         name: "history",
-        component: () => import('../pages/history.vue'),
+        component: () => import("../pages/history.vue"),
         meta: {
           requiresAuth: true
         }
-      },
+      }
     ]
   },
 
   {
     path: "/login",
     name: "login",
-    component: Login,
+    component: Login
   },
   {
     path: "/register",
     name: "register",
-    component: register,
+    component: register
   },
-
-
+  {
+    path: "*",
+    component: {
+      template: '<h1>Not found</h1>'
+    }
+  }
 ];
 
 const router = new VueRouter({
@@ -79,7 +106,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
-
 
 export default router;
