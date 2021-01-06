@@ -62,7 +62,7 @@
                 </div>
               </td>
             </tr>
-            <tr>
+            <tr v-if="!Boolean(companies.data.length)">
               <td colspan="4">
                 <div class="col-md-12 text-center">
                   <h3 class="text-muted h5">

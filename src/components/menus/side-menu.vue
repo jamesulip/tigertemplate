@@ -14,6 +14,12 @@
           Job Trail
         </div>
       </menu_item>
+      <menu_item :to="{ name: 'projects' }" :routeName="'projects'">
+        <div slot="title">
+          <i class="nav-icon fas fa-th"></i>
+          Projects
+        </div>
+      </menu_item>
       <menu_item :to="{ name: 'clients' }" :routeName="'clients'">
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>

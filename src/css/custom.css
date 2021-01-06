@@ -16,3 +16,7 @@
   display: flex;
   flex-flow: row wrap;
 }
+
+.add_client_label label {
+  font-weight: unset!important;
+}

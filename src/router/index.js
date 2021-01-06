@@ -15,10 +15,12 @@ const routes = [{
     meta: {
       requiresAuth: true
     },
-    children: [{
-        path: "home",
+    children: [
+
+      {
+        path: "",
         name: "home",
-        component: () => import("../pages/home.vue"),
+        component: () => import("../views/trail/trail.vue"),
         meta: {
           requiresAuth: true
         }
@@ -65,13 +67,31 @@ const routes = [{
         }
       },
       {
-        path: "delegate",
-        name: "delegate",
-        component: () => import("../pages/delegate.vue"),
+        path: "projects",
+        component: () => import("../pages/project/projects.vue"),
         meta: {
           requiresAuth: true
-        }
+        },
+        children: [{
+            path: "",
+            name: "projects",
+            component: () => import("../pages/clients/clients_list.vue"),
+            meta: {
+              requiresAuth: true
+            },
+          },
+          {
+            path: ":id",
+            name: "client_view",
+            component: () => import("../pages/clients/clients_view.vue"),
+            meta: {
+              requiresAuth: true
+            }
+          }
+        ]
       },
+
+
       {
         path: "history",
         name: "history",
