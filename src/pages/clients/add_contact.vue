@@ -1,8 +1,11 @@
 <template>
     <div>
-        <b-button pill variant="info" size="sm" @click="add_contact_modal=true">
-            <b-icon-plus></b-icon-plus>Add Contact
-        </b-button>
+        <div class="d-flex" style="align-items: flex-start;">
+            <span class="h4">Add Contact</span>
+            <b-button pill variant="secondary" class="ml-2" size="sm" @click="add_contact_modal=true">
+                <b-icon-plus></b-icon-plus>
+            </b-button>
+        </div>
 
         <b-modal v-model="add_contact_modal" @ok="validate" :title="`Add Contacts`">
             <form ref="form" @submit.stop.prevent="handleSubmit">
