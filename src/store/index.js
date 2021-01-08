@@ -61,6 +61,9 @@ export default new Vuex.Store({
     currentUser: state => {
       return state.currentUser;
     },
+    current_employee_id: state => {
+      return state.currentUser.employee_id;
+    },
     loadingState: state => {
       return state.page_loading;
     },

@@ -6,7 +6,7 @@ import router from "./router";
 import store from "./store";
 import Pusher from "pusher-js"
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-
+import moment from 'moment'
 
 
 import {initialize} from './general'
@@ -32,6 +32,9 @@ Vue.mixin({
       initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
       return initials;
     },
+    formatDate(val,format){
+      return moment(val).format(format);
+    }
   },
 })
 

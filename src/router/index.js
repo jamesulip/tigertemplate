@@ -75,19 +75,12 @@ const routes = [{
         children: [{
             path: "",
             name: "projects",
-            component: () => import("../pages/clients/clients_list.vue"),
+            component: () => import("../pages/project/project_list.vue"),
             meta: {
               requiresAuth: true
             },
           },
-          {
-            path: ":id",
-            name: "client_view",
-            component: () => import("../pages/clients/clients_view.vue"),
-            meta: {
-              requiresAuth: true
-            }
-          }
+          
         ]
       },
 
