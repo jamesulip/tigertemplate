@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     
-    <div class="col-md-12" v-if="value.LR">
+    <div class="col-md-12" v-if="value.JO">
       <h4 class="text-muted">LR</h4>
       <div class="card">
         <div class="card-body p-0">
@@ -17,8 +17,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="pro in value.LR" :key="pro.ID">
-                <td colspan="2">
+              <tr v-for="pro in value.JO" :key="pro.ID">
+                <td colspan="3">
                   <div class="d-flex align-center">
                     <div class="d-flex flex-column">
                       <span><a class="text-link">{{pro.project.TYPE}}# {{pro.project.NUM}}</a></span>
@@ -29,9 +29,7 @@
                     </div>
                   </div>
                 </td>
-                <td>
-
-                </td>
+               
                 <td><span class="badge badge-success">Done</span></td>
                 <td><span class="badge badge-success">{{pro.s_media}}</span></td>
                 <td>
