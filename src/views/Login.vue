@@ -81,8 +81,8 @@ export default {
   data() {
     return {
       auth: {
-        email: "erine.atordido@tigergraphics.com.ph",
-        password: "erinemariele"
+        email: "raven.valenzuela@tigergraphics.com",
+        password: "Persevere"
       },
       loading: false
     };

@@ -23,7 +23,7 @@
          <div class="col-md-8 offset-md-2 mb-3">
             
                <div class="input-group">
-                  <input type="search" v-model.lazy="search_q.searchq" @change="search()" class="form-control form-control-lg" placeholder="Type your keywords here">
+                  <input type="search" v-model.lazy="search_q.searchq" @change="search()" class="form-control form-control-lg" placeholder="Search Project Name">
                   <div class="input-group-append">
                      <button @click="search()" type="submit" class="btn btn-lg btn-default">
                         <i class="fa fa-search"></i>
@@ -49,7 +49,7 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="(item, index) in projects.data" :key="index">
+                  <tr v-for="(item, index) in projects.data" :key="index" role="button">
                      <td colspan="2">
                         <div class="d-flex flex-column">
                            <span>{{item.ProjectName}}</span>
@@ -69,11 +69,13 @@
                            <!-- <div  class="badge mr-1 badge-success badge-pill">{{CountPro(item.project,'JO').length}}  JO</div>
                            <div  class="badge mr-1 badge-warning badge-pill">{{CountPro(item.project,'PSR').length}}  PSR</div>
                            <div  class="badge mr-1 badge-info badge-pill">{{CountPro(item.project,'LR').length}}  LR</div> -->
+                            <div>
                             <b-avatar-group>
                              <b-avatar  variant="success" badge="JO" v-if="CountPro(item.project,'JO').length" :text="CountPro(item.project,'JO').length.toString()" size="60px"/>
                              <b-avatar  variant="warning" badge="PSR" v-if="CountPro(item.project,'PSR').length" :text="CountPro(item.project,'PSR').length.toString()" size="60px"/>
                              <b-avatar  variant="info" badge="LR" v-if="CountPro(item.project,'LR').length" :text="CountPro(item.project,'LR').length.toString()" size="60px"/>
                              </b-avatar-group>
+                            </div>
                         </div>
 
                      </td>
@@ -83,18 +85,26 @@
                      <td></td>
                      <td>{{formatDate(item.created_at,'L')}}</td>
                      <td>
-                        <b-dropdown size="sm" id="dropdown-1" text="Dropdown Button" class="m-md-2">
+                        <b-dropdown left size="sm" id="dropdown-1" text="Dropdown Button" class="m-md-2">
                            <template #button-content>
                               <b-icon-gear></b-icon-gear>
                            </template>
-                           <b-dropdown-item>Hold</b-dropdown-item>
-                           <b-dropdown-item>Cancel</b-dropdown-item>
+                           <b-dropdown-item><b-icon-folder2-open></b-icon-folder2-open> Open</b-dropdown-item>
+                           <b-dropdown-item><b-icon-pause></b-icon-pause> Hold</b-dropdown-item>
+                           <b-dropdown-item><b-icon-x></b-icon-x> Cancel</b-dropdown-item>
                            <b-dropdown-divider></b-dropdown-divider>
-                           <b-dropdown-item disabled>Delete</b-dropdown-item>
+                           <b-dropdown-item disabled><b-icon-trash></b-icon-trash> Delete</b-dropdown-item>
                         </b-dropdown>
                      </td>
                   </tr>
                </tbody>
+               <tfoot>
+                 <tr>
+                     <td colspan="7" class="text-center">
+                        <b-button variant="link" @click="loadNext()">Load More</b-button>
+                     </td>
+                  </tr>
+               </tfoot>
             </table>
          </div>
       </div>
@@ -137,6 +147,16 @@
             })
             .catch(err => {
                console.error(err);
+            })
+         },
+         loadNext(){
+            axios.post(this.projects.next_page_url,this.search_q)
+            .then(res => {
+               // console.log(res)
+               this.projects.data.push(res.data.data)
+            })
+            .catch(err => {
+               console.error(err); 
             })
          }
       },

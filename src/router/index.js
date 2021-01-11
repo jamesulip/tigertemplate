@@ -80,7 +80,14 @@ const routes = [{
               requiresAuth: true
             },
           },
-          
+          {
+            path: ":id",
+            name: "project_view",
+            component: () => import("../pages/project/project_view.vue"),
+            meta: {
+              requiresAuth: true
+            },
+          },
         ]
       },
 
