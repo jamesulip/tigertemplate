@@ -7,9 +7,8 @@
             <div class="col-sm-6 p-0 back-button">
                <h1> Projects</h1>
 
-               <b-button pill variant="secondary" class="btn-flat ml-3" size="sm">
-                  <b-icon-plus></b-icon-plus>
-               </b-button>
+             <project_add/>
+
             </div>
             <div class="col-md-6">
                <div class="float-right">
@@ -49,7 +48,7 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="(item, index) in projects.data" :key="index" role="button">
+                  <tr v-for="(item, index) in projects.data" :key="index" role="button" @click="$router.push({name:'project_view',params:{id:item.ID}})"> 
                      <td colspan="2">
                         <div class="d-flex flex-column">
                            <span>{{item.ProjectName}}</span>
@@ -98,7 +97,7 @@
                      </td>
                   </tr>
                </tbody>
-               <tfoot>
+               <tfoot v-if="projects.next_page_url">
                  <tr>
                      <td colspan="7" class="text-center">
                         <b-button variant="link" @click="loadNext()">Load More</b-button>
@@ -114,6 +113,7 @@
 
 <script>
    /*eslint-disable*/
+   import project_add from './project_add'
    export default {
       data() {
          return {
@@ -123,8 +123,12 @@
                SalesExec: this.$store.getters.current_employee_id,
                searchq: null,
                sort: null,
+               count_page:50
             }
          }
+      },
+      components:{
+         project_add
       },
       mounted() {
          this.search()
@@ -152,8 +156,9 @@
          loadNext(){
             axios.post(this.projects.next_page_url,this.search_q)
             .then(res => {
-               // console.log(res)
-               this.projects.data.push(res.data.data)
+               this.projects.data.push(...res.data.data)
+
+               this.projects.next_page_url  = res.data.next_page_url
             })
             .catch(err => {
                console.error(err); 

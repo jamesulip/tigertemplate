@@ -12,3 +12,18 @@ export function statusColor(Status) {
       return "";
   }
 }
+
+export function statusVariant(Status) {
+  switch (Status) {
+    case "Working on it":
+      return "primary";
+    case "Done":
+      return "success";
+    case "Paused":
+      return "warning";
+    case "REVISED":
+      return "danger";
+    default:
+      return "";
+  }
+}

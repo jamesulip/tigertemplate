@@ -23,6 +23,7 @@
     "install": "^0.13.0",
     "jquery": "^3.5.1",
     "laravel-echo": "^1.10.0",
+    "loadash": "^1.0.0",
     "pusher": "^4.0.2",
     "pusher-js": "^4.4.0",
     "vue": "^2.6.12",
