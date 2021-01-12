@@ -7,7 +7,7 @@
             <div class="col-sm-6 p-0 back-button">
                <h1> Projects</h1>
 
-             <project_add/>
+             <project_add @project_added="search()"/>
 
             </div>
             <div class="col-md-6">
