@@ -7,7 +7,9 @@ import store from "./store";
 import Pusher from "pusher-js"
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import moment from 'moment'
+import vSelect from "vue-select";
 
+Vue.component("v-select", vSelect);
 
 import {initialize} from './general'
 

@@ -7,8 +7,9 @@
 <style lang="scss">
 @import "node_modules/bootstrap/scss/bootstrap.scss";
 @import "node_modules/bootstrap-vue/src/index.scss";
-@import "admin-lte/build/scss/AdminLTE.scss";
+@import "admin-lte";
 @import "./css/custom.css";
+@import "~vue-select/dist/vue-select.css";
 </style>
 <script>
 export default {

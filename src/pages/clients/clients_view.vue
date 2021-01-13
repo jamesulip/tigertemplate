@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <b-overlay :show="loading" rounded="sm" :opacity=".5">
       <template #overlay>
         <div class="text-center" style="margin-top:60vh">

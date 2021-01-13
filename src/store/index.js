@@ -13,7 +13,10 @@ export default new Vuex.Store({
     page_loading: true,
     current_job: [],
     selected_project: {},
-    my_projects: []
+    my_projects: [],
+    current_project:{},
+    projecttypes:[],
+    productstep:[]
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -37,16 +40,41 @@ export default new Vuex.Store({
     },
     set_my_projects(state, payload) {
       state.my_projects = payload;
+    },
+    set_projects(state, payload) {
+      state.current_project = payload;
+    },
+    set_projecttypes(state, payload) {
+      
+      state.projecttypes = payload;
+    },
+    set_productstep(state, payload) {
+      
+      state.productstep = payload;
     }
   },
   actions: {
-    set_current_job(state) {
+
+    set_projecttypes_s({ commit }) {
       return new Promise((resolutionFunc, rejectionFunc) => {
         axios
-          .get(`cors/current_project`)
+          .get(`cors/projecttypes`)
           .then(res => {
-            state.state.current_job = res.data;
-            console.log("ss", state.current_job);
+            commit('set_projecttypes',res.data)
+            resolutionFunc(res.data);
+          })
+          .catch(err => {
+            console.error(err);
+            rejectionFunc(err);
+          });
+      });
+    },
+    set_productstep({ commit }) {
+      return new Promise((resolutionFunc, rejectionFunc) => {
+        axios
+          .get(`cors/productstep`)
+          .then(res => {
+            commit('set_productstep',res.data)
             resolutionFunc(res.data);
           })
           .catch(err => {
@@ -75,6 +103,15 @@ export default new Vuex.Store({
     },
     get_my_projects: state => {
       return state.my_projects;
+    },
+    get_project: state => {
+      return state.current_project;
+    },
+    get_projecttypes: state => {
+      return state.projecttypes;
+    },
+    get_productstep: state => {
+      return state.productstep;
     }
   }
 });

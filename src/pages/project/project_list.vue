@@ -48,15 +48,14 @@
                   </tr>
                </thead>
                <tbody>
-                  <tr v-for="(item, index) in projects.data" :key="index" role="button" @click="$router.push({name:'project_view',params:{id:item.ID}})"> 
+                  <tr v-for="(item, index) in projects.data" :key="index" > 
                      <td colspan="2">
                         <div class="d-flex flex-column">
-                           <span>{{item.ProjectName}}</span>
+                           <router-link :to="{name:'project_view',params:{id:item.ID}}" class="text-capitalize">{{item.ProjectName.toLowerCase()}}</router-link>
 
                            <div class="d-flex align-items-center">
                               <b-icon-building></b-icon-building>
-                              <b-icon-building></b-icon-building>
-                              <a class="text-link">{{item.client.com_name}}</a>
+                              <a class="text-link text-muted">{{item.client.com_name}}</a>
                            </div>
 
 
@@ -82,7 +81,7 @@
                         <b-avatar v-for="i in removeDuplicate(item.project)" :key="i.ID" variant="primary" size="35px" :text="getInitial(i.sales_exec_auth.name)" class="mr-3"></b-avatar>
                      </td>
                      <td></td>
-                     <td>{{formatDate(item.created_at,'L')}}</td>
+                     <td>{{formatDate(item.updated_at,'L')}}</td>
                      <td>
                         <b-dropdown left size="sm" id="dropdown-1" text="Dropdown Button" class="m-md-2">
                            <template #button-content>
@@ -92,7 +91,7 @@
                            <b-dropdown-item><b-icon-pause></b-icon-pause> Hold</b-dropdown-item>
                            <b-dropdown-item><b-icon-x></b-icon-x> Cancel</b-dropdown-item>
                            <b-dropdown-divider></b-dropdown-divider>
-                           <b-dropdown-item disabled><b-icon-trash></b-icon-trash> Delete</b-dropdown-item>
+                           <b-dropdown-item @click="delete_project(item)"><b-icon-trash></b-icon-trash> Delete</b-dropdown-item>
                         </b-dropdown>
                      </td>
                   </tr>
@@ -105,6 +104,11 @@
                   </tr>
                </tfoot>
             </table>
+             <b-skeleton-table v-if="loading_table"
+                  :rows="6"
+                  :columns="4"
+                  :table-props="{ bordered: true, striped: true }"
+                  ></b-skeleton-table>
          </div>
       </div>
 
@@ -124,16 +128,50 @@
                searchq: null,
                sort: null,
                count_page:50
-            }
+            },
+            loading_table:false
          }
       },
       components:{
          project_add
       },
       mounted() {
-         this.search()
+         if(!this.$store.getters.get_my_projects.current_page){
+            this.search()
+         }
+         else{
+            this.projects = this.$store.getters.get_my_projects
+         }
       },
       methods: {
+         delete_project(item){
+               this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
+                  title: 'Please Confirm',
+                  size: 'sm',
+                  buttonSize: 'sm',
+                  okVariant: 'danger',
+                  okTitle: 'YES',
+                  cancelTitle: 'NO',
+                  footerClass: 'p-2',
+                  hideHeaderClose: false,
+                  centered: true
+               })
+               .then(value => {
+                  // alert(value)
+                  if(value){
+                     axios.delete(`cors/wholeprojects/${item.ID}`)
+                     .then(res => {
+                        this.search()
+                     })
+                     .catch(err => {
+                        console.error(err); 
+                     })
+                  }
+               })
+               .catch(err => {
+                  // An error occurred
+               })
+         },
          removeDuplicate(arr){
             return arr.filter((v,i,a)=>a.findIndex(t=>(t.id === v.id))===i)
          },
@@ -143,11 +181,13 @@
             })
          },
          search(){
+            this.loading_table = true
             axios.post(`cors/wholeprojectssearch`,
             this.search_q)
             .then(res => {
-               // console.log(res)
                this.projects = res.data
+               this.$store.commit('set_my_projects',res.data)
+               this.loading_table = false
             })
             .catch(err => {
                console.error(err);
