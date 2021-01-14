@@ -17,7 +17,7 @@
       <section class="content-header row">
 
          <b-dropdown id="dropdown-left" text="Add New" variant="primary" class="">
-            <jo_add>
+            <jo_add v-if="$store.getters.get_projecttypes.length">
                <b-icon-plus-circle/> Add Job Order
             </jo_add>
             <b-dropdown-item href="#">
@@ -153,6 +153,8 @@
            if(!this.$store.getters.get_projecttypes.length){
               this.$store.dispatch('set_projecttypes_s')
               this.$store.dispatch('set_productstep')
+              this.$store.dispatch('set_productiontypes')
+              this.$store.dispatch('set_machines')
            }
 
       },

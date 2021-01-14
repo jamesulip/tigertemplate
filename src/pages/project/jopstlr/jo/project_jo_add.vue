@@ -6,12 +6,13 @@
             </slot>
 
         </a>
-        <b-modal lazy  no-close-on-esc  no-close-on-backdrop :title="`Add Job Order`" size="lg" v-model="open_jo_add_modal">
-            <jo_form v-model="data"/>
+        <b-modal lazy  @ok="submit" no-close-on-esc  no-close-on-backdrop :title="`Add Job Order`" size="lg" v-model="open_jo_add_modal">
+            <jo_form ref="jo_form" v-model="data"/>
         </b-modal>
     </li>
 </template>
 <script>
+/*eslint-disable*/
     import jo_form from './forms'
     export default {
         components:{
@@ -20,7 +21,31 @@
         data() {
             return {
                 open_jo_add_modal: false,
-                data:{}
+                data:{
+                    "finishers": [
+
+                    ],
+                    "details": {
+                        "s_accountexec": this.$store.getters.current_employee_id,
+                        "s_projname": this.$store.getters.get_project.ProjectName,
+                        "s_company": this.$store.getters.get_project.Client
+                    },
+                    "projects": {
+                        "SALESEXEC": this.$store.getters.current_employee_id,
+                        "projectID": this.$store.getters.get_project.ID,
+                        "TYPE": "JO",
+                        "projecttype": 11
+                    },
+                    
+                }
+            }
+        },
+        methods: {
+            submit(bvt){
+                bvt.preventDefault();
+                // // console.log(this.data)
+                
+                this.$refs.jo_form.submit()
             }
         },
         

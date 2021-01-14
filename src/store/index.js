@@ -16,7 +16,9 @@ export default new Vuex.Store({
     my_projects: [],
     current_project:{},
     projecttypes:[],
-    productstep:[]
+    productstep:[],
+    productiontypes:[],
+    machines:[]
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -51,6 +53,14 @@ export default new Vuex.Store({
     set_productstep(state, payload) {
       
       state.productstep = payload;
+    },
+    set_productiontypes(state, payload) {
+      
+      state.productiontypes = payload;
+    },
+    set_machines(state, payload) {
+      
+      state.machines = payload;
     }
   },
   actions: {
@@ -82,6 +92,37 @@ export default new Vuex.Store({
             rejectionFunc(err);
           });
       });
+    },
+    set_productiontypes({ commit }) {
+      return new Promise((resolutionFunc, rejectionFunc) => {
+        axios
+          .post(`cors/productiontypes_get`,{
+            type: "FOR"
+          })
+          .then(res => {
+            commit('set_productiontypes',res.data)
+            resolutionFunc(res.data);
+          })
+          .catch(err => {
+            console.error(err);
+            rejectionFunc(err);
+          });
+      });
+    },
+    set_machines({ commit }) {
+      return new Promise((resolutionFunc, rejectionFunc) => {
+        axios
+          .get(`cors/machine-search?group=brand`)
+          .then(res => {
+            commit('set_machines',res.data)
+            resolutionFunc(res.data);
+          })
+          .catch(err => {
+            rejectionFunc(err);
+          });
+      });
+   
+     
     }
   },
   modules: {},
@@ -112,6 +153,12 @@ export default new Vuex.Store({
     },
     get_productstep: state => {
       return state.productstep;
+    },
+    get_productiontypes: state => {
+      return state.productiontypes;
+    },
+    get_machines: state => {
+      return state.machines;
     }
   }
 });
