@@ -6,22 +6,32 @@
             </slot>
 
         </a>
-        <b-modal lazy  @ok="submit" no-close-on-esc  no-close-on-backdrop :title="`Add Job Order`" size="lg" v-model="open_jo_add_modal">
-            <jo_form ref="jo_form" v-model="data"/>
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add Job Order`" size="lg"
+            v-model="open_jo_add_modal">
+            <jo_form ref="jo_form" v-model="data" />
+            <template #modal-footer="{ ok, close }">
+               
+                    <b-button variant="primary"  class="float-right" @click="close()">
+                        Cancel
+                    </b-button>
+                     <b-button variant="primary"  class="float-right" @click="ok()">
+                        Save
+                    </b-button>
+            </template>
         </b-modal>
     </li>
 </template>
 <script>
-/*eslint-disable*/
+    /*eslint-disable*/
     import jo_form from './forms'
     export default {
-        components:{
+        components: {
             jo_form
         },
         data() {
             return {
                 open_jo_add_modal: false,
-                data:{
+                data: {
                     "finishers": [
 
                     ],
@@ -36,18 +46,20 @@
                         "TYPE": "JO",
                         "projecttype": 11
                     },
-                    
+                    items:[]
+
                 }
             }
         },
         methods: {
-            submit(bvt){
+            
+            submit(bvt) {
                 bvt.preventDefault();
                 // // console.log(this.data)
-                
+
                 this.$refs.jo_form.submit()
             }
         },
-        
+
     }
 </script>
