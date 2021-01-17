@@ -8,7 +8,9 @@
         </a>
         <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add Job Order`" size="lg"
             v-model="open_jo_add_modal">
-            <jo_form ref="jo_form" v-model="data" />
+            <jo_form ref="jo_form" v-model="data" @added="x=>{
+                $emit('added');open_jo_add_modal=false
+            }"/>
             <template #modal-footer="{ ok, close }">
                
                     <b-button variant="primary"  class="float-right" @click="close()">

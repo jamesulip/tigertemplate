@@ -3,11 +3,17 @@
         <b-tabs card>
             <b-tab active>
                 <template #title>
-                  Job Order Details  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${Object.keys(errors).length}`" icon="exclamation-triangle"></b-avatar>
+                  Job Order Details  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${errors_count.info || 0}`" icon="exclamation-triangle"></b-avatar>
                 </template>
 
 
                 <div class="row">
+                    <div class="col-md-12">
+                       
+                         <b-alert dismissible @dismissed="x=>{show_errors=false,errors={}}" :show="Boolean(Object.keys(errors).length) && show_errors" variant="danger" class="disabled">
+                             Cant Proceed {{Object.keys(errors).length}} error<template v-if="Object.keys(errors).length>0">s</template> found
+                         </b-alert>
+                    </div>
                     <div class="col-md-6">
                         <b-form-group label="Media:" label-for="input-3">
                             <b-form-input :state="array_to_bool(errors['details.s_media'])"
@@ -75,7 +81,12 @@
 
                 </div>
             </b-tab>
-            <b-tab title="Items">
+            <b-tab>
+                 <template #title>
+                  Items  
+                  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${errors_count.items || 0}`" :text="`${value.items.length}`"></b-avatar>
+                  
+                </template>
                <table class="table">
                    <thead>
                        <tr>
@@ -87,9 +98,9 @@
                            <th>Qty</th>
                            <th></th>
                        </tr>
-                   </thead>
-                   <tbody>
-                       <tr v-for="(item,index) in value.items" :key="`s${index}`">
+                    </thead>
+                    <transition-group name="list" tag="tbody">
+                       <tr v-for="(item,index) in value.items" :key="`s${index}`" class="list-item-tr">
                            <td>{{index+1}}</td>
                            <td>
                                <b-form-input
@@ -146,12 +157,20 @@
                                 required
                                 ></b-form-input>
                            </td>
+                           <td>
+                               <b-button variant="sm" @click="$delete(value.items, index)"><b-icon-trash></b-icon-trash></b-button>
+                           </td>
                        </tr>
-                   </tbody>
+                    </transition-group>
                    <tfoot>
                        <tr>
-                           <td colspan="6">
-                               <b-button @click="AddItem()"></b-button>
+                           <td colspan="7">
+                               <div class="float-right">
+                                   
+                               <b-button @click="AddItem()" size="sm">
+                                   <b-icon-plus></b-icon-plus> Add Item
+                               </b-button>
+                               </div>
                            </td>
                        </tr>
                    </tfoot>
@@ -160,12 +179,22 @@
         </b-tabs>
     </div>
 </template>
+<style lang="scss">
+    .list-enter-active, .list-leave-active {
+        transition: all .2s;
+    }
+    .list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+        opacity: 0;
+       
+    }
+</style>
 <script>
     /*eslint-disable*/
     export default {
         props: ['value'],
         data() {
             return {
+                show_errors:false,
                 finishers_selected: [],
                 test2: "",
                 errors: {
@@ -180,6 +209,7 @@
             array_to_bool(array) {
                 if (array)
                     return !Boolean(array.length)
+               
             },
             filterMachine(machine, type) {
                 var s = machine.filter(x => {
@@ -196,8 +226,9 @@
 
             },
             submit: function () {
+                this.show_errors = true
                 this.errors = {}
-
+                
                 if(!this.test2){
                     this.errors.scope = [
                         {name: "s_media", message: "No Media"}
@@ -216,7 +247,7 @@
                     finishers: this.finishers.concat(this.scope())
                 })
                 .then(res => {
-                    console.log(res)
+                   this.$emit('added',res.data)
                 })
                 .catch(err => {
                     console.log('ss', err.response);
@@ -237,7 +268,19 @@
         },
 
         computed: {
+            errors_count(){
+                var counts={}
+                Object.keys(this.errors).map(x=>{
+                    return x.split('.')[0]
+                }).forEach(function(x) { 
+                    if(x=='items')
+                        counts['items'] = (counts[x] || 0)+1;
+                    else
+                         counts['info'] = (counts['info'] || 0)+1;
+                 });
 
+                return counts;
+            },
             finishers: function () {
                 return this.finishers_selected.map((s, i) => {
                     return {

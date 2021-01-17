@@ -17,7 +17,7 @@
       <section class="content-header row">
 
          <b-dropdown id="dropdown-left" text="Add New" variant="primary" class="">
-            <jo_add v-if="$store.getters.get_projecttypes.length">
+            <jo_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
                <b-icon-plus-circle/> Add Job Order
             </jo_add>
             <b-dropdown-item href="#">

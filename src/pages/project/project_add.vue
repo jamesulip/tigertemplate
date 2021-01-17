@@ -3,7 +3,7 @@
         <b-button pill @click="add_project_modal=true" variant="secondary" class="btn-flat ml-3" size="sm">
             <b-icon-plus></b-icon-plus>
         </b-button>
-        <b-modal @hide="retsetData()" no-close-on-backdrop :title="`Add Project`" v-model="add_project_modal" @ok="add_project">
+        <b-modal @hide="retsetData()" size="xl" no-close-on-backdrop :title="`Add Project`" v-model="add_project_modal" @ok="add_project">
             <b-form>
                   <b-form-group
                     id="input-group-1"
