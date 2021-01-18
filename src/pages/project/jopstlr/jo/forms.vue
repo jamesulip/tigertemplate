@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b-tabs card>
+        <b-tabs card v-model="detail_tab">
             <b-tab active>
                 <template #title>
                   Job Order Details  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${errors_count.info || 0}`" icon="exclamation-triangle"></b-avatar>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <b-form-group label="Project Name:" label-for="input-2">
-                    <b-form-input :state="array_to_bool(errors['details.s_projname'])"
+                    <b-form-input  :state="array_to_bool(errors['details.s_projname'])"
                         v-model="value.details.s_projname" />
                 </b-form-group>
                 <b-form-group label="Scope" label-for="radio-group-1">
@@ -195,11 +195,13 @@
         data() {
             return {
                 show_errors:false,
+                detail_tab:0,
                 finishers_selected: [],
                 test2: "",
                 errors: {
                     scope:{}
-                }
+                },
+                loading:false
             }
         },
         methods: {
@@ -228,7 +230,6 @@
             submit: function () {
                 this.show_errors = true
                 this.errors = {}
-                
                 if(!this.test2){
                     this.errors.scope = [
                         {name: "s_media", message: "No Media"}
@@ -241,17 +242,36 @@
                     ]
                     return false
                 }
-
+                this.loading = true
                 axios.post(`cors/newAddproject`, {
                     ...this.value,
                     finishers: this.finishers.concat(this.scope())
                 })
                 .then(res => {
                    this.$emit('added',res.data)
+                     this.loading = false
                 })
                 .catch(err => {
-                    console.log('ss', err.response);
+                  
                     this.errors = err.response.data.errors
+
+                    if(this.errors_count.info){
+                        this.$bvToast.toast(`${this.errors_count.info} found on JO details Tab`, {
+                        title: `Cant Proceed`,
+                            variant: 'danger',
+                            solid: true
+                        })
+                        this.detail_tab = 0
+                    }
+                    else if(this.errors_count.items){
+                        this.$bvToast.toast(`${this.errors_count.items} found on Items Tab`, {
+                        title: `Cant Proceed`,
+                            variant: 'danger',
+                            solid: true
+                        })
+                        this.detail_tab = 1
+                    }
+                     this.loading = false
                 })
             },
             scope() {

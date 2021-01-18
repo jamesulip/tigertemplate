@@ -12,12 +12,12 @@
                 $emit('added');open_jo_add_modal=false
             }"/>
             <template #modal-footer="{ ok, close }">
-               
-                    <b-button variant="primary"  class="float-right" @click="close()">
+                    <b-button variant="danger"  class="float-right" @click="close()">
                         Cancel
                     </b-button>
-                     <b-button variant="primary"  class="float-right" @click="ok()">
-                        Save
+                     <b-button :disabled="$refs.jo_form?$refs.jo_form.loading:false" variant="primary"  class="float-right" @click="ok()">
+                         <i class="fas fa-save"></i>
+                         Save
                     </b-button>
             </template>
         </b-modal>

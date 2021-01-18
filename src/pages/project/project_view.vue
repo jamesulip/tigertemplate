@@ -15,18 +15,25 @@
       </section>
 
       <section class="content-header row">
-
-         <b-dropdown id="dropdown-left" text="Add New" variant="primary" class="">
-            <jo_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
-               <b-icon-plus-circle/> Add Job Order
-            </jo_add>
-            <b-dropdown-item href="#">
-               Add PSR
-            </b-dropdown-item>
-            <b-dropdown-item href="#">Add Layout Proposal</b-dropdown-item>
-         </b-dropdown>
-
-
+         <b-button-toolbar>
+            <b-button-group class="mr-1">
+               <b-dropdown id="dropdown-left" text="Add New" variant="primary" class="">
+                  <jo_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
+                     <b-icon-plus-circle /> Add Job Order
+                  </jo_add>
+                  <b-dropdown-item href="#">
+                     Add PSR
+                  </b-dropdown-item>
+                  <b-dropdown-item href="#">Add Layout Proposal</b-dropdown-item>
+               </b-dropdown>
+            </b-button-group>
+            <b-button-group class="mr-1">
+               <b-button @click="create_group=true">
+                  <!-- <b-icon-plus></b-icon-plus> -->
+                  <i class="fas fa-folder-plus    "></i> Create Group
+               </b-button>
+            </b-button-group>
+         </b-button-toolbar>
       </section>
 
 
@@ -41,7 +48,7 @@
                   <h5 class="card-title">Jobs List</h5>
                </div>
                <div class="card-body p-0">
-                  <table class="table" style="">
+                  <table class="table" style="" v-if="!loading_table">
                      <tbody>
                         <tr>
                            <td class="p-0">
@@ -53,7 +60,7 @@
                                        <th class="text-truncate">Job Name</th>
                                        <th class="text-truncate" style="width:150px">Media</th>
                                        <th style="width:130px">Status</th>
-                                       <th style="width:130px">Action </th>
+                                       <th style="width:50px"> </th>
                                     </thead>
                                  </table>
                               </div>
@@ -98,8 +105,24 @@
                                              <td style="width:130px">
                                                 <status_indicator v-model="oj.STATUS" pill />
                                              </td>
-                                             <td style="width:130px">
-                                                <status_indicator v-model="oj.STATUS" pill />
+                                             <td style="width:50px">
+
+                                                <b-dropdown variant="link" toggle-class="text-decoration-none" no-caret
+                                                   dropleft>
+                                                   <template #button-content>
+                                                      <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                   </template>
+                                                   <b-dropdown-item href="#"><span class="text-primary h6">
+                                                         <i class="fas fa-edit"></i>
+                                                         Edit</span></b-dropdown-item>
+                                                   <b-dropdown-divider></b-dropdown-divider>
+
+                                                   <confirm_delete @deleted="$delete(j.projects,i)" ref="comfirm_delete"
+                                                      :project="oj" />
+
+                                                </b-dropdown>
+
+
                                              </td>
                                           </tr>
                                           <tr v-if="!Boolean(j.projects.length)">
@@ -126,6 +149,13 @@
             <!-- /.card -->
          </div>
       </div>
+      <b-modal size="sm" title="Create Group" v-model="create_group" @ok="create_new_project">
+         <b-form-group id="input-group-1" label="Group Name:" label-for="input-1"
+            description="Create grouping for projects.">
+            <b-form-input id="input-1" v-model="new_group.name" type="email" placeholder="Enter Group Name" required>
+            </b-form-input>
+         </b-form-group>
+      </b-modal>
    </div>
 </template>
 <script>
@@ -135,7 +165,7 @@
       statusColor
    } from '../../js/helper.js'
    export default {
-      components:{
+      components: {
          jo_add
       },
       data() {
@@ -143,19 +173,24 @@
             jobs: [],
             project_details: {},
             loading_table: true,
-            add_job: false
+            add_job: false,
+            create_group: false,
+            new_group:{
+               name:'',
+               parent_id:this.$route.params.id
+            }
          }
       },
       mounted() {
 
          this.loadJobs()
          this.load_project()
-           if(!this.$store.getters.get_projecttypes.length){
-              this.$store.dispatch('set_projecttypes_s')
-              this.$store.dispatch('set_productstep')
-              this.$store.dispatch('set_productiontypes')
-              this.$store.dispatch('set_machines')
-           }
+         if (!this.$store.getters.get_projecttypes.length) {
+            this.$store.dispatch('set_projecttypes_s')
+            this.$store.dispatch('set_productstep')
+            this.$store.dispatch('set_productiontypes')
+            this.$store.dispatch('set_machines')
+         }
 
       },
       computed: {
@@ -164,10 +199,25 @@
          }
       },
       methods: {
+         create_new_project(modal){
+            modal.preventDefault();
+            axios.post(`cors/projectGroups`,this.new_group)
+            .then(res => {
+               this.loadJobs()
+               this.create_group = false
+            })
+            .catch(err => {
+               console.error(err); 
+            })
+         },
+         async delete_job() {
+            await this.$refs['comfirm_delete'].show_modal()
+
+         },
          load_project() {
             axios.get(`cors/wholeprojects/${this.$route.params.id}`).then(x => {
                this.project_details = x.data
-               this.$store.commit('set_projects',x.data)
+               this.$store.commit('set_projects', x.data)
             })
          },
          sort_number(objs) {
