@@ -94,6 +94,11 @@ export default {
       myLoginRoutine(this.auth)
         .then(x => {
           this.$store.commit("loginSuccess", x.data);
+          if(this.$route.query.nextUrl)
+            this.$router.push({
+              path:this.$route.query.nextUrl
+            });
+            else
           this.$router.push("/");
         })
         .catch(x => {

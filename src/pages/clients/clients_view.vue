@@ -5,7 +5,6 @@
         <div class="text-center" style="margin-top:60vh">
           <b-icon icon="stopwatch" font-scale="3" animation="cylon"></b-icon>
           <p id="cancel-label">Loading...</p>
-
         </div>
       </template>
       <section class="content-header">

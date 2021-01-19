@@ -10,6 +10,9 @@
 @import "admin-lte";
 @import "./css/custom.css";
 @import "~vue-select/dist/vue-select.css";
+*,*:focus,*:hover{
+    outline:none;
+}
 </style>
 <script>
 export default {

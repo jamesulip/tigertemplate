@@ -49,6 +49,7 @@ Vue.component('loading1', require('./components/loaders/loading1.vue').default);
 Vue.component('project_detail', require('./pages/project/project_detail.vue').default);
 Vue.component('status_indicator', require('./components/custom/status_indicator.vue').default);
 Vue.component('confirm_delete', require('./components/custom/confirm_delete.vue').default);
+Vue.component('edit_psr', require('./pages/project/jopstlr/psr/project_psr_edit').default);
 
 new Vue({
   router,

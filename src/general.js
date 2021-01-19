@@ -13,7 +13,12 @@ export function initialize(store,router){
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         const currentUser = store.state.currentUser;
         if(requiresAuth && !currentUser) {
-            next('/login');
+            next({
+                path: '/login',
+                query: {
+                   nextUrl: to.fullPath,
+                }
+            });
         } else if((to.path == '/login' || to.path == '/register') && currentUser) {
             next('/trail');
         } else {
@@ -26,7 +31,12 @@ export function initialize(store,router){
     axios.interceptors.response.use(null, (error) => {
         if (error.response.status == 401) {
             store.commit('logout');
-            router.push('/login');
+            router.push({
+                path: '/login',
+                query: {
+                   nextUrl: to.fullPath,
+                }
+            });
         }
         return Promise.reject(error);
     });

@@ -21,9 +21,9 @@
                   <jo_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
                      <b-icon-plus-circle /> Add Job Order
                   </jo_add>
-                  <b-dropdown-item href="#">
-                     Add PSR
-                  </b-dropdown-item>
+                  <psr_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
+                     <b-icon-plus-circle /> Add PSR
+                  </psr_add>
                   <b-dropdown-item href="#">Add Layout Proposal</b-dropdown-item>
                </b-dropdown>
             </b-button-group>
@@ -67,25 +67,46 @@
                            </td>
                         </tr>
                         <template v-for="(j) in jobs">
-                           <tr data-widget="expandable-table" aria-expanded="true" :key="`${j.id}-s`">
-                              <td class="bg-gray">
-                                 <i class="fas fa-caret-right fa-fw"></i>
-                                 {{j.name}}
+                           <tr :key="`${j.id}-s`">
+                              <td class="bg-light">
+                                 <div class="row">
+                                    <div class="col-md-6">
+                                       <i class="fas fa-caret-right fa-fw" v-b-toggle="`collapse-${j.id}`"></i>
+                                       {{j.name}}
+                                    </div>
+                                    <div class="col-md-6">
+                                       <div class="float-right">
+                                          <b-dropdown size="sm" v-if="j.id" text="Small" variant="link" class="m-0"
+                                             dropleft toggle-class="text-decoration-none" no-caret>
+                                             <template #button-content>
+                                                <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                             </template>
+                                             <b-dropdown-item-button><i class="fas fa-edit    "></i> Edit Name
+                                             </b-dropdown-item-button>
+                                             <b-dropdown-divider></b-dropdown-divider>
+                                             <b-dropdown-item-button @click="delete_group(j)"><i class="fa fa-trash"
+                                                   aria-hidden="true"></i> Delete</b-dropdown-item-button>
+                                          </b-dropdown>
+                                       </div>
+                                    </div>
+                                 </div>
                               </td>
                            </tr>
                            <tr class="expandable-body" :key="`${j.id}-x`">
                               <td>
-                                 <div class="p-0" style="">
+                                 <!-- <div class="p-0" style=""> -->
+                                 <b-collapse visible :id="`collapse-${j.id}`" class="p-0">
                                     <table class="table table-sm table-hover b-table b-table-fixed">
-                                       <tbody>
-
+                                       <draggable :list=" j.projects" tag="tbody" group="people"
+                                          @change="change_group($event,j.id)" handle=".handle">
 
                                           <tr v-for="(oj,i) in j.projects" :key="`${oj.ID}-pr`">
 
-                                             <td :rowspan="j.projects.length" style="width:50px" v-if="i==0"></td>
+                                             <!-- <td :rowspan="j.projects.length" style="width:50px" v-if="i==0"></td> -->
 
-                                             <td style="width:200px">{{oj.TYPE}}#{{oj.NUM}} <template
-                                                   v-if="oj.VERSION > 0">
+                                             <td style="width:200px;    vertical-align: middle;">
+                                                <i class="fa fa-align-justify handle" role="button"></i>
+                                                {{oj.TYPE}}#{{oj.NUM}} <template v-if="oj.VERSION > 0">
                                                    V.{{oj.VERSION}}</template></td>
                                              <td>
                                                 <div class="d-flex flex-column text-truncate">
@@ -112,9 +133,14 @@
                                                    <template #button-content>
                                                       <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                    </template>
-                                                   <b-dropdown-item href="#"><span class="text-primary h6">
-                                                         <i class="fas fa-edit"></i>
-                                                         Edit</span></b-dropdown-item>
+        
+                                                   
+                                                   <edit_psr  :id="oj">
+                                                     <div>
+                                                           <i class="fas fa-edit"></i>
+                                                         Edit
+                                                     </div>
+                                                   </edit_psr>
                                                    <b-dropdown-divider></b-dropdown-divider>
 
                                                    <confirm_delete @deleted="$delete(j.projects,i)" ref="comfirm_delete"
@@ -128,9 +154,11 @@
                                           <tr v-if="!Boolean(j.projects.length)">
                                              <td colspan="6">No Project</td>
                                           </tr>
-                                       </tbody>
+                                          <!-- </tbody> -->
+                                       </draggable>
                                     </table>
-                                 </div>
+                                    <!-- </div> -->
+                                 </b-collapse>
                               </td>
                            </tr>
                         </template>
@@ -161,12 +189,16 @@
 <script>
    /*eslint-disable*/
    import jo_add from './jopstlr/jo/project_jo_add.vue'
+   import psr_add from './jopstlr/psr/project_psr_add.vue'
    import {
       statusColor
    } from '../../js/helper.js'
+   import draggable from "vuedraggable";
    export default {
       components: {
-         jo_add
+         jo_add,
+         psr_add,
+         draggable
       },
       data() {
          return {
@@ -175,9 +207,9 @@
             loading_table: true,
             add_job: false,
             create_group: false,
-            new_group:{
-               name:'',
-               parent_id:this.$route.params.id
+            new_group: {
+               name: '',
+               parent_id: this.$route.params.id
             }
          }
       },
@@ -199,16 +231,57 @@
          }
       },
       methods: {
-         create_new_project(modal){
+         change_group(s, id) {
+            if (s.added) {
+               console.log(id, s.added)
+               axios.patch(`cors/projects/${s.added.element.ID}`, {
+                     ShopVoxID: id
+                  })
+                  .then(res => {
+                     console.log(res)
+                  })
+                  .catch(err => {
+                     console.error(err);
+                  })
+            }
+         },
+         delete_group(o) {
+            console.log(o)
+            this.$bvModal.msgBoxConfirm('All projects in this group will be moved to `No Project`.', {
+                  title: 'Please Confirm',
+                  size: 'sm',
+                  buttonSize: 'sm',
+                  okVariant: 'danger',
+                  okTitle: 'YES',
+                  cancelTitle: 'NO',
+                  footerClass: 'p-2',
+                  hideHeaderClose: false,
+                  centered: true
+               })
+               .then(value => {
+                  if (value) {
+                     axios.delete(`cors/projectGroups/${o.id}`)
+                        .then(res => {
+                           // console.log(res)
+                           this.loadJobs()
+                        })
+
+                  }
+               })
+               .catch(err => {
+                  // An error occurred
+               })
+         },
+         create_new_project(modal) {
             modal.preventDefault();
-            axios.post(`cors/projectGroups`,this.new_group)
-            .then(res => {
-               this.loadJobs()
-               this.create_group = false
-            })
-            .catch(err => {
-               console.error(err); 
-            })
+            axios.post(`cors/projectGroups`, this.new_group)
+               .then(res => {
+                  this.loadJobs()
+                  this.create_group = false
+               })
+               .catch(err => {
+                  console.error(err);
+               })
          },
          async delete_job() {
             await this.$refs['comfirm_delete'].show_modal()
@@ -252,3 +325,13 @@
       },
    }
 </script>
+
+<style lang="scss">
+   .not-collapsed {
+      transform: rotate(90deg);
+   }
+
+   i.fas {
+      transition: transform .3s linear;
+   }
+</style>

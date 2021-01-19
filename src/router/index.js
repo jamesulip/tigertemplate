@@ -25,10 +25,7 @@ const routes = [{
           requiresAuth: true
         }
       },
-      {
-        path: "*",
-        component: ()=>import('../pages/404.vue')
-      },
+     
 
 
 
@@ -116,7 +113,11 @@ const routes = [{
     path: "/register",
     name: "register",
     component: register
+  }, {
+    path: "*",
+    component: ()=>import('../pages/404.vue')
   }
+  
 ];
 
 const router = new VueRouter({
