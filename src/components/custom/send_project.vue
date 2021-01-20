@@ -4,7 +4,7 @@
             <i class="fa fa-paper-plane" aria-hidden="true"></i> Send to Trail
         </b-button>
 
-        <b-modal v-model="send_to_trail" size="lg">
+        <b-modal v-model="send_to_trail" size="lg" @ok="send">
 
             <div class="col-md-12">
                 <b-form-group label="Subject:" label-for="input-2">
@@ -53,6 +53,7 @@
     </div>
 </template>
 <script>
+/*eslint-disable*/
     import _ from 'lodash';
     export default {
         props: ['projects'],
@@ -71,13 +72,15 @@
                 ],
                 content: {
                     content: '',
-                    title: ''
+                    title: '',
+                    projects:''
                 },
                 error: {
                     projects: true
                 }
             }
         },
+     
         computed: {
             selected_projects() {
                 try {
@@ -121,6 +124,20 @@
             }
         },
         methods: {
+            send(f){
+                f.preventDefault();
+                
+                axios.post(`cors/emails2`,{
+                    ...this.content,
+                    projects:this.sel.map(x=>x.ID)
+                })
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
             set_subject() {
                 this.error.projects = true
                 if (this.selected_projects) {
