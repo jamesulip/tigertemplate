@@ -6,7 +6,7 @@
             </slot>
 
         </a>
-        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Edit PSR#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Edit JO#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @edited="x=>{
                 $emit('edited');open_jo_add_modal=false

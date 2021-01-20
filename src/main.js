@@ -5,6 +5,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import Pusher from "pusher-js"
+import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import moment from 'moment'
 import vSelect from "vue-select";
@@ -23,6 +24,7 @@ try {
 } catch (e) {
   console.log('error',e);
 }
+Vue.use(VueEditor);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
@@ -50,6 +52,8 @@ Vue.component('project_detail', require('./pages/project/project_detail.vue').de
 Vue.component('status_indicator', require('./components/custom/status_indicator.vue').default);
 Vue.component('confirm_delete', require('./components/custom/confirm_delete.vue').default);
 Vue.component('edit_psr', require('./pages/project/jopstlr/psr/project_psr_edit').default);
+Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').default);
+Vue.component('send_project', require('./components/custom/send_project').default);
 
 new Vue({
   router,

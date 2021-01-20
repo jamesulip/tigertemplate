@@ -33,6 +33,11 @@
                   <i class="fas fa-folder-plus    "></i> Create Group
                </b-button>
             </b-button-group>
+
+            <b-button-group class="mr-1">
+              <send_project :projects="project_details.project"/>
+            </b-button-group>
+
          </b-button-toolbar>
       </section>
 
@@ -53,7 +58,7 @@
                         <tr>
                            <td class="p-0">
                               <div class="p-0" style="">
-                                 <table class="table table-sm table-hover b-table b-table-fixed">
+                                 <table class="table table-sm table-hover b-table b-table-fixed m-0">
                                     <thead>
                                        <th style="width:50px"></th>
                                        <th style="width:200px">Number</th>
@@ -133,14 +138,20 @@
                                                    <template #button-content>
                                                       <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                                                    </template>
-        
-                                                   
-                                                   <edit_psr  :id="oj">
-                                                     <div>
-                                                           <i class="fas fa-edit"></i>
-                                                         Edit
-                                                     </div>
+
+                                                   <edit_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='PSR'">
+                                                      <div>
+                                                         <i class="fas fa-edit"></i>
+                                                         Edit PSR
+                                                      </div>
                                                    </edit_psr>
+                                                   <edit_jo @edited="edited()" :id="oj" v-else>
+                                                      <div>
+                                                         <i class="fas fa-edit"></i>
+                                                         Edit JO
+                                                      </div>
+                                                   </edit_jo>
+
                                                    <b-dropdown-divider></b-dropdown-divider>
 
                                                    <confirm_delete @deleted="$delete(j.projects,i)" ref="comfirm_delete"
@@ -202,6 +213,7 @@
       },
       data() {
          return {
+            content:'',
             jobs: [],
             project_details: {},
             loading_table: true,
@@ -231,6 +243,13 @@
          }
       },
       methods: {
+         edited() {
+            this.$bvToast.toast('Project Successfully Updated', {
+               title: `Success`,
+               variant: 'success',
+               solid: true
+            })
+         },
          change_group(s, id) {
             if (s.added) {
                console.log(id, s.added)
