@@ -13,6 +13,7 @@
 *,*:focus,*:hover{
     outline:none;
 }
+
 </style>
 <script>
 export default {

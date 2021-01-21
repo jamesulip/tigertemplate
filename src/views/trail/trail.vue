@@ -1,86 +1,5 @@
 <template>
   <div class="content pt-4 p-0">
-    <!-- <div class="col-md-3">
-          <a href="compose.html" class="btn btn-primary btn-block mb-3">Compose</a>
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Folders</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <ul class="nav nav-pills flex-column">
-                <li class="nav-item active">
-                  <a href="#" class="nav-link">
-                    <i class="fas fa-inbox"></i> Inbox
-                    <span class="badge bg-primary float-right">12</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-envelope"></i> Sent
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-file-alt"></i> Drafts
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="fas fa-filter"></i> Junk
-                    <span class="badge bg-warning float-right">65</span>
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-trash-alt"></i> Trash
-                  </a>
-                </li>
-              </ul>
-            </div>
-         
-          </div>
-          
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Labels</h3>
-
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="card-body p-0">
-              <ul class="nav nav-pills flex-column">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle text-danger"></i>
-                    Important
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle text-warning"></i> Promotions
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <i class="far fa-circle text-primary"></i>
-                    Social
-                  </a>
-                </li>
-              </ul>
-            </div>
-           
-          </div>
-          
-        </div> -->
-    <!-- /.col -->
     <div class="col-md-12">
       <div class="card card-primary card-outline">
         <div class="card-header">
@@ -88,11 +7,7 @@
 
           <div class="card-tools">
             <div class="input-group input-group-sm">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search Mail"
-              />
+              <input type="text" class="form-control" placeholder="Search Mail" />
               <div class="input-group-append">
                 <div class="btn btn-primary">
                   <i class="fas fa-search"></i>
@@ -106,10 +21,7 @@
         <div class="card-body p-0">
           <div class="mailbox-controls">
             <!-- Check all button -->
-            <button
-              type="button"
-              class="btn btn-default btn-sm checkbox-toggle"
-            >
+            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
               <i class="far fa-square"></i>
             </button>
             <div class="btn-group">
@@ -142,7 +54,17 @@
             <!-- /.float-right -->
           </div>
           <div class="table-responsive mailbox-messages">
-            <table class="table table-hover table-sm  table-striped">
+            <table class="table table-hover table-sm  table-striped" style="table-layout:fixed">
+              <thead>
+                <tr>
+                  <th style="width:60px"></th>
+                  <th style="width:60px"></th>
+                  <th style="width:auto;max-width:400px"></th>
+                  <th></th>
+                  <th style="width:60px"></th>
+                  <th style="width:100px"></th>
+                </tr>
+              </thead>
               <tbody>
                 <template v-for="(trail, index) in page.data">
                   <tr :key="index" role="button" @click="openTrail(trail)">
@@ -153,51 +75,16 @@
                       </div>
                     </td>
                     <td class="mailbox-star"><a href="#"></a></td>
-                    <!-- <td class="mailbox-name">
-                      <div v-if="Boolean(trail.email.lastcomment2.length)" class="">
-                        <b-avatar-group size="sm">
-                          <div>
-                            <div class="d-inline">
-                              <b-avatar class="float-left" size="sm"></b-avatar>
-                            </div>
-                            <div class="d-inline">
-                              <b-badge v-for="(item, index) in noDulp(trail.email.lastcomment2)" :key="index" href="#"
-                                class="mr-1 item-avatar" variant="primary">
-                                {{item.name}}</b-badge>
-                            </div>
-                          </div>
-
-                        </b-avatar-group>
-                      </div>
-                      <div v-else>
-
-                        <div>
-                          <div class="d-inline">
-                            <b-avatar class="float-left" size="sm"></b-avatar>
-                          </div>
-                          <div class="d-inline">
-                            <b-badge href="#" class="mr-1 item-avatar" variant="primary">
-                              {{trail.from.name}}</b-badge>
-                          </div>
-                        </div>
-                      </div>
-                    </td> -->
-                    <td class="mailbox-name">
-                      <span
-                        class="badge badge-secondary mx-1"
-                        v-for="(item, index) in trail.project"
-                        :key="index"
-                        >{{ item.TYPE }}#{{ item.NUM }}</span
-                      >
+                    <td class="mailbox-name  text-truncate">
+                      <span class="badge badge-secondary mx-1 " v-for="(item, index) in trail.project"
+                        :key="index">{{ item.TYPE }}#{{ item.NUM }}</span>
                     </td>
                     <td class="mailbox-subject">
                       <div class="col-md-12">
-                        <div class="d-flex content-subject">
-                          <div class="m-title col-md-3">
-                            <b>{{ trail.email.title }}</b>
-                          </div>
-                          <div class="col-md-9 m-content">
-                            <span>
+                        <div class="d-flex content-subject text-truncate">
+                         
+                            <b class="text-truncate">{{ trail.email.title }}</b>
+                            <span class="text-truncate">
                               -
                               {{
                                 strippedContent(
@@ -206,7 +93,6 @@
                                 ) || trail.from.name
                               }}
                             </span>
-                          </div>
                         </div>
                       </div>
                     </td>
@@ -224,10 +110,7 @@
         <div class="card-footer p-0">
           <div class="mailbox-controls">
             <!-- Check all button -->
-            <button
-              type="button"
-              class="btn btn-default btn-sm checkbox-toggle"
-            >
+            <button type="button" class="btn btn-default btn-sm checkbox-toggle">
               <i class="far fa-square"></i>
             </button>
             <div class="btn-group">
@@ -267,26 +150,29 @@
   </div>
 </template>
 <style scoped>
-.m-content {
-  overflow: hidden;
-  max-width: 800px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.mailbox-date {
-  width: 1%;
-  white-space: nowrap;
-}
-.content-subject {
-  font-size: 0.875rem;
-}
-.item-avatar {
-  margin: -6px;
-  padding-left: 10px;
-}
+  .m-content {
+    overflow: hidden;
+    max-width: 800px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .mailbox-date {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  .content-subject {
+    font-size: 0.875rem;
+  }
+
+  .item-avatar {
+    margin: -6px;
+    padding-left: 10px;
+  }
 </style>
 <script>
-/* eslint-disable */
+  /* eslint-disable */
   export default {
     data() {
       return {
@@ -305,8 +191,8 @@
         })
     },
     methods: {
-      openTrail(){
-        
+      openTrail(trail) {
+          this.$router.push({name:'view_trail',params:{'id':trail.id}})
       },
       noDulp(text) {
         var names = text.map(function (elem) {

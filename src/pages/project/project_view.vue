@@ -29,7 +29,6 @@
             </b-button-group>
             <b-button-group class="mr-1">
                <b-button @click="create_group=true">
-                  <!-- <b-icon-plus></b-icon-plus> -->
                   <i class="fas fa-folder-plus    "></i> Create Group
                </b-button>
             </b-button-group>
@@ -78,6 +77,7 @@
                                     <div class="col-md-6">
                                        <i class="fas fa-caret-right fa-fw" v-b-toggle="`collapse-${j.id}`"></i>
                                        {{j.name}}
+                                       <send_project variant="link" size="size" :projects="j.projects"/>
                                     </div>
                                     <div class="col-md-6">
                                        <div class="float-right">

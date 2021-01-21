@@ -16,7 +16,7 @@ const routes = [{
       requiresAuth: true
     },
     children: [
-      
+
       {
         path: "",
         name: "home",
@@ -25,7 +25,7 @@ const routes = [{
           requiresAuth: true
         }
       },
-     
+
 
 
 
@@ -61,11 +61,25 @@ const routes = [{
 
       {
         path: "trail",
-        name: "trail",
-        component: () => import("../views/trail/trail.vue"),
+       
+        component: () => import("../pages/clients/clients.vue"),
         meta: {
           requiresAuth: true
-        }
+        },
+        children: [{
+          path: "",
+          component: () => import("../views/trail/trail"),
+          meta: {
+            requiresAuth: true
+          },
+        }, {
+          path: ":id",
+          name:'view_trail',
+          component: () => import("../views/trail/trail_view"),
+          meta: {
+            requiresAuth: true
+          },
+        }]
       },
       {
         path: "projects",
@@ -115,9 +129,9 @@ const routes = [{
     component: register
   }, {
     path: "*",
-    component: ()=>import('../pages/404.vue')
+    component: () => import('../pages/404.vue')
   }
-  
+
 ];
 
 const router = new VueRouter({

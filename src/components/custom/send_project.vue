@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <b-button @click="send_to_trail=true">
+    
+        <b-button :variant="variant" :size="size" @click="send_to_trail=true">
             <i class="fa fa-paper-plane" aria-hidden="true"></i> Send to Trail
-        </b-button>
+      
 
         <b-modal v-model="send_to_trail" size="lg" @ok="send">
 
@@ -50,13 +50,13 @@
             </div>
         </b-modal>
 
-    </div>
+     </b-button>
 </template>
 <script>
 /*eslint-disable*/
     import _ from 'lodash';
     export default {
-        props: ['projects'],
+        props: ['projects',"variant","size"],
         data() {
             return {
                 sel: [],
@@ -132,7 +132,8 @@
                     projects:this.sel.map(x=>x.ID)
                 })
                 .then(res => {
-                    console.log(res)
+                    // console.log(res)
+                    this.send_to_trail = false
                 })
                 .catch(err => {
                     console.error(err); 
