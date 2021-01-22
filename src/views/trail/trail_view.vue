@@ -46,11 +46,11 @@
                       <div class="media-body">
                         <div class="media-title" style="">
                           <span class="h6 mr-1">Claire</span>
-                          <span class="float-right text-muted text-small">
+                          <span class="float-right text-muted text-xs">
                             1 few min ago
                           </span>
                         </div>
-                        <div style="font-size: .875rem;line-height: 1.3125rem;">
+                        <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;">
                         Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
                         purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
                         vulputate fringilla. Donec lacinia congue felis in faucibus.

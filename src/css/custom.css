@@ -20,3 +20,14 @@
 .add_client_label label {
   font-weight: unset!important;
 }
+
+
+.media-title .h6{
+  font-size: .875rem;
+  line-height: 1.3125rem;
+}
+.media-title .messge-body{
+  font-size: .875rem;
+  line-height: 1.3125rem;
+  
+}
