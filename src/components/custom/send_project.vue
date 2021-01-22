@@ -17,12 +17,7 @@
                         </b-input-group-append>
                     </b-input-group>
                 </b-form-group>
-                <!-- <b-form-group label="Subject:" label-for="input-2">
-                    <b-form-input v-model="content.title" />
-                     <b-input-group-append>
-      <b-button variant="outline-success">Button</b-button>
-      >
-                </b-form-group> -->
+                
             </div>
             <div class="col-md-12">
                 <b-form-group label="Projects:" label-for="input-2">

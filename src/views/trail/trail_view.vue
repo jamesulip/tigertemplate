@@ -1,7 +1,7 @@
 <template>
-  <div class="container pt-5">
+  <div class="container pt-5 pb-5">
     <div class="row justify-content-center">
-      <div class="col-lg-9 col-xl-9">
+      <div class="col-lg-12 col-xl-12">
         <div class="page-header">
           <h4>Medium Rare ☕</h4>
           <p class="lead">a</p>
@@ -13,33 +13,7 @@
             <div class="mt-3">
               <div class="content-list-body">
                 <ol class="list-group list-group-flush">
-                  <li class="list-group-item" v-for="i in 20" :key="i">
-                    <!-- <div class="media">
-                      <div class="list-group-flush mr-2">
-                        <b-avatar class="avatar" size="md"></b-avatar>
-                      </div>
-                      <div class="media-body">
-                        <div>
-                          <span class="h6 mr-1">Claire</span>
-                          <span  class="text-muted">completed the task</span><a href="#"
-                           class="A-filter-by-text">Set up client chat channel</a>
-  <span data-filter-by="text" class="SPAN-filter-by-text">4 days ago</span>
-                            <div class="trail-body">
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                              asdasd <br>
-                            </div>
-                        </div>
-                       
-                      </div>
-                    </div> -->
+                  <li class="list-group-item" v-for="i in messages" :key="i.id">
                     <div class="media">
                       <b-avatar class="avatar mr-2" size="md"></b-avatar>
 
@@ -50,13 +24,14 @@
                             1 few min ago
                           </span>
                         </div>
-                        <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;">
-                        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras
-                        purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi
-                        vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;" v-html="i.content">
+
                         </div>
                       </div>
                     </div>
+                  </li>
+                  <li class="list-group-item" style="background-color: transparent;">
+                      <sendMessage :trailid="$route.params.id"/>
                   </li>
                 </ol>
               </div>
@@ -74,3 +49,34 @@
 
 
 </style>
+
+<script>
+  /*eslint-disable*/
+  import sendMessage from './sendmessage'
+  export default {
+    components:{
+      sendMessage
+    },
+    data() {
+      return {
+        messages: [],
+      }
+    },
+    mounted() {
+      this.get_messages()
+    },
+    methods: {
+     
+      get_messages() {
+        axios.post(`cors/trail/${this.$route.params.id}`)
+          .then(res => {
+            // console.log(res)
+            this.messages = res.data
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      }
+    },
+  }
+</script>

@@ -11,24 +11,20 @@ import moment from 'moment'
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
-
 import {initialize} from './general'
-
-
-
-
 try {
+  
   window.Popper = require('popper.js').default;
   window.$ = window.jQuery = require('jquery');
   require('admin-lte'); // Include AdminLTE
 } catch (e) {
   console.log('error',e);
 }
-Vue.use(VueEditor);
 Vue.use(BootstrapVue);
 Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
 
+Vue.use(VueEditor);
 Vue.mixin({
   methods: {
     getInitial: function (name) {
