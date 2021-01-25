@@ -8,10 +8,13 @@ import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import moment from 'moment'
+Vue.prototype.moment = moment
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
 import {initialize} from './general'
+
+
 try {
   
   window.Popper = require('popper.js').default;
@@ -51,6 +54,13 @@ Vue.component('edit_psr', require('./pages/project/jopstlr/psr/project_psr_edit'
 Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').default);
 Vue.component('send_project', require('./components/custom/send_project').default);
 
+
+Vue.filter('formatDate', function (value,format) {
+  if(format=='ago')
+    return moment(value).fromNow()
+  else  
+    return moment(value).format(format)
+})
 new Vue({
   router,
   store,

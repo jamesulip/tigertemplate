@@ -68,6 +68,7 @@ const routes = [{
         },
         children: [{
           path: "",
+          name:'trail',
           component: () => import("../views/trail/trail"),
           meta: {
             requiresAuth: true

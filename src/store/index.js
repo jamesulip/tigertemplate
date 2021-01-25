@@ -18,7 +18,8 @@ export default new Vuex.Store({
     projecttypes:[],
     productstep:[],
     productiontypes:[],
-    machines:[]
+    machines:[],
+    users:[]
   },
   mutations: {
     loginSuccess(state, payload) {
@@ -61,9 +62,19 @@ export default new Vuex.Store({
     set_machines(state, payload) {
       
       state.machines = payload;
+    },
+    set_users(s,p){
+      s.users = p
     }
   },
   actions: {
+    update_users({commit}){
+      return axios.get(`cors/users`)
+      .then(res => {
+        commit('set_users',res.data)
+      })
+    
+    },
 
     set_projecttypes_s({ commit }) {
       return new Promise((resolutionFunc, rejectionFunc) => {
