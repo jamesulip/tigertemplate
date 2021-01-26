@@ -19,6 +19,9 @@ export default new Vuex.Store({
     my_projects:[]
   },
   mutations: {
+    setServerUrl(state, payload) {
+      state.serUrl = payload;
+    },
     loginSuccess(state, payload) {
       state.isLoggedIn = true;
       state.currentUser = Object.assign({}, payload.user, {
@@ -41,9 +44,18 @@ export default new Vuex.Store({
      set_my_projects(state,payload) {
       state.my_projects=payload
      },
-    
+     set_users(s,p){
+      s.users = p
+    }
   },
   actions: {
+    update_users({commit}){
+      return axios.get(`cors/users`)
+      .then(res => {
+        commit('set_users',res.data)
+      })
+    
+    },
     set_current_job(state){
       return new Promise( (resolutionFunc,rejectionFunc) => {
           axios.get(`cors/current_project`)

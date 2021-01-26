@@ -25,6 +25,34 @@ const routes = [
           requiresAuth: true
         }
       },
+
+
+
+      {
+        path: "trail",
+       
+        component: () => import("../pages/client/clients.vue"),
+        meta: {
+          requiresAuth: true
+        },
+        children: [{
+          path: "",
+          name:'trail',
+          component: () => import("../views/trail/trail"),
+          meta: {
+            requiresAuth: true
+          },
+        }, {
+          path: ":id",
+          name:'view_trail',
+          component: () => import("../views/trail/trail_view"),
+          meta: {
+            requiresAuth: true
+          },
+        }]
+      },
+
+
       {
         path: 'projects',
         name: "projects",
