@@ -21,7 +21,7 @@
 
                       <div class="media-body">
                         <div class="media-title" style="">
-                          <span class="h6 mr-1">Claire</span>
+                          <span class="h6 mr-1">{{i.userl.name}}</span>
 
                           <span class="float-right text-muted text-xs"
                             v-b-tooltip="{ title: i.created_at, placement: 'bottomLeft' }">
@@ -33,12 +33,13 @@
                         </div>
                         <template  v-for="(item, index) in i.file" >
                         <div class="media media-attachment" v-if="Boolean(i.file.length)" :key="`f-${index}`">
-                         <b-avatar size="2rem" variant="primary"  icon="paperclip">
-                           <i class="fa fa-file" aria-hidden="true"></i>
+                     
+                         <b-avatar rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"  icon="paperclip">
+                      
                          </b-avatar>
                           <div class="media-body">
-                            <a href="#" data-filter-by="text" class="A-filter-by-text">{{item.filename}}</a>
-                            <span data-filter-by="text" class="SPAN-filter-by-text">24kb Document</span>
+                            <a role="button" @click="check_mime(item.file_meta.ext)?full_screen_image(item):null" class="A-filter-by-text">{{item.filename}}</a>
+                            <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}}</span>
                           </div>
                         </div>
                         </template>
@@ -55,11 +56,14 @@
             </div>
           </b-tab>
           <b-tab title="Projects">
-
+            <b-img :src="full_image"></b-img>
           </b-tab>
         </b-tabs>
       </div>
     </div>
+    <b-modal v-model="show_pic" hide-header hide-footer :content-class="`modal-content-image`" :dialog-class="`modal-dialog-image`" size="lg">
+      <b-img-lazy :src="full_image"></b-img-lazy>
+    </b-modal>
   </div>
 </template>
 <style lang="scss">
@@ -69,22 +73,35 @@
 
 <script>
   /*eslint-disable*/
+  import { mapState } from 'vuex'
   import sendMessage from './sendmessage'
   export default {
     components: {
       sendMessage
     },
+     computed: mapState([
+    'serUrl'
+  ]),
     data() {
       return {
         messages: [],
-
+        show_pic:false,
+        full_image:''
       }
     },
     mounted() {
       this.get_messages()
       this.get_trail_details()
+      
     },
     methods: {
+      check_mime(type){
+        return /(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(type);
+      },
+      full_screen_image(f){
+        this.full_image = `${this.serUrl}/${f.location}`
+        this.show_pic  =true
+      },
       get_trail_details() {
         axios.post(`cors/emails/details/${this.$route.params.id}`)
           .then(res => {

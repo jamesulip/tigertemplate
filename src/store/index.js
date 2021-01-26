@@ -19,9 +19,13 @@ export default new Vuex.Store({
     productstep:[],
     productiontypes:[],
     machines:[],
-    users:[]
+    users:[],
+    serUrl:""
   },
   mutations: {
+    setServerUrl(state, payload) {
+      state.serUrl = payload;
+    },
     loginSuccess(state, payload) {
       state.isLoggedIn = true;
       state.currentUser = Object.assign({}, payload.user, {

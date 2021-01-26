@@ -41,9 +41,9 @@ Vue.mixin({
   },
 })
 
-
 initialize(store,router)
 
+store.commit('setServerUrl',`http://${process.env.VUE_APP_SERVER}:8000`)
 
 
 Vue.component('loading1', require('./components/loaders/loading1.vue').default);
@@ -61,10 +61,16 @@ Vue.filter('formatDate', function (value,format) {
   else  
     return moment(value).format(format)
 })
+Vue.filter('bytesToSize', function (bytes) {
+  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  if (bytes == 0) return '0 Byte';
+  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+})
+
+
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount("#app");
-
-// console.log(process.env.VUE_APP_SERVER)
