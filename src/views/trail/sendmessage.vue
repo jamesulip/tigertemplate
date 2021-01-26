@@ -237,14 +237,18 @@
                 axios.post(`cors/trail/${this.trailid}/send`, this.data)
                     .then(res => {
                         // console.log(res)
-                        this.$emit('sent')
-                        this.data = {}
-                        this.sending = false
+                       
 
-                        this.update_temp(res.data.id);
+                       this.update_temp(res.data.id);
+                        
                     })
                     .catch(err => {
                         console.error(err);
+                    }).then(x=>{
+                        
+                        this.$emit('sent')
+                        this.data = {}
+                        this.sending = false
                     })
             },
             handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
@@ -279,7 +283,7 @@
                         type: "comment"
                     })
                     .then(res => {
-
+                        this.files = []
                     })
                     .catch(err => {
                         console.error(err);

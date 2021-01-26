@@ -9,6 +9,12 @@
 @import "./css/custom.css";
 @import "~vue-select/dist/vue-select.css";
 @import "./css/main.scss";
+
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+
 *,*:focus,*:hover{
     outline:none;
 }
@@ -18,10 +24,24 @@
 
 </style>
 <script>
+/*eslint-disable*/
+import { mapState } from 'vuex'
+
 export default {
   components: {},
+  computed: mapState([
+  // map this.count to store.state.count
+  'currentUser'
+]),
   mounted() {
     document.body.classList.add("sidebar-min", "layout-fixed");
+
+    Echo.private(`App.User.${this.currentUser.id}`)
+    .notification((notification) => {
+        console.log(notification.type);
+    });
+
+    
   }
 };
 </script>

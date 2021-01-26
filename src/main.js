@@ -14,7 +14,6 @@ import vSelect from "vue-select";
 Vue.component("v-select", vSelect);
 import {initialize} from './general'
 
-
 try {
   
   window.Popper = require('popper.js').default;

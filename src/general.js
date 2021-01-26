@@ -61,7 +61,7 @@ export function config_pusher(token){
         wsPort: 6001,
         disableStats: true,
         enabledTransports: ['ws'],
-        authEndpoint: `http://jarvis2.test/cors/broadcasting/auth`,
+        authEndpoint: `http://127.0.0.1:8000/cors/broadcasting/auth`,
         auth: {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -70,5 +70,7 @@ export function config_pusher(token){
         },
         forceTLS: false
     });
+
+
     
 }

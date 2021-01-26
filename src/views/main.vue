@@ -39,6 +39,9 @@
   /* eslint-disable  */
 
   export default {
+    mounted() {
+       document.title = "Sales";
+    },
     components: {
       sideMenu: () => import('../components/menus/side-menu.vue'),
       topMenu: () => import('../components/menus/top-menu.vue')

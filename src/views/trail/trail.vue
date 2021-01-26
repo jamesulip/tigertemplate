@@ -178,7 +178,7 @@
       return {
         page: {
 
-        }
+        },
       }
     },
     mounted() {
@@ -192,7 +192,7 @@
     },
     methods: {
       openTrail(trail) {
-          this.$router.push({name:'view_trail',params:{'id':trail.id}})
+          this.$router.push({name:'view_trail',params:{'id':trail.email.id}})
       },
       noDulp(text) {
         var names = text.map(function (elem) {
