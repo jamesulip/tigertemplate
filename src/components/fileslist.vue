@@ -114,6 +114,7 @@
 </template>
 <script>
 /* eslint-disable */
+    import { mapGetters } from 'vuex'
     export default {
         props: ['value'],
         data() {
@@ -124,6 +125,9 @@
             }
         },
         computed: {
+          ...mapGetters([
+              'getSelected_project',
+            ]),
             value_modal:{
                 get(){
                 return this.value
@@ -148,7 +152,7 @@
         methods: {
             save() {
                 this.loading= true
-                var proj = this.$store.getters.getSelected_project
+                var proj = this.getSelected_project
                 axios.post('cors/insertTally', {
                     projectID: proj.project.DETAILID,
                     tally: this.files.files
@@ -161,7 +165,7 @@
             },
             show() {
                 this.loading = true
-                var proj = this.$store.getters.getSelected_project
+                var proj = this.getSelected_project
                 axios.get(`cors/filesList2/${proj.project.DETAILID}`)
                     .then(res => {
                         this.files = res.data

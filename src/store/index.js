@@ -10,7 +10,7 @@ export default new Vuex.Store({
     currentUser: user,
     isLoggedIn: false,
     user: null,
-    page_loading: true,
+    page_loading: false,
     current_job: [],
     selected_project: {},
     my_projects: [],

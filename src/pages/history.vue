@@ -52,8 +52,8 @@
                       <br />
                       {{ item.project2.detail2.client2.com_name }}
                     </td>
-                    <td>{{ item.Start | format_date("Y-M-D hh:m:d A") }}</td>
-                    <td>{{ item.Stop | format_date("Y-M-D hh:m:d A") }}</td>
+                    <td>{{ item.Start | formatDate("Y-M-D hh:m:d A") }}</td>
+                    <td>{{ item.Stop | formatDate("Y-M-D hh:m:d A") }}</td>
                     <td>
                       {{ date_duration() }}
                     </td>
@@ -111,11 +111,7 @@ import moment from "moment";
                 selID:null
             }
         },
-        filters:{
-            format_date:function(value,format){
-                return moment(value).format(format)
-            }
-        },
+     
         mounted() {
             
             this.changePage(`cors/MyProject/History`)

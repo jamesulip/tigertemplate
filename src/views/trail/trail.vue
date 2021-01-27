@@ -97,7 +97,7 @@
                       </div>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date">5 mins ago</td>
+                    <td class="mailbox-date text-sm text-muted">{{trail.updated_at |formatDate('ago')}}</td>
                   </tr>
                 </template>
               </tbody>

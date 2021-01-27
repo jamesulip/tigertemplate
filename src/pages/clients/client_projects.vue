@@ -66,10 +66,6 @@
 
       }
     },
-    filters: {
-      formatDate(val, format) {
-        return moment(val).fromNow()
-      }
-    }
+    
   }
 </script>

@@ -34,7 +34,7 @@
             </b-button-group>
 
             <b-button-group class="mr-1">
-              <send_project :projects="project_details.project"/>
+               <send_project :projects="project_details.project" />
             </b-button-group>
 
          </b-button-toolbar>
@@ -77,7 +77,7 @@
                                     <div class="col-md-6">
                                        <i class="fas fa-caret-right fa-fw" v-b-toggle="`collapse-${j.id}`"></i>
                                        {{j.name}}
-                                       <send_project variant="link" size="size" :projects="j.projects"/>
+                                       <send_project variant="link" size="size" :projects="j.projects" />
                                     </div>
                                     <div class="col-md-6">
                                        <div class="float-right">
@@ -112,7 +112,10 @@
                                              <td style="width:200px;    vertical-align: middle;">
                                                 <i class="fa fa-align-justify handle" role="button"></i>
                                                 {{oj.TYPE}}#{{oj.NUM}} <template v-if="oj.VERSION > 0">
-                                                   V.{{oj.VERSION}}</template></td>
+                                                   V.{{oj.VERSION}}</template>
+                                                   
+                                                   <i class="fa fa-envelope" aria-hidden="true"></i>
+                                                   </td>
                                              <td>
                                                 <div class="d-flex flex-column text-truncate">
                                                    <span>{{oj.detail2.s_projname}}</span>
@@ -213,7 +216,7 @@
       },
       data() {
          return {
-            content:'',
+            content: '',
             jobs: [],
             project_details: {},
             loading_table: true,

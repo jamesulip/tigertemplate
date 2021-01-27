@@ -26,9 +26,11 @@
 
       <div class="content-wrapper">
 
-        <!-- <b-overlay :show="$store.getters.loadingState" rounded="sm"> -->
-        <router-view />
-        <!-- </b-overlay> -->
+        <b-overlay :show="$store.getters.loadingState" rounded="sm">
+        <keep-alive>
+          <router-view />
+        </keep-alive>
+        </b-overlay>
 
       </div>
     </div>
@@ -37,10 +39,24 @@
 
 <script>
   /* eslint-disable  */
-
+  import {
+    mapState
+  } from 'vuex'
   export default {
+    computed: mapState([
+      'currentUser'
+    ]),
     mounted() {
-       document.title = "Sales";
+      document.title = "Sales";
+
+
+      axios.post(`cors/auth/test_connection`)
+        .then(res => {
+          console.log(res)
+        })
+        .catch(err => {
+          console.error(err);
+        })
     },
     components: {
       sideMenu: () => import('../components/menus/side-menu.vue'),

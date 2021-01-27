@@ -301,18 +301,7 @@
             },
             inputFile(newFile, oldFile) {
                 this.$refs.upload.active = true
-                // if (newFile && !oldFile) {
-                //     // add
-                //     console.log('add', newFile)
-                // }
-                // if (newFile && oldFile) {
-                //     // update
-                //     console.log('update', newFile)
-                // }
-                // if (!newFile && oldFile) {
-                //     // remove
-                //     console.log('remove', oldFile)
-                // }
+               
             }
 
 

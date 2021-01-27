@@ -20,11 +20,11 @@
               <!-- <img src="https://adminlte.io/themes/dev/AdminLTE/dist/img/user2-160x160.jpg"
               class="user-image img-circle elevation-2 mr-2" style="width:2rem" alt="User Image"> -->
               <span class="d-none d-md-inline">{{
-                $store.state.currentUser.name
+                currentUser.name
               }}</span>
             </template>
             <b-dropdown-item href="#">Profile</b-dropdown-item>
-            <b-dropdown-item @click="logout()">Sign Out</b-dropdown-item>
+            <b-dropdown-item @click="logout2()">Sign Out</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
@@ -33,13 +33,27 @@
 </template>
 
 <script>
-/* eslint-disable */
+  /* eslint-disable */
+  import {
+    mapGetters,mapMutations
+  } from 'vuex'
+
   export default {
+    computed: {
+      ...mapGetters([
+        'currentUser'
+      ]),
+    },
+ 
     methods: {
-      logout() {
+       ...mapMutations(['logout','setLoading']),
+
+      logout2() {
+        this.setLoading(true)
         axios.post(`cors/auth/logout`)
           .then(res => {
-            this.$store.commit('logout');
+            this.logout()
+             this.setLoading(false)
             this.$router.push('/login');
           })
           .catch(err => {

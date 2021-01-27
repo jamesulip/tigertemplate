@@ -7,8 +7,7 @@ import store from "./store";
 import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-import moment from 'moment'
-Vue.prototype.moment = moment
+
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);
@@ -27,18 +26,7 @@ Vue.use(IconsPlugin);
 Vue.config.productionTip = false;
 
 Vue.use(VueEditor);
-Vue.mixin({
-  methods: {
-    getInitial: function (name) {
-      var initials = name.match(/\b\w/g) || [];
-      initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-      return initials;
-    },
-    formatDate(val,format){
-      return moment(val).format(format);
-    }
-  },
-})
+
 
 initialize(store,router)
 
@@ -53,21 +41,8 @@ Vue.component('edit_psr', require('./pages/project/jopstlr/psr/project_psr_edit'
 Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').default);
 Vue.component('send_project', require('./components/custom/send_project').default);
 
-
-Vue.filter('formatDate', function (value,format) {
-  if(format=='ago')
-    return moment(value).fromNow()
-  else  
-    return moment(value).format(format)
-})
-Vue.filter('bytesToSize', function (bytes) {
-  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes == 0) return '0 Byte';
-  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-})
-
-
+import plugin from './plugin.js'
+Vue.use(plugin)
 new Vue({
   router,
   store,

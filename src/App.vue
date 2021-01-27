@@ -25,21 +25,14 @@
 </style>
 <script>
 /*eslint-disable*/
-import { mapState } from 'vuex'
 
 export default {
   components: {},
-  computed: mapState([
-  // map this.count to store.state.count
-  'currentUser'
-]),
+
   mounted() {
     document.body.classList.add("sidebar-min", "layout-fixed");
 
-    Echo.private(`App.User.${this.currentUser.id}`)
-    .notification((notification) => {
-        console.log(notification.type);
-    });
+   
 
     
   }

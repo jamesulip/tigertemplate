@@ -1,4 +1,5 @@
 <template>
+<b-overlay :show="loading">
   <div class="login-page">
     <div class="login-box">
       <div class="login-logo">
@@ -72,6 +73,7 @@
       </div>
     </div>
   </div>
+</b-overlay>
 </template>
 <script>
 /* eslint-disable no-unused-vars */

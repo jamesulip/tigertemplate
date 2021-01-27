@@ -26,7 +26,7 @@ export function initialize(store,router){
         }
 
     });
-     
+    //  console.log('router',window.location.pathname)
  
     axios.interceptors.response.use(null, (error) => {
         if (error.response.status == 401) {
@@ -34,7 +34,7 @@ export function initialize(store,router){
             router.push({
                 path: '/login',
                 query: {
-                   nextUrl: to.fullPath,
+                   nextUrl: window.location.pathname,
                 }
             });
         }
