@@ -117,33 +117,45 @@
 
 <script>
    /*eslint-disable*/
+   import { mapGetters, mapMutations } from 'vuex'
    import project_add from './project_add'
    export default {
       data() {
          return {
             projects: {},
-            search_q:{
-               Client: null,
-               SalesExec: this.$store.getters.current_employee_id,
-               searchq: null,
-               sort: null,
-               count_page:50
-            },
+            search_q:{},
             loading_table:false
          }
       },
       components:{
          project_add
+        
+      },
+      computed: {
+         
+         ...mapGetters([
+            'get_my_projects','current_employee_id'
+         ]),
       },
       mounted() {
-         if(!this.$store.getters.get_my_projects.current_page){
+         this.search_q = {
+            Client: null,
+            SalesExec: this.current_employee_id,
+            searchq: null,
+            sort: null,
+            count_page:50
+         }
+         if(!this.get_my_projects.current_page){
             this.search()
          }
          else{
-            this.projects = this.$store.getters.get_my_projects
+            this.projects = this.get_my_projects
          }
       },
       methods: {
+          ...mapMutations([
+            'set_my_projects'
+         ]),
          delete_project(item){
                this.$bvModal.msgBoxConfirm('Please confirm that you want to delete everything.', {
                   title: 'Please Confirm',
@@ -186,7 +198,7 @@
             this.search_q)
             .then(res => {
                this.projects = res.data
-               this.$store.commit('set_my_projects',res.data)
+               this.set_my_projects(res.data)
                this.loading_table = false
             })
             .catch(err => {

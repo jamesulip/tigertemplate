@@ -13,7 +13,9 @@ export default new Vuex.Store({
     page_loading: false,
     current_job: [],
     selected_project: {},
-    my_projects: [],
+    my_projects: {
+      current_page:''
+    },
     current_project:{},
     projecttypes:[],
     productstep:[],

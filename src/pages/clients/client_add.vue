@@ -67,8 +67,13 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
   /* eslint-disable*/
+  
     export default {
+         computed: {
+            ...mapGetters(['currentUser'])
+        },
         data() {
             return {
                 add_client: false,
@@ -82,11 +87,14 @@
                     companycol: null,
                     contacts_count: 1,
                     notes: null,
-                    salesExec: this.$store.getters.currentUser.id,
+                    // salesExec: this.getters.currentUser.id,
                 },
                 errors:{},
                 loading:false
             }
+        },
+        mounted() {
+            this.client = this.currentUser.id
         },
         methods: {
             array_to_bool(array){

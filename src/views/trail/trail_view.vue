@@ -10,7 +10,7 @@
           </div>
           <hr>
 
-          <b-tabs pills fill variant="danger" nav-class="sssss" active-nav-item-class="bg-white">
+          <b-tabs pills fill variant="danger" nav-class="rounded bg-light shadow-sm p-3" active-nav-item-class="bg-white">
             <b-tab title="Trail" :title-link-class="`font-weight-normal`">
               <template #title>
                 <div class=" text-primary">
@@ -18,6 +18,7 @@
                 </div>
               </template>
               <div class="mt-3">
+                <h3 class="text-muted text-lg">Job Trail</h3>
                 <div class="content-list-body">
                   <ol class="list-group list-group-flush">
 
@@ -38,7 +39,7 @@
                             v-html="info.content">
 
                           </div>
-                          <div class="row" v-if="info.attachments && Boolean( info.attachments.length)" >
+                          <div class="row" v-if="info.attachments && Boolean(info.attachments.length)">
                             <div class="col-md-12">
                               <hr>
                               <template v-for="(item, index) in info.attachments">
@@ -51,7 +52,7 @@
                                   </b-avatar>
                                   <div class="media-body">
                                     <a role="button"
-                                      @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
+                                      @click="check_mime(item.file_meta.ext)?full_screen_image(info.attachments):null"
                                       class="A-filter-by-text">{{item.filename}}</a>
                                     <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}}</span>
                                   </div>
@@ -83,29 +84,32 @@
                             v-html="i.content">
 
                           </div>
-                            <div class="row" v-if="info.attachments && Boolean( info.attachments.length)" >
+                          <div class="row" v-if="info.attachments && Boolean( info.attachments.length)">
                             <div class="col-md-12">
                               <hr>
-                               <template v-for="(item, index) in i.file">
-                            <div class="media media-attachment" v-if="Boolean(i.file.length)" :key="`f-${index}`">
+                              <template v-for="(item, index) in i.file">
+                                <div class="media media-attachment" :key="`f-${index}`">
 
-                              <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null" button
-                                rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
-                                icon="paperclip">
+                                  <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
+                                    button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
+                                    icon="paperclip">
 
-                              </b-avatar>
-                              <div class="media-body">
-                                <a role="button" @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
-                                  class="A-filter-by-text">{{item.filename}}</a>
-                                <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}}    <a :href="`${serUrl}/cors/downloadFile2/${item.id}`" target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
-                              
-                             
-                              </div>
-                            </div>
-                          </template>
+                                  </b-avatar>
+                                  <div class="media-body">
+                                    <a role="button"
+                                      @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
+                                      class="A-filter-by-text">{{item.filename}}</a>
+                                    <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
+                                        :href="`${serUrl}/cors/downloadFile2/${item.id}`" target="_blank"><i
+                                          class="fa fa-download" aria-hidden="true"></i></a></span>
+
+
+                                  </div>
+                                </div>
+                              </template>
                             </div>
                           </div>
-                        
+
 
 
                         </div>

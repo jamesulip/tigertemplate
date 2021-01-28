@@ -18,10 +18,10 @@
          <b-button-toolbar>
             <b-button-group class="mr-1">
                <b-dropdown id="dropdown-left" text="Add New" variant="primary" class="">
-                  <jo_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
+                  <jo_add v-if="get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
                      <b-icon-plus-circle /> Add Job Order
                   </jo_add>
-                  <psr_add v-if="$store.getters.get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
+                  <psr_add v-if="get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
                      <b-icon-plus-circle /> Add PSR
                   </psr_add>
                   <b-dropdown-item href="#">Add Layout Proposal</b-dropdown-item>
@@ -109,13 +109,15 @@
 
                                              <!-- <td :rowspan="j.projects.length" style="width:50px" v-if="i==0"></td> -->
 
-                                             <td style="width:200px;    vertical-align: middle;">
+                                             <td style="width:200px;vertical-align: middle;">
                                                 <i class="fa fa-align-justify handle" role="button"></i>
                                                 {{oj.TYPE}}#{{oj.NUM}} <template v-if="oj.VERSION > 0">
                                                    V.{{oj.VERSION}}</template>
-                                                   
-                                                   <i class="fa fa-envelope" aria-hidden="true"></i>
-                                                   </td>
+
+                                                <i class="fa fa-envelope float-right text-primary" v-if="oj.trailid"
+                                                   aria-hidden="true"></i>
+
+                                             </td>
                                              <td>
                                                 <div class="d-flex flex-column text-truncate">
                                                    <span>{{oj.detail2.s_projname}}</span>
@@ -208,6 +210,7 @@
       statusColor
    } from '../../js/helper.js'
    import draggable from "vuedraggable";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
    export default {
       components: {
          jo_add,
@@ -232,20 +235,26 @@
 
          this.loadJobs()
          this.load_project()
-         if (!this.$store.getters.get_projecttypes.length) {
-            this.$store.dispatch('set_projecttypes_s')
-            this.$store.dispatch('set_productstep')
-            this.$store.dispatch('set_productiontypes')
-            this.$store.dispatch('set_machines')
+         if (!this.get_projecttypes.length) {
+            this.set_projecttypes_s()
+            this.set_productstep()
+            this.set_productiontypes()
+            this.set_machines()
          }
 
       },
       computed: {
-         test() {
-
-         }
+         ...mapGetters([
+            'get_projecttypes','get_projecttypes'
+         ])
       },
       methods: {
+         ...mapActions([
+            'set_productstep','set_projecttypes_s','set_productiontypes','set_machines'
+         ]),
+         ...mapMutations([
+            'set_projects'
+         ]),
          edited() {
             this.$bvToast.toast('Project Successfully Updated', {
                title: `Success`,
@@ -312,7 +321,7 @@
          load_project() {
             axios.get(`cors/wholeprojects/${this.$route.params.id}`).then(x => {
                this.project_details = x.data
-               this.$store.commit('set_projects', x.data)
+               this.set_projects(x.data)
             })
          },
          sort_number(objs) {

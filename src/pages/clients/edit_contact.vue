@@ -31,25 +31,27 @@
     
 </template>
 <script>
+import { mapState } from 'vuex'
   /* eslint-disable*/
+  
     export default {
         props:['client'],
         data() {
             return {
                 add_contact_modal: false,
                 clients: {
-                    "cli_name": null,
-                    "cli_Email": null,
-                    "cli_phone": null,
-                    "cli_Position": null,
-                    "cli_company": this.$route.params.id,
-                    "s_accountexec": this.$store.state.currentUser.id,
-                    "active": true,
+                   
                 },
                 validation:{
                   
                 }
             }
+        },
+        computed:{
+            ...mapState(['currentUser'])
+        },
+        mounted() {
+            
         },
         methods: {
             array_to_bool(array){

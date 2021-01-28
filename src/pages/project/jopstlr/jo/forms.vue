@@ -23,7 +23,7 @@
                     <div class="col-md-6">
                         <b-form-group label="Project Type:" label-for="input-1">
                             <v-select :label="`name`" v-model="value.projects.projecttype" :reduce="Client => Client.ID"
-                                :options="$store.getters.get_projecttypes">
+                                :options="get_projecttypes">
                                 <template #selected-option="{ name }">
                                     <div style="margin:2px">
                                         <strong>{{ name }}</strong>
@@ -40,7 +40,7 @@
                 <b-form-group label="Scope" label-for="radio-group-1">
 
                     <b-form-radio-group id="radio-group-1" v-model="test2" text-field="prodt_name" value-field="ID"
-                        :options="$store.getters.get_productiontypes" name="radio-options">
+                        :options="get_productiontypes" name="radio-options">
                         <b-form-invalid-feedback :state="Boolean(test2)">Select Scope</b-form-invalid-feedback>
                     </b-form-radio-group>
                 </b-form-group>
@@ -49,7 +49,7 @@
                     <hr class="col-md-12">
                     <b-form-group label="Project Name:" label-for="input-2">
                         <b-form-select value-field="steps" :state="array_to_bool(errors['finishers'])" text-field="stepname" v-model="finishers_selected"
-                            :options="$store.getters.get_productstep" :value="$store.getters.get_productstep[0]" />
+                            :options="get_productstep" :value="get_productstep[0]" />
                     </b-form-group>
                     <div class="row" v-if="finishers_selected">
                         <div class="col-md-12 row m-0 p-0 ">
@@ -64,8 +64,8 @@
                                         <b-form-group label="Machine:" label-for="input-2">
                                             <b-form-select :state="array_to_bool(errors[`finishers.${index}.machine`])"
                                                 v-model="item.sel_machine"
-                                                :disabled="!Boolean(filterMachine($store.state.machines,item).length)"
-                                                :options="filterMachine($store.state.machines,item)" />
+                                                :disabled="!Boolean(filterMachine(machines,item).length)"
+                                                :options="filterMachine(machines,item)" />
                                         </b-form-group>
                                         <b-form-group label="Instructions" label-for="input-5">
                                             <b-form-textarea v-model="item.detail" rows="5" max-rows="5" no-auto-shrink>
@@ -189,7 +189,9 @@
     }
 </style>
 <script>
+import { mapGetters, mapState } from 'vuex'
     /*eslint-disable*/
+
     export default {
         props: ['value'],
         data() {
@@ -203,8 +205,10 @@
                 },
                 loading:false
             }
+            
         },
         methods: {
+           
             AddItem(){
               this.value.items.push({source: "", w: "", h: "", qty: "", detailID: "", uom: ""})
             },
@@ -275,7 +279,7 @@
                 })
             },
             scope() {
-                var sel_scope = this.$store.getters.get_productiontypes.find(x => x.ID === this.test2)
+                var sel_scope = this.get_productiontypes.find(x => x.ID === this.test2)
                 let scope = {
                     DETAILS: "",
                     FINISHING: sel_scope.prodt_name,
@@ -288,6 +292,8 @@
         },
 
         computed: {
+             ...mapGetters(['get_productiontypes','get_productstep','get_projecttypes']),
+             ...mapState(['machines']),
             errors_count(){
                 var counts={}
                 Object.keys(this.errors).map(x=>{

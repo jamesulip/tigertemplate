@@ -6,7 +6,8 @@
             </slot>
 
         </a>
-        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Edit JO#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop v-if="data.projects"
+            :title="`Edit JO#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @edited="x=>{
                 $emit('edited');open_jo_add_modal=false
@@ -25,10 +26,13 @@
     </li>
 </template>
 <script>
+    import {
+        mapGetters
+    } from 'vuex';
     /*eslint-disable*/
     import jo_form from './edit_form'
     export default {
-        props:['id'],
+        props: ['id'],
         components: {
             jo_form
         },
@@ -36,52 +40,59 @@
             return {
                 open_jo_add_modal: false,
                 data: {
-                    "finishers": [
 
-                    ],
-                    "details": {
-                        "s_accountexec": this.$store.getters.current_employee_id,
-                        "s_projname": this.$store.getters.get_project.ProjectName,
-                        "s_company": this.$store.getters.get_project.Client,
-                        "size": ""
-                    },
-                    "projects": {
-                        "SALESEXEC": this.$store.getters.current_employee_id,
-                        "projectID": this.$store.getters.get_project.ID,
-                        "TYPE": "PSR",
-                        "projecttype": 11
-                    },
-                    items: []
 
                 }
             }
         },
+        mounted() {
+            this.data = {
+                "finishers": [
 
+                ],
+                "details": {
+                    "s_accountexec": this.current_employee_id,
+                    "s_projname": this.get_project.ProjectName,
+                    "s_company": this.get_project.Client,
+                    "size": ""
+                },
+                "projects": {
+                    "SALESEXEC": this.current_employee_id,
+                    "projectID": this.get_project.ID,
+                    "TYPE": "PSR",
+                    "projecttype": 11
+                },
+                items: []
+            }
+        },
+        computed: {
+            ...mapGetters(['current_employee_id', 'get_project'])
+        },
         methods: {
             submit(bvt) {
                 bvt.preventDefault();
                 this.$refs.jo_form.submit()
             },
-            add(){
-                if(this.id)
+            add() {
+                if (this.id)
                     this.create_from_id(this.id)
             },
             create_from_id(id) {
-               axios.get(`cors/projectDetail/${id.DETAILID}`)
-               .then(res => {
-                    this.data = {
-                        ...res.data,
-                        projects:{
-                            ...res.data.project,
-                            projecttype:parseInt(res.data.project.projecttype)
-                        },
-                    }
-                    delete this.data.project;
+                axios.get(`cors/projectDetail/${id.DETAILID}`)
+                    .then(res => {
+                        this.data = {
+                            ...res.data,
+                            projects: {
+                                ...res.data.project,
+                                projecttype: parseInt(res.data.project.projecttype)
+                            },
+                        }
+                        delete this.data.project;
 
-               })
-               .catch(err => {
-                   console.error(err); 
-               })
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
             }
         },
 

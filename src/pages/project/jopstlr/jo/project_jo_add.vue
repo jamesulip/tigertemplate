@@ -24,6 +24,7 @@
     </li>
 </template>
 <script>
+import { mapGetters } from 'vuex';
     /*eslint-disable*/
     import jo_form from './forms'
     export default {
@@ -34,23 +35,32 @@
             return {
                 open_jo_add_modal: false,
                 data: {
-                    "finishers": [
+                   
 
+                }
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'current_employee_id','get_project'
+            ])
+        },
+        mounted() {
+            this.data = {
+                 "finishers": [
                     ],
                     "details": {
-                        "s_accountexec": this.$store.getters.current_employee_id,
-                        "s_projname": this.$store.getters.get_project.ProjectName,
-                        "s_company": this.$store.getters.get_project.Client
+                        "s_accountexec": this.current_employee_id,
+                        "s_projname": this.get_project.ProjectName,
+                        "s_company": this.get_project.Client
                     },
                     "projects": {
-                        "SALESEXEC": this.$store.getters.current_employee_id,
-                        "projectID": this.$store.getters.get_project.ID,
+                        "SALESEXEC": this.current_employee_id,
+                        "projectID": this.get_project.ID,
                         "TYPE": "JO",
                         "projecttype": 11
                     },
                     items:[]
-
-                }
             }
         },
         methods: {

@@ -8,7 +8,7 @@
         </a>
         <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add PSR`" size="lg" @show="add"
             v-model="open_jo_add_modal">
-            <jo_form ref="jo_form"  v-model="data" @added="x=>{
+            <jo_form ref="jo_form" v-model="data" @added="x=>{
                 $emit('added');open_jo_add_modal=false
             }" />
             <template #modal-footer="{ ok, close }">
@@ -27,34 +27,46 @@
 <script>
     /*eslint-disable*/
     import jo_form from './forms'
+    import {
+        mapGetters
+    } from 'vuex';
     export default {
-        props:['id'],
+        props: ['id'],
         components: {
             jo_form
         },
         data() {
             return {
-                loaded:true,
+                loaded: true,
                 open_jo_add_modal: false,
                 data: {
-                    "finishers": [
 
-                    ],
-                    "details": {
-                        "s_accountexec": this.$store.getters.current_employee_id,
-                        "s_projname": this.$store.getters.get_project.ProjectName,
-                        "s_company": this.$store.getters.get_project.Client,
-                        "size": ""
-                    },
-                    "projects": {
-                        "SALESEXEC": this.$store.getters.current_employee_id,
-                        "projectID": this.$store.getters.get_project.ID,
-                        "TYPE": "PSR",
-                        "projecttype": 11
-                    },
-                    items: []
-
+                    
                 }
+            }
+        },
+        computed: {
+            ...mapGetters([
+                'current_employee_id', 'get_project'
+            ])
+        },
+        mounted() {
+            this.data = {
+                "finishers": [],
+                "details": {
+                    "s_accountexec": this.current_employee_id,
+                    "s_projname": this.get_project.ProjectName,
+                    "s_company": this.get_project.Client,
+                    "size": ""
+                },
+                "projects": {
+                    "SALESEXEC": this.current_employee_id,
+                    "projectID": this.get_project.ID,
+                    "TYPE": "JO",
+                    "projecttype": 11
+                },
+                // items: []
+                size:""
             }
         },
         methods: {
@@ -62,25 +74,24 @@
                 bvt.preventDefault();
                 this.$refs.jo_form.submit()
             },
-            add(){
+            add() {
                 this.loaded = true
-                if(this.id)
+                if (this.id)
                     this.create_from_id(this.id)
             },
             create_from_id(id) {
-                
+
                 axios.get(`cors/wholeprojects/${id}`).then(x => {
                     this.data = {
-                        "finishers": [
-                        ],
+                        "finishers": [],
                         "details": {
-                            "s_accountexec": this.$store.getters.current_employee_id,
+                            "s_accountexec": this.current_employee_id,
                             "s_projname": x.ProjectName,
                             "s_company": x.Client,
                             "size": null
                         },
                         "projects": {
-                            "SALESEXEC": this.$store.getters.current_employee_id,
+                            "SALESEXEC": this.current_employee_id,
                             "projectID": x.ID,
                             "TYPE": "PSR",
                             "projecttype": 11

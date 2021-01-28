@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <b-form-group label="Project Type:" label-for="input-1">
                     <v-select :label="`name`" v-model="value.projects.projecttype" :reduce="Client => Client.ID"
-                        :options="$store.getters.get_projecttypes">
+                        :options="get_projecttypes">
                         <template #selected-option="{ name }">
                             <div style="margin:2px">
                                 <strong>{{ name }}</strong>
@@ -64,8 +64,8 @@
                             <b-form-group label="Machine:" label-for="input-2">
                                 <b-form-select :state="array_to_bool(errors[`finishers.${index}.machine`])"
                                     v-model="item.machine"
-                                    :disabled="!Boolean(filterMachine($store.state.machines,item).length)"
-                                    :options="filterMachine($store.state.machines,item)" />
+                                    :disabled="!Boolean(filterMachine(machines,item).length)"
+                                    :options="filterMachine(machines,item)" />
                             </b-form-group>
                             <b-form-group label="Instructions" label-for="input-5">
                                 <b-form-textarea v-model="item.DETAILS" rows="5" max-rows="5" no-auto-shrink>
@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
     /*eslint-disable*/
     export default {
         props: ['value'],
@@ -92,6 +93,8 @@
             }
         },
         computed: {
+            ...mapGetters(['get_projecttypes']),
+            ...mapState(['machines']),
             size: {
                 get(val) {
                     console.log(val.value.details.size)

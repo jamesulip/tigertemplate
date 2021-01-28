@@ -55,7 +55,7 @@
                         <div class="col-md-12 mt-2">
 
                             <file-upload class="btn btn-primary"
-                                :headers="{'Authorization':`Bearer ${ $store.getters.currentUser.token}`,'Accept':'application/json'}"
+                                :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
                                 :post-action="`${server}/cors/file/attach/send`"  :multiple="true"
                                 :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
                                 @input-file="inputFile" ref="upload">
@@ -108,6 +108,8 @@
 
 
     import {
+      mapActions,
+      mapGetters,
         mapState
     } from 'vuex'
 
@@ -149,10 +151,12 @@
             quillEditor,
             FileUpload
         },
-        computed: mapState([
-            // map this.count to store.state.count
-            'users'
-        ]),
+        computed:{
+            ...mapState([
+                'users'
+            ]),
+            ...mapGetters(['currentUser','current_employee_id'])
+        },
         data() {
             return {
                 server: window.axios.defaults.baseURL,
@@ -161,7 +165,7 @@
                 data: {
                     Type: "comment",
                     content: "",
-                    user: this.$store.getters.current_employee_id,
+                    user: this.current_employee_id,
                 },
                 customToolbar: {
                     theme: 'snow',
@@ -214,9 +218,10 @@
             }
         },
         mounted() {
-            this.$store.dispatch('update_users')
+            this.update_users()
         },
         methods: {
+            ...mapActions(['update_users']),
             suggestPeople(searchTerm) {
                 const allPeople = this.users;
                 return allPeople.filter(person => person.name.includes(searchTerm));
@@ -264,15 +269,12 @@
                         let url = result.data.url;
                         var quill = this.$refs.test.quill;
                         this.sending = false
-                        quill.insertEmbed(0, 'imageBlot', {
+                        console.log('Editor',Editor)
+                        quill.insertEmbed(quill.getSelection().index, 'imageBlot', {
                             src: url,
-                            // custom: 'hello-' + Date.now(),
                         }, 'user');
 
                     })
-                    .catch(err => {
-                        console.log(err);
-                    });
             },
             update_temp(id) {
                 

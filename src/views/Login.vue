@@ -76,6 +76,7 @@
 </b-overlay>
 </template>
 <script>
+import { mapMutations } from 'vuex';
 /* eslint-disable no-unused-vars */
 
 import { myLoginRoutine } from "../js/login";
@@ -89,13 +90,14 @@ export default {
       loading: false
     };
   },
-
+  
   methods: {
+    ...mapMutations(['loginSuccess']),
     login() {
       this.loading = true;
       myLoginRoutine(this.auth)
         .then(x => {
-          this.$store.commit("loginSuccess", x.data);
+          this.loginSuccess(x.data);
           if(this.$route.query.nextUrl)
             this.$router.push({
               path:this.$route.query.nextUrl

@@ -30,6 +30,7 @@
 </template>
 <script>
     /*eslint-disable*/
+    import {mapGetters} from 'vuex'
     export default {
         props:['project'],
         data() {
@@ -37,6 +38,11 @@
                 password: 'Persevere',
                 errors: {}
             }
+        },
+        computed:{
+            ...mapGetters([
+               'current_employee_id' 
+            ])
         },
         methods: {
             array_to_bool(array) {
@@ -50,7 +56,7 @@
                 this.errors = {}
                 s.preventDefault();
                 axios.post(`cors/checkpass`, {
-                    SalesExec: this.$store.getters.current_employee_id,
+                    SalesExec: this.current_employee_id,
                     password: this.password
                 })
                 .then(res => {

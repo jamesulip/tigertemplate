@@ -42,7 +42,9 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 /*eslint-disable*/
+
 export default {
     data() {
         return {
@@ -50,7 +52,7 @@ export default {
             data:{
                 Client: "",
                 ProjectName: "",
-                SalesExec: this.$store.getters.current_employee_id,
+                SalesExec: this.current_employee_id,
                 default_cont: "",
                 datecreated: "2021-01-13"
             },
@@ -62,13 +64,19 @@ export default {
     },
     mounted() {
         this.getCompany()
+        this.data.SalesExec = this.current_employee_id
+    },
+    computed: {
+        ...mapGetters([
+            'current_employee_id'
+        ])
     },
     methods: {
         retsetData(){
             this.data ={
                 Client: "",
                 ProjectName: "",
-                SalesExec: this.$store.getters.current_employee_id,
+                SalesExec: this.current_employee_id,
                 default_cont: "",
                 // datecreated: "2021-01-13"
             }

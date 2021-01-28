@@ -21,16 +21,13 @@
                     title: false,
                     toolbar: {
                         download: function(s,c) {
-                           console.log('s',s,c)
                         },
                     },
                     tooltip: false
                 }
             }
         },
-        mounted() {
-            console.log(this.$refs.test)
-        },
+      
         methods: {
             show(images, index = 0) {
                 this.images = images

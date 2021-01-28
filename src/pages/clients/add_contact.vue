@@ -31,24 +31,35 @@
         </b-modal>
     </div>
 </template>
+
 <script>
-  /* eslint-disable*/
+    /* eslint-disable*/
+    import { mapState } from 'vuex'
+  
     export default {
         data() {
             return {
                 add_contact_modal: false,
                 clients: {
-                    "cli_name": null,
-                    "cli_Email": null,
-                    "cli_phone": null,
-                    "cli_Position": null,
-                    "cli_company": this.$route.params.id,
-                    "s_accountexec": this.$store.state.currentUser.id,
-                    "active": true,
+                  
                 },
                 validation:{
                   
                 }
+            }
+        },
+        computed:{
+            ...mapState(['currentUser'])
+        },
+        mounted() {
+            this.clients = {
+                "cli_name": null,
+                "cli_Email": null,
+                "cli_phone": null,
+                "cli_Position": null,
+                "cli_company": this.$route.params.id,
+                "s_accountexec": this.currentUser.id,
+                "active": true,
             }
         },
         methods: {

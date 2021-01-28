@@ -24,15 +24,25 @@
                     <v-select :closeOnSelect="false" multiple v-model="sel" :options="projects" :label="`NUM`">
                         <template slot="selected-option" slot-scope="option">
                             <div class="flex">
-                                <div class="col">
-
+                                <div class="col-md-6">
                                     <span> {{ option.TYPE }}#{{ option.NUM }}</span>
                                 </div>
                             </div>
                         </template>
                         <template slot="option" slot-scope="option">
-                            <span class="fa" :class="option.icon"></span>
-                            {{ option.TYPE }}#{{ option.NUM }}
+                           
+                         
+                            <div class="row">
+                             <div class="col-md-6">
+                                    {{ option.TYPE }}#{{ option.NUM }}
+                                
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="float-right">
+                                        <b-icon-check></b-icon-check>
+                                    </div>
+                                </div>
+                                </div>
                         </template>
                     </v-select>
                     <b-form-invalid-feedback :state="!error.projects">
@@ -85,20 +95,13 @@
                         <div class="col-md-12 mt-2">
 
                             <file-upload class="btn btn-primary"
-                                :headers="{'Authorization':`Bearer ${ $store.getters.currentUser.token}`,'Accept':'application/json'}"
+                                :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
                                 :post-action="`${server}/cors/file/attach/send`" :multiple="true"
                                 :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
                                 @input-file="inputFile" ref="upload">
                                 <i class="fa fa-plus"></i>
                                 Select files
                             </file-upload>
-
-                            <!-- <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6"
-                                spinner-small spinner-variant="primary" class="d-inline-block float-right">
-                                <b-button @click="submit">
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>Send
-                                </b-button>
-                            </b-overlay> -->
                         </div>
                     </div>
                 </div>
@@ -123,6 +126,7 @@
     import MagicUrl from 'quill-magic-url'
     import "quill-mention";
     import FileUpload from 'vue-upload-component'
+import { mapGetters } from 'vuex';
     var InlineBlot = Quill.import('blots/block');
 
     Quill.register({
@@ -234,6 +238,7 @@
         },
 
         computed: {
+            ...mapGetters(['currentUser']),
             selected_projects() {
                 try {
                     var a4 = this.sel.map(pro => {
@@ -314,7 +319,7 @@
                         let url = result.data.url;
                         var quill = this.$refs.test.quill;
                         this.sending = false
-                        quill.insertEmbed(0, 'imageBlot', {
+                        quill.insertEmbed(quill.getSelection().index, 'imageBlot', {
                             src: url,
                             // custom: 'hello-' + Date.now(),
                         }, 'user');
