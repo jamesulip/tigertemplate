@@ -10,19 +10,51 @@
           </div>
           <hr>
 
-          <b-tabs pills fill variant="danger" nav-class="rounded bg-light shadow-sm p-3" active-nav-item-class="bg-white">
+          <b-tabs pills fill variant="danger" nav-class="rounded bg-light shadow-sm p-3"
+            active-nav-item-class="bg-white">
             <b-tab title="Trail" :title-link-class="`font-weight-normal`">
               <template #title>
                 <div class=" text-primary">
                   Trail <b-badge variant="danger">{{messages.length}}</b-badge>
                 </div>
               </template>
+
               <div class="mt-3">
+
                 <h3 class="text-muted text-lg">Job Trail</h3>
                 <div class="content-list-body">
+
+
                   <ol class="list-group list-group-flush">
 
-                    <li class="list-group-item shadow">
+
+
+                    <li class="list-group-item shadow" v-if="!info.user">
+                      <div class="media">
+
+                        <b-skeleton type="avatar" class="mr-2"></b-skeleton>
+                        <div class="media-body">
+                          <div class="media-title" style="">
+                            <span class="h6 mr-1"><b-skeleton animation="wave" width="200px"></b-skeleton></span>
+                            <span class="float-right text-muted text-xs"
+                              v-b-tooltip="{ title: info.created_at, placement: 'bottomLeft' }">
+                              <b-skeleton animation="wave" width="100px"></b-skeleton>
+                            </span>
+                          </div>
+                          <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;">
+                            <b-skeleton animation="wave" width="85%"></b-skeleton>
+                            <b-skeleton animation="wave" width="55%"></b-skeleton>
+                            <b-skeleton animation="wave" width="70%"></b-skeleton>
+                            <b-skeleton animation="wave" width="85%"></b-skeleton>
+                            <b-skeleton animation="wave" width="55%"></b-skeleton>
+                            <b-skeleton animation="wave" width="70%"></b-skeleton>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+
+
+                    <li class="list-group-item shadow" v-else>
                       <div class="media">
                         <b-avatar class="avatar mr-2" size="md"></b-avatar>
 
