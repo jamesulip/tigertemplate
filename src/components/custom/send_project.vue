@@ -37,7 +37,7 @@
                                     {{ option.TYPE }}#{{ option.NUM }}
                                 
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" v-if="option.trailid">
                                     <div class="float-right">
                                         <b-icon-check></b-icon-check>
                                     </div>

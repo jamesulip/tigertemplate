@@ -43,6 +43,8 @@ Vue.component('send_project', require('./components/custom/send_project').defaul
 
 import plugin from './plugin.js'
 Vue.use(plugin)
+
+
 new Vue({
   router,
   store,

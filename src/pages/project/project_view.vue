@@ -24,7 +24,17 @@
                   <psr_add v-if="get_projecttypes.length" @added="X=>{load_project();loadJobs()}">
                      <b-icon-plus-circle /> Add PSR
                   </psr_add>
-                  <b-dropdown-item href="#">Add Layout Proposal</b-dropdown-item>
+                  <li role="presentation">
+                     <router-link :to="{name:'lr-create',params:{lrid:$route.params.id}}" role="button" class="dropdown-item">
+                        <slot>
+                           Request Layout Proposal
+                        </slot>
+
+                     </router-link>
+                  </li>
+                  <!-- <lr_add v-if="get_projecttypes.length">
+                     <b-icon-plus-circle />  Request Layout Proposal
+                  </lr_add> -->
                </b-dropdown>
             </b-button-group>
             <b-button-group class="mr-1">
@@ -206,15 +216,21 @@
    /*eslint-disable*/
    import jo_add from './jopstlr/jo/project_jo_add.vue'
    import psr_add from './jopstlr/psr/project_psr_add.vue'
+   import lr_add from './jopstlr/lr/add_lr.vue'
    import {
       statusColor
    } from '../../js/helper.js'
    import draggable from "vuedraggable";
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+   import {
+      mapActions,
+      mapGetters,
+      mapMutations
+   } from 'vuex';
    export default {
       components: {
          jo_add,
          psr_add,
+         lr_add,
          draggable
       },
       data() {
@@ -245,12 +261,12 @@ import { mapActions, mapGetters, mapMutations } from 'vuex';
       },
       computed: {
          ...mapGetters([
-            'get_projecttypes','get_projecttypes'
+            'get_projecttypes', 'get_projecttypes'
          ])
       },
       methods: {
          ...mapActions([
-            'set_productstep','set_projecttypes_s','set_productiontypes','set_machines'
+            'set_productstep', 'set_projecttypes_s', 'set_productiontypes', 'set_machines'
          ]),
          ...mapMutations([
             'set_projects'

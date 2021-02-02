@@ -26,6 +26,12 @@
           Clients
         </div>
       </menu_item>
+      <menu_item :to="{ name: 'lr' }" :routeName="'lr'">
+        <div slot="title">
+          <i class="nav-icon fas fa-th"></i>
+          LR
+        </div>
+      </menu_item>
       <menu_item :to="{ name: 'delegate' }" :routeName="'delegate'">
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>

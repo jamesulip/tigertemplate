@@ -28,8 +28,31 @@ const routes = [{
 
 
 
-
-
+      {
+        path: "lr",
+        component: () => import("../pages/clients/clients.vue"),
+        meta: {
+          requiresAuth: true
+        },
+        children: [{
+            path: "",
+            name: "lr",
+            component: () => import("../pages/project/jopstlr/lr/lr_list.vue"),
+            meta: {
+              requiresAuth: true
+            },
+          },
+          {
+            path: ":id/lr-create",
+            name: "lr-create",
+            component: () => import("../pages/project/jopstlr/lr/add_lr.vue"),
+            meta: {
+              rerender:true,
+              requiresAuth: true
+            },
+          }
+        ]
+      },
       {
         path: "clients",
         component: () => import("../pages/clients/clients.vue"),
@@ -61,21 +84,21 @@ const routes = [{
 
       {
         path: "trail",
-       
+
         component: () => import("../pages/clients/clients.vue"),
         meta: {
           requiresAuth: true
         },
         children: [{
           path: "",
-          name:'trail',
+          name: 'trail',
           component: () => import("../views/trail/trail"),
           meta: {
             requiresAuth: true
           },
         }, {
           path: ":id",
-          name:'view_trail',
+          name: 'view_trail',
           component: () => import("../views/trail/trail_view"),
           meta: {
             requiresAuth: true
@@ -84,7 +107,7 @@ const routes = [{
       },
       {
         path: "projects",
-        component: () => import("../pages/project/projects.vue"),
+        component: () => import("../pages/clients/clients.vue"),
         meta: {
           requiresAuth: true
         },

@@ -56,13 +56,13 @@
       document.title = "Sales";
 
 
-      axios.post(`cors/auth/test_connection`)
-        .then(res => {
-          console.log(res)
-        })
-        .catch(err => {
-          console.error(err);
-        })
+      // axios.post(`cors/auth/test_connection`)
+      //   .then(res => {
+      //     console.log(res)
+      //   })
+      //   .catch(err => {
+      //     console.error(err);
+      //   })
     },
     components: {
       sideMenu: () => import('../components/menus/side-menu.vue'),

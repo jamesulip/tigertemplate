@@ -29,7 +29,7 @@
 
 
 
-                    <li class="list-group-item shadow" v-if="!info.user">
+                    <li class="list-group-item shadow pb-5" v-if="!info.user">
                       <div class="media">
 
                         <b-skeleton type="avatar" class="mr-2"></b-skeleton>
@@ -54,7 +54,7 @@
                     </li>
 
 
-                    <li class="list-group-item shadow" v-else>
+                    <li class="list-group-item shadow pb-5" v-else>
                       <div class="media">
                         <b-avatar class="avatar mr-2" size="md"></b-avatar>
 

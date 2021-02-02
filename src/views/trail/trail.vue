@@ -18,7 +18,7 @@
           <!-- /.card-tools -->
         </div>
         <!-- /.card-header -->
-        <div class="card-body p-0">
+        <div class="card-body p-1">
           <div class="mailbox-controls">
             <!-- Check all button -->
             <button type="button" class="btn btn-default btn-sm checkbox-toggle">
@@ -53,13 +53,25 @@
             </div>
             <!-- /.float-right -->
           </div>
-          <div class="table-responsive mailbox-messages">
-            <table class="table table-hover table-sm  table-striped" style="table-layout:fixed">
+          <div class="table-responsive">
+
+            <div class="col-md-12 d-flex justify-content-center " v-if="page.data && !Boolean(page.data.length)">
+              <div class="col-md-12 rounded border m-3   p-4 text-muted d-flex d-flex flex-column">
+                <div class="text-center">
+                  <b-icon-envelope class="h1"></b-icon-envelope>
+                </div>
+                <div class="text-center">
+                  <span>No Trail</span>
+                </div>
+
+              </div>
+            </div>
+            <table v-else class="table table-hover table-md  table-striped" style="table-layout:fixed">
               <thead>
                 <tr>
                   <th style="width:60px"></th>
                   <th style="width:60px"></th>
-                  <th style="width:auto;max-width:400px"></th>
+                  <th style="width:250px;max-width:400px"></th>
                   <th></th>
                   <th style="width:60px"></th>
                   <th style="width:100px"></th>
@@ -67,7 +79,7 @@
               </thead>
               <tbody>
                 <template v-for="(trail, index) in page.data">
-                  <tr :key="index" role="button" @click="openTrail(trail)">
+                  <tr :key="index" role="button" @click="openTrail(trail)" v-if="page.data">
                     <td>
                       <div class="icheck-primary">
                         <input type="checkbox" value="" id="check1" />
@@ -82,26 +94,33 @@
                     <td class="mailbox-subject">
                       <div class="col-md-12">
                         <div class="d-flex content-subject text-truncate">
-                         
-                            <b class="text-truncate">{{ trail.email.title }}</b>
-                            <span class="text-truncate">
-                              -
-                              {{
+
+                          <b class="text-truncate">{{ trail.email.title }}</b>
+                          <span class="text-truncate">
+                            -
+                            {{
                                 strippedContent(
                                   trail.email.lastcomment2,
                                   "contents"
                                 ) || trail.from.name
                               }}
-                            </span>
+                          </span>
                         </div>
                       </div>
                     </td>
                     <td class="mailbox-attachment"></td>
-                    <td class="mailbox-date text-sm text-muted">{{trail.updated_at |formatDate('ago')}}</td>
+                    <td class="mailbox-date text-sm text-muted">
+                      <div class="text-truncate"><span>
+                          {{trail.updated_at |formatDate('ago')}}</span></div>
+                    </td>
                   </tr>
+
                 </template>
+
+
               </tbody>
             </table>
+
             <!-- /.table -->
           </div>
           <!-- /.mail-box-messages -->
@@ -192,7 +211,12 @@
     },
     methods: {
       openTrail(trail) {
-          this.$router.push({name:'view_trail',params:{'id':trail.email.id}})
+        this.$router.push({
+          name: 'view_trail',
+          params: {
+            'id': trail.email.id
+          }
+        })
       },
       noDulp(text) {
         var names = text.map(function (elem) {
