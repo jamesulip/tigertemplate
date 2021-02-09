@@ -11,7 +11,7 @@
       <menu_item :to="{ name: 'trail' }" :routeName="'trail'">
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
-          Job Trail
+          Job Trails
         </div>
       </menu_item>
       <menu_item :to="{ name: 'projects' }" :routeName="'projects'">

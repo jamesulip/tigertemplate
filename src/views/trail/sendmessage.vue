@@ -239,7 +239,10 @@
             },
             submit() {
                 this.sending = true
-                axios.post(`cors/trail/${this.trailid}/send`, this.data)
+                axios.post(`cors/trail/${this.trailid}/send`, {
+                    ...this.data,
+                    user: this.current_employee_id,
+                })
                     .then(res => {
                         // console.log(res)
                        

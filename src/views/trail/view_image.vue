@@ -16,14 +16,7 @@
             return {
                 images: [],
                 options: {
-                    movable: true,
-                    navbar: false,
-                    title: false,
-                    toolbar: {
-                        download: function(s,c) {
-                        },
-                    },
-                    tooltip: false
+                 
                 }
             }
         },

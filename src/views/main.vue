@@ -11,7 +11,8 @@
         </a>
         <div class="sidebar">
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <b-avatar button style="    width: 40px;height: 40px;" variant="primary"
+       
+            <b-avatar button :src="`${serUrl}${currentUser.img}`" style="width: 40px;height: 40px;" variant="primary"
               :text="getInitial(currentUser.name)" class="align-baseline"></b-avatar>
 
             <div class="info">
@@ -45,7 +46,7 @@
   export default {
     computed: {
       ...mapState([
-        'currentUser'
+        'currentUser','serUrl'
       ]),
       ...mapGetters([
         'loadingState'

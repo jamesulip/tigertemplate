@@ -12,20 +12,21 @@
                                 <b-form-input id="input-1" v-model="data.details.s_projname" trim></b-form-input>
                             </b-form-group>
                         </div>
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             {{state_check(errors['details.s_media'])}}
                             <b-form-group id="fieldset-1" label="Media" label-for="input-1">
                                 <b-form-input :state="state_check(errors['details.s_media'])" id="input-1"
                                     v-model="data.details.s_media" trim></b-form-input>
                             </b-form-group>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="card-body">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Layouts</th>
+                                <th colspan="3">Layouts</th>
+                                <th style="width:100px">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -220,16 +221,37 @@
                     .then(res => {
                         console.log('d',res)
                         var x = res.data
+                       
+
                         axios.post(`cors/emails2`, {
                             ...this.content,
                             title:`${x.project.TYPE}#${x.project.NUM}-${this.get_project.client.com_name}-${this.get_project.ProjectName}`,
                             projects: [x.project.ID]
+                        }).then(x=>{
+                            this.update_temp(res.id);
+                            this.$router.push({name:'view_trail',params:{id:x.data.id}})
                         })
+
                     })
                     .catch(err => {
                         this.errors = err.response.data.errors
                     })
-            }
+            },
+             update_temp(id) {
+                
+                axios.post(`cors/file/updateTemp/${id}`, {
+                        ids: this.files.map(x => {
+                            return x.response.id
+                        }),
+                        type: "comment"
+                    })
+                    .then(res => {
+                        this.files = []
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
         },
         computed: {
             ...mapGetters(['current_employee_id', 'get_project', 'currentUser']),
@@ -258,8 +280,8 @@
                 },
                 layout: []
 
-            }
-
+            },
+           
             await this.set_productstep().then(x => {
                  this.data.finishers = x.find(x => {
                     return x.stepname == "LAYOUT PROPOSAL"

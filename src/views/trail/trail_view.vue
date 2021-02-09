@@ -1,5 +1,8 @@
 <template>
   <b-overlay :show="loading">
+    <div class="tw-bg-purple tw-text-white tw-sm:bg-green tw-md:bg-blue tw-md:text-yellow tw-lg:bg-red tw-xl:bg-orange ">
+  Test
+</div>
     <div class="container pt-5" style="padding-bottom:50vh">
       <div class="row justify-content-center">
         <div class="col-lg-12 col-xl-12">
@@ -10,7 +13,7 @@
           </div>
           <hr>
 
-          <b-tabs pills fill variant="danger" nav-class="rounded bg-light shadow-sm p-3"
+          <b-tabs pills fill variant="danger" nav-class="rounded bg-tab shadow-sm p-3"
             active-nav-item-class="bg-white">
             <b-tab title="Trail" :title-link-class="`font-weight-normal`">
               <template #title>
@@ -168,7 +171,9 @@
   </b-overlay>
 </template>
 <style lang="scss">
-
+  .bg-tab{
+    background-color: #E9ECEF;
+  }
 
 </style>
 

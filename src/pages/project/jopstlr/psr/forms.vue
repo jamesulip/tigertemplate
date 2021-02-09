@@ -194,7 +194,7 @@ import { mapGetters, mapState } from 'vuex'
                 })
             },
             scope() {
-                var sel_scope = this.this.get_productiontypes.find(x => x.ID === this.test2)
+                var sel_scope = this.get_productiontypes.find(x => x.ID === this.test2)
                 let scope = {
                     DETAILS: "",
                     FINISHING: sel_scope.prodt_name,

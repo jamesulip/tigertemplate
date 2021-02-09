@@ -14,7 +14,6 @@
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
 
-
 *,*:focus,*:hover{
     outline:none;
 }

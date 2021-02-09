@@ -42,7 +42,7 @@
                      <th></th>
                      <th>Jobs</th>
                      <th>Sales Team</th>
-                     <th>Production Team</th>
+                  
                      <th>Date Created</th>
                      <th></th>
                   </tr>
@@ -80,7 +80,7 @@
                      <td>
                         <b-avatar v-for="i in removeDuplicate(item.project)" :key="i.ID" variant="primary" size="35px" :text="getInitial(i.sales_exec_auth.name)" class="mr-3"></b-avatar>
                      </td>
-                     <td></td>
+                   
                      <td>{{formatDate(item.updated_at,'L')}}</td>
                      <td>
                         <b-dropdown left size="sm" id="dropdown-1" text="Dropdown Button" class="m-md-2">
@@ -98,7 +98,7 @@
                </tbody>
                <tfoot v-if="projects.next_page_url">
                  <tr>
-                     <td colspan="7" class="text-center">
+                     <td colspan="6" class="text-center">
                         <b-button variant="link" @click="loadNext()">Load More</b-button>
                      </td>
                   </tr>
