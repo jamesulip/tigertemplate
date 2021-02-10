@@ -228,7 +228,7 @@
                             title:`${x.project.TYPE}#${x.project.NUM}-${this.get_project.client.com_name}-${this.get_project.ProjectName}`,
                             projects: [x.project.ID]
                         }).then(x=>{
-                            this.update_temp(res.id);
+                            this.update_temp(x.data.id);
                             this.$router.push({name:'view_trail',params:{id:x.data.id}})
                         })
 
