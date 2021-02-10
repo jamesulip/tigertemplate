@@ -2,8 +2,8 @@
   <div class="about">
     <div class="wrapper">
       <topMenu />
-      <aside class="main-sidebar sidebar-dark bg-dark">
-        <a href="index3.html" class="brand-link">
+
+        <!-- <a href="index3.html" class="brand-link">
           <img
             src="https://images.builderservices.io/s/cdn/v1.0/i/m?url=https%3A%2F%2Fstorage.googleapis.com%2Fproduction-ipage-v1-0-2%2F752%2F533752%2FhworyvZU%2F6d67c622dc5443c59bce42015f241a75&methods=resize%2C500%2C5000"
             alt="AdminLTE Logo" class="brand-image " style="opacity: .8" />
@@ -22,8 +22,9 @@
             </div>
           </div>
           <sideMenu />
-        </div>
-      </aside>
+        </div> -->
+        <sideMenu class="main-sidebar"/>
+ 
 
       <div class="content-wrapper">
 
@@ -66,7 +67,7 @@
       //   })
     },
     components: {
-      sideMenu: () => import('../components/menus/side-menu.vue'),
+      sideMenu: () => import('../components/menus/side-menu2.vue'),
       topMenu: () => import('../components/menus/top-menu.vue')
     }
   }

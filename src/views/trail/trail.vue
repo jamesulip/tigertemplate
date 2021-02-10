@@ -75,7 +75,9 @@
                         </div>
                       </div>
                     </td>
-                    <td class="mailbox-attachment"></td>
+                    <td class="mailbox-attachment">
+                      <b-icon-check2></b-icon-check2>
+                    </td>
                     <td class="mailbox-date text-sm text-muted">
                       <div class="text-truncate"><span>
                           {{trail.updated_at |formatDate('ago')}}</span></div>
@@ -179,6 +181,11 @@
 
       },
       openTrail(trail) {
+        axios.post(`/cors/notifications/read/${trail.id}`)
+        .then(res => {
+         
+        })
+        
         this.$router.push({
           name: 'view_trail',
           params: {

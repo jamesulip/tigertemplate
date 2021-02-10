@@ -8,6 +8,8 @@ import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 
+import './assets/css/index.css';
+
 import vSelect from "vue-select";
 
 Vue.component("v-select", vSelect);

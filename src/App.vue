@@ -7,12 +7,12 @@
 @import "node_modules/bootstrap-vue/src/index.scss";
 @import "admin-lte";
 @import "./css/custom.css";
-@import "~vue-select/dist/vue-select.css";
+@import "vue-select/dist/vue-select.css";
 @import "./css/main.scss";
 
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.bubble.css';
+@import 'quill/dist/quill.snow.css';
 
 *,*:focus,*:hover{
     outline:none;
