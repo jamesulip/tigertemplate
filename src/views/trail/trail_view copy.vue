@@ -2,7 +2,7 @@
   <b-overlay :show="loading">
     <div class="container pt-5" style="padding-bottom:50vh">
       <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
+        <div class="col-lg-8 col-xl-8">
           <div class="page-header">
             <h4 class="h4">{{info.title}}</h4>
 
@@ -20,7 +20,7 @@
 
               <div class="mt-3">
 
-                <h3 class="text-muted text-lg py-3">Job Trail</h3>
+                <h3 class="text-muted text-lg">Job Trail</h3>
                 <div class="content-list-body">
 
 
@@ -56,91 +56,97 @@
 
 
                     <li class="list-group-item shadow pb-5" v-else>
-                       <div class="flex items-center">
-                        <b-avatar class="avatar mr-2 " :src="`${serUrl}${info.user.img}`" size="md"></b-avatar>
-                        <div class="ml-2">
-                          <div class="text-sm ">
-                            <span class="font-semibold">{{info.user?info.user.name:'mumu'}}</span>
-                          </div>
-                          <div class="text-gray-500 text-xs " v-html="info.user?info.user.role:'mumu'"></div>
-                          <div class="text-gray-500 text-xs flex">
-                            <span class="inline-block">{{info.created_at | formatDate('ago')}}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="info.content"></p>
-                      <div class="row text-sm" v-if="info.attachments && Boolean( info.attachments.length)">
-                        <div class="col-md-12">
-                          <hr>
-                          <div class="row">
-                            <template v-for="(item, index) in info.attachments">
-                              <div class="col-md-3 p-2" :key="`f-${index}`">
-                                <div class="media media-attachment ">
+                      <div class="media">
+                        <b-avatar class="avatar mr-2" size="md"></b-avatar>
 
-                                  <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(info.attachments):null"
+                        <div class="media-body">
+                          <div class="media-title" style="">
+                            <span class="h6 mr-1">{{info.user?info.user.name:'mumu'}}</span>
+
+                            <span class="float-right text-muted text-xs"
+                              v-b-tooltip="{ title: info.created_at, placement: 'bottomLeft' }">
+                              {{info.created_at | formatDate('LLL')}}
+                            </span>
+                          </div>
+                          <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;"
+                            v-html="info.content">
+
+                          </div>
+                          <div class="row" v-if="info.attachments && Boolean(info.attachments.length)">
+                            <div class="col-md-12">
+                              <hr>
+                              <template v-for="(item, index) in info.attachments">
+                                <div class="media media-attachment" :key="`f-${index}`">
+                                  <b-avatar
+                                    @click="check_mime(item.file_meta.ext)?full_screen_image( info.attachments):null"
                                     button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
                                     icon="paperclip">
 
                                   </b-avatar>
-                                  <div class="media-body  text-truncate">
-                                    <a role="button" v-b-tooltip="{ title: item.filename, placement: 'bottom' }"
+                                  <div class="media-body">
+                                    <a role="button"
                                       @click="check_mime(item.file_meta.ext)?full_screen_image(info.attachments):null"
-                                      class=" text-truncate">{{item.filename}}</a>
-                                    <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
-                                        v-b-tooltip="'download'" :href="`${serUrl}/cors/downloadFile2/${item.id}`"
-                                        target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
+                                      class="A-filter-by-text">{{item.filename}}</a>
+                                    <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}}</span>
                                   </div>
                                 </div>
-                              </div>
-                            </template>
+                              </template>
+                            </div>
                           </div>
+
+
+
                         </div>
                       </div>
                     </li>
 
                     <li class="list-group-item shadow pb-4" v-for="i in messages" :key="i.id">
+                      <div class="media">
+                        <b-avatar class="avatar mr-2" size="md"></b-avatar>
 
-                      <div class="flex items-center">
-                        <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
-                        <div class="ml-2">
-                          <div class="text-sm ">
-                            <span class="font-semibold">{{i.userl?i.userl.name:'mumu'}}</span>
+                        <div class="media-body">
+                          <div class="media-title" style="">
+                            <span class="h6 mr-1">{{i.userl?i.userl.name:'mumu'}}</span>
+
+                            <span class="float-right text-muted text-xs"
+                              v-b-tooltip="{ title: i.created_at, placement: 'bottomLeft' }">
+                              {{i.created_at | formatDate('ago')}}
+                            </span>
                           </div>
-                          <div class="text-gray-500 text-xs " v-html="i.userl?i.userl.role:'mumu'"></div>
-                          <div class="text-gray-500 text-xs flex">
-                            <span class="inline-block">{{i.created_at | formatDate('ago')}}</span>
+                          <div class="messge-body" style="font-size: .875rem;line-height: 1.3125rem;"
+                            v-html="i.content">
+
                           </div>
-                        </div>
-                      </div>
-                      <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="i.content"></p>
-                      <div class="row text-sm" v-if="info.attachments && Boolean( info.attachments.length)">
-                        <div class="col-md-12">
-                          <hr>
-                          <div class="row">
-                            <template v-for="(item, index) in i.file">
-                              <div class="col-md-3 p-2" :key="`f-${index}`">
-                                <div class="media media-attachment ">
+                          <div class="row" v-if="info.attachments && Boolean( info.attachments.length)">
+                            <div class="col-md-12">
+                              <hr>
+                              <template v-for="(item, index) in i.file">
+                                <div class="media media-attachment" :key="`f-${index}`">
 
                                   <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
                                     button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
                                     icon="paperclip">
 
                                   </b-avatar>
-                                  <div class="media-body  text-truncate">
-                                    <a role="button" v-b-tooltip="{ title: item.filename, placement: 'bottom' }"
+                                  <div class="media-body">
+                                    <a role="button"
                                       @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
-                                      class=" text-truncate">{{item.filename}}</a>
+                                      class="A-filter-by-text">{{item.filename}}</a>
                                     <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
-                                        v-b-tooltip="'download'" :href="`${serUrl}/cors/downloadFile2/${item.id}`"
-                                        target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
+                                        :href="`${serUrl}/cors/downloadFile2/${item.id}`" target="_blank"><i
+                                          class="fa fa-download" aria-hidden="true"></i></a></span>
+
+
                                   </div>
                                 </div>
-                              </div>
-                            </template>
+                              </template>
+                            </div>
                           </div>
+
+
+
                         </div>
                       </div>
-
                     </li>
                     <li class="list-group-item" style="background-color: transparent;padding: 15px;">
                       <sendMessage @sent="get_messages()" :trailid="$route.params.id" />
@@ -192,7 +198,6 @@
         info: {}
       }
     },
-
     mounted() {
 
 

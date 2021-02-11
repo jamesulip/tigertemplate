@@ -37,3 +37,20 @@
     margin: 0;
     padding: 0;
   }
+
+
+  .fade-enter {
+    opacity: 0;
+  }
+  
+  .fade-enter-active {
+    transition: opacity .1s ease;
+  }
+  
+  .fade-leave {}
+  
+  .fade-leave-active {
+    transition: opacity .1s ease;
+    opacity: 0;
+  }
+  

@@ -1,15 +1,7 @@
 <template>
     <div class="mailbox-controls">
         <!-- Check all button -->
-        <!-- <button type="button" class="btn btn-link btn-sm checkbox-toggle">
-            <i class="far fa-square"></i>
-        </button>
-        <div class="btn-group">
-              <button type="button"  class="btn btn-link btn-sm">
-                 <b-icon-trash></b-icon-trash>
-            </button>
-           
-        </div> -->
+        <slot name="mailcontrol"></slot>
 
       
         <div class="float-right">
