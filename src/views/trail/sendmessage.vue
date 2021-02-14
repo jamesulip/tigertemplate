@@ -238,6 +238,7 @@
 
             },
             submit() {
+               
                 this.sending = true
                 axios.post(`cors/trail/${this.trailid}/send`, {
                     ...this.data,
@@ -248,7 +249,7 @@
                        
 
                        this.update_temp(res.data.id);
-                        
+                          this.showNotification({title:'Message Sent',content:res.data.content})
                     })
                     .catch(err => {
                         console.error(err);
@@ -257,6 +258,9 @@
                         this.$emit('sent')
                         this.data = {}
                         this.sending = false
+
+                       
+
                     })
             },
             handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {

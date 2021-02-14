@@ -68,7 +68,7 @@
                 <template v-for="(trail, index) in page.data">
                   <tr :key="index" role="button" @click.self.prevent="openTrail(trail)" v-if="page.data">
                     <td>
-                       <b-form-checkbox
+                       <b-form-checkbox size="lg"
                        v-model="trail.selected"
                        @click.prevent
                       :id="`checkbox-${index}`"

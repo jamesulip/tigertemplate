@@ -6,6 +6,74 @@ export default {
     install(Vue, options) {
         Vue.mixin({
             methods: {
+                showNotification(set={title:'title',subject:'subject',content:'content',variant:'default',toast:'b-toaster-bottom-left'}) {
+                    function stripHtml(html)
+                    {
+                       let tmp = document.createElement("DIV");
+                       tmp.innerHTML = html;
+                       return tmp.textContent || tmp.innerText || "";
+                    }
+
+                    const h = this.$createElement
+                    const vNodesMsg = h(
+                        'div', {
+                            class: ['d-flex']
+                        },
+                        [
+                            h(
+                                'div', {
+                                    class: ['pr-2', 'h4']
+                                },
+                                [
+                                    h(set.icon)
+    
+                                ]
+                            ),
+    
+                            h(
+                                'div', {
+                                    class: ['text-truncate']
+                                },
+                                [
+                                    h(
+                                        'span', {
+                                            class: ['text-bold']
+                                        },
+                                        [
+                                            h('span', set.subject)
+    
+                                        ]
+                                    ),
+                                    h(
+                                        'div', {
+                                            class: ['notif-contrnt']
+                                        },
+                                        [
+                                            h('span',stripHtml(set.content))
+                                        ]
+                                    ),
+    
+                                ]
+                            )
+    
+                        ]
+                    )
+                    const vNodesTitle = h(
+                    'div',
+                    { class: ['d-flex', 'flex-grow-1', 'align-items-baseline', 'mr-2'] },
+                    [
+                        h('strong', { class: 'mr-2' },  set.title),
+                    ]
+                    )
+                    this.$bvToast.toast([vNodesMsg], {
+                        autoHideDelay: 20000,
+                        title: vNodesTitle,
+                        solid: true,
+                        variant: set.variant,
+                        toaster:'b-toaster-bottom-left'
+    
+                    })
+                },
                 getInitial: function (name) {
                     var initials = name.match(/\b\w/g) || [];
                     initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();

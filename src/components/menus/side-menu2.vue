@@ -1,6 +1,6 @@
 <template>
-<div class="tw-side-nav">
-        <h2 class="text-3xl font-semibold text-gray-800 dark:text-white">TG-Sales</h2>
+<div class="tw-side-nav ">
+        <h2 class="text-3xl font-semibold text-gray-800 dark:text-white ">TG-Sales</h2>
 
         <div class="relative mt-6">
             <!-- <span class="absolute inset-y-0 left-0 flex items-center pl-3">
@@ -18,8 +18,7 @@
             </nav>
 
             <div class="flex items-center px-4 -mx-2">
-                <!-- <img class="object-cover mx-2 rounded-full h-9 w-9" src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="avatar"> -->
-                <b-img :src="`${serUrl}${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-img>
+                <b-img :src="`${serUrl}/${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-img>
                 <h4 class="mx-2 font-medium text-gray-800 dark:text-gray-200 hover:underline">{{currentUser.name}}</h4>
             </div>
         </div>
