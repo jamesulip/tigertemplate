@@ -21,3 +21,5 @@ body:not(.sidebar-mini-md) .main-header{
 .tw-side-nav{
     @apply flex flex-col w-64 h-screen px-2 py-8 bg-gray-100 border-r ;
 }
+
+

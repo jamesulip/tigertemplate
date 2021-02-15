@@ -3,16 +3,14 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" @click="toggleSide()"  href="#">
+          <b-icon-arrow-bar-left v-if="collapseButton"/>
+          <b-icon-arrow-bar-right v-else/>
+        </a>
       </li>
     </ul>
 
     <b-collapse id="nav-collapse" is-nav>
-      <b-navbar-nav>
-        <b-nav-item href="#">Link</b-nav-item>
-        <b-nav-item href="#" disabled>Disabled</b-nav-item>
-      </b-navbar-nav>
-
       <b-collapse id="nav-collapse" class="mr-5" is-nav>
         <b-navbar-nav class="ml-auto">
           <b-nav-item-dropdown right>
@@ -39,6 +37,11 @@
   } from 'vuex'
 
   export default {
+    data() {
+      return {
+        collapseButton:false
+      }
+    },
     computed: {
       ...mapGetters([
         'currentUser'
@@ -47,6 +50,19 @@
  
     methods: {
        ...mapMutations(['logout','setLoading']),
+
+      toggleSide(){
+        this.$nextTick().then(() =>{
+            if( $('body').hasClass('sidebar-collapse')){
+              document.body.classList.remove('sidebar-collapse')
+              this.collapseButton = false
+            }
+            else{
+              document.body.classList.add('sidebar-collapse')
+              this.collapseButton = true
+            }
+        })
+      },
 
       logout2() {
         this.setLoading(true)
