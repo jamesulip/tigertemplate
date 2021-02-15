@@ -16,11 +16,10 @@ body:not(.sidebar-mini-md) .main-header{
 
 
 .side-button {
-    @apply flex items-center px-4 py-2 text-gray-700 rounded text-gray-600 transition-colors duration-200 transform dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 dark:hover:text-gray-200 hover:text-gray-700;
+    @apply flex items-center px-4 py-2 text-gray-700 rounded;
 }
 .tw-side-nav{
-    @apply flex flex-col w-64 h-screen px-2 py-8 bg-gray-100 border-r dark:bg-gray-800;
+    @apply flex flex-col w-64 h-screen px-2 py-8 bg-gray-100 border-r ;
 }
-.router-link-active{
-    @apply bg-yellow-400 text-black;
-}
+
+

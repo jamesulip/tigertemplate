@@ -61,23 +61,31 @@
                 
                   <th></th>
                   <th style="width:60px"></th>
+             
                   <th style="width:100px"></th>
                 </tr>
               </thead>
               <tbody>
                 <template v-for="(trail, index) in page.data">
-                  <tr :key="index" role="button" @click.self.prevent="openTrail(trail)" v-if="page.data">
-                    <td>
-                       <b-form-checkbox size="lg"
-                       v-model="trail.selected"
-                       @click.prevent
+                  <tr :key="index" role="button" v-if="page.data"  @click="openTrail(trail)" :class="{'table-active':trail.selected}">
+                    <td   @click.stop="x=>{$forceUpdate()}">
+                       <b-form-checkbox
+                      v-model="trail.selected"
+                   
                       :id="`checkbox-${index}`"
                       :name="`checkbox-${index}`"
-                      value="accepted"
-                      unchecked-value="not_accepted"/>
+                
+                      />
                     </td>
-                    <td class="mailbox-star">
-                      <svg style="width:25px" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                    <td class="mailbox-star" @click.stop="t=>{trail.status2 = !trail.status2;$forceUpdate()}">
+
+
+                          <b-icon-bell v-if="trail.status2"></b-icon-bell>
+                          <b-icon-bell-fill  v-else ></b-icon-bell-fill>
+                      <!-- <svg style="width:25px"  v-if="trail.status2" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
+                      
+                      <svg style="width:25px"  v-else  className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z" /></svg> -->
+
                     </td>
                  
                     <td class="mailbox-subject">
@@ -107,6 +115,7 @@
                       <div class="text-truncate"><span>
                           {{trail.updated_at |formatDate('ago')}}</span></div>
                     </td>
+                   
                   </tr>
 
                 </template>
