@@ -7,6 +7,9 @@ import Login from "../views/Login.vue";
 import register from "../views/Register.vue";
 import test from "../views/test.vue";
 
+import viewer from "../pages/project/jopstlr/lr/viewer.vue";
+
+
 Vue.use(VueRouter);
 
 const routes = [{
@@ -47,6 +50,15 @@ const routes = [{
             path: ":id/lr-create",
             name: "lr-create",
             component: () => import("../pages/project/jopstlr/lr/add_lr.vue"),
+            meta: {
+              rerender:true,
+              requiresAuth: true
+            },
+          },
+          {
+            path: ":id/view",
+            name: "lrViewer",
+            component: viewer,
             meta: {
               rerender:true,
               requiresAuth: true
