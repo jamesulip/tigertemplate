@@ -1,28 +1,7 @@
 <template>
-  <div class="about">
+
     <div class="wrapper">
       <topMenu />
-
-        <!-- <a href="index3.html" class="brand-link">
-          <img
-            src="https://images.builderservices.io/s/cdn/v1.0/i/m?url=https%3A%2F%2Fstorage.googleapis.com%2Fproduction-ipage-v1-0-2%2F752%2F533752%2FhworyvZU%2F6d67c622dc5443c59bce42015f241a75&methods=resize%2C500%2C5000"
-            alt="AdminLTE Logo" class="brand-image " style="opacity: .8" />
-          <span class="brand-text font-weight-light">.</span>
-        </a>
-        <div class="sidebar">
-          <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-       
-            <b-avatar button :src="`${serUrl}${currentUser.img}`" style="width: 40px;height: 40px;" variant="primary"
-              :text="getInitial(currentUser.name)" class="align-baseline"></b-avatar>
-
-            <div class="info">
-              <a href="#" class="d-block">{{
-                currentUser.name
-              }}</a>
-            </div>
-          </div>
-          <sideMenu />
-        </div> -->
         <sideMenu class="main-sidebar"/>
  
 
@@ -36,7 +15,7 @@
 
       </div>
     </div>
-  </div>
+
 </template>
 
 <script>

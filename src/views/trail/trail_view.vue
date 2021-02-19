@@ -113,7 +113,7 @@
                         </div>
                       </div>
                       <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="i.content"></p>
-                      <div class="row text-sm" v-if="info.attachments && Boolean( info.attachments.length)">
+                      <div class="row text-sm" v-if="i.file">
                         <div class="col-md-12">
                           <hr>
                           <div class="row">
