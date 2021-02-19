@@ -1,5 +1,5 @@
 /* eslint-disable*/
-
+import './assets/index.css'
 import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
@@ -50,19 +50,11 @@ Vue.component('loading1', require('./components/loaders/loading1.vue').default);
 Vue.component('project_detail', require('./pages/project/project_detail.vue').default);
 
 
+import plugin from './plugin.js'
+Vue.use(plugin)
 
-Vue.filter('formatDate', function (value,format) {
-  if(format=='ago')
-    return moment(value).fromNow()
-  else  
-    return moment(value).format(format)
-})
-Vue.filter('bytesToSize', function (bytes) {
-  var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-  if (bytes == 0) return '0 Byte';
-  var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-  return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-})
+
+
 
 
 new Vue({

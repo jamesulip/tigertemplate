@@ -1,14 +1,16 @@
 <template>
     <div class="pt-3">
-        <div class="col-md-12 row">
-            <div class="col-md-3">
-                <div class="card">
+        <div class="col-md-12 row card-deck">
+        
+                <div class="card col-md-4 p-0">
                     <div class="card-header">
                         <h3 class="card-title">Designers</h3>
                     </div>
 
                     <div class="card-body p-0 cleafix">
-
+                        <div class="py-2">
+                            <loading1 v-if="loading.designersLoading" />
+                        </div>
                         <div class="block">
                             <b-list-group class="list-group-flush">
                                 <b-list-group-item class="d-flex align-items-center py-1"
@@ -26,12 +28,27 @@
                     </div>
                 </div>
 
-            </div>
-            <div class="col-md-9">
-                <div class="card">
+         
+                <div class="card col-md-8 p-0">
                     <div class="card-header border-0">
-                        <h3 class="card-title">Products</h3>
-                       
+                        <h3 class="card-title">Projects</h3>
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                               <b-form-input v-model="search.search"
+                                            type="text"
+                                            placeholder="Search"
+                                            debounce="500"
+                                            @change="getProjects()"
+                                           
+                              ></b-form-input>
+
+                                <div class="input-group-append">
+                                    <button @click="getProjects()" type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <loading1 v-if="loading.projectLoading" />
                     <div class="card-body  p-0" style="min-height:600px">
@@ -49,11 +66,12 @@
                             <tbody>
 
                                 <tr v-for="proj in projects.data" :key="`projects-${proj.ID}`" style="cursor:pointer"
-                                    @contextmenu.prevent="event=>openContext(event,proj)" @click.prevent="x=>{proj.selected= !proj.selected;$forceUpdate()}"
+                                    @contextmenu.prevent="event=>openContext(event,proj)"
+                                    @click.prevent="x=>{proj.selected= !proj.selected;$forceUpdate()}"
                                     :class="{'table-active':proj.selected}">
                                     <td>
-                                        <b-form-checkbox :id="`checkbox-${proj.ID}`" v-model="proj.selected" :name="`checkbox-${proj.ID}`"
-                                            :value="true" :unchecked-value="false">
+                                        <b-form-checkbox :id="`checkbox-${proj.ID}`" v-model="proj.selected"
+                                            :name="`checkbox-${proj.ID}`" :value="true" :unchecked-value="false">
 
                                         </b-form-checkbox>
                                     </td>
@@ -65,7 +83,8 @@
                                     </td>
                                     <td class="align-middle text-truncate text-capitalize" style="max-width: 100px;">
                                         <div v-if="proj.employees2"
-                                            v-b-tooltip.hover.bottom="proj.employees2?proj.employees2.ln:'Pending'" class="text-truncate">
+                                            v-b-tooltip.hover.bottom="proj.employees2?proj.employees2.ln:'Pending'"
+                                            class="text-truncate">
                                             <b-avatar style="width:25px;height:25px" variant="info"
                                                 src="https://placekitten.com/300/300" class="mr-2">
                                             </b-avatar>{{proj.employees2?proj.employees2.ln:'Pending'}}
@@ -75,7 +94,9 @@
                                         </div>
                                     </td>
                                     <td>
-                                        <b-button variant="link" size="sm" @click.prevent="x=>{selID=proj.detailID;current_project_modal=true}">view</b-button>
+                                        <b-button variant="link" size="sm"
+                                            @click.prevent="x=>{selID=proj.detailID;current_project_modal=true}">view
+                                        </b-button>
                                     </td>
                                 </tr>
                                 <!-- -->
@@ -91,7 +112,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+            
 
             </div>
         </div>
@@ -99,6 +120,7 @@
 
         <vue-context ref="menu" v-slot="{ data }">
             <template v-if="designers">
+
                 <li @click.prevent="delegate(data,des)" v-for="des in designers" :key="`dess-${des.id}`">
                     <a class="text-capitalize">
                         {{des.name.toLowerCase()}}
@@ -106,15 +128,14 @@
                 </li>
                 <li @click="delegate(data,null)" class="bg-danger">
                     <a>
-                        <b-icon-trash ></b-icon-trash> Remove Delegation
+                        <b-icon-trash></b-icon-trash> Remove Delegation
                     </a>
                 </li>
             </template>
         </vue-context>
 
-        <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" 
-            content-class="shadow">
-             <project_detail ref="detailModal" :project_id="selID" :load="true"/>
+        <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" content-class="shadow">
+            <project_detail ref="detailModal" :project_id="selID" :load="true" />
         </b-modal>
     </div>
 </template>
@@ -133,13 +154,17 @@
                     projectLoading: true,
                     designersLoading: true
                 },
-                current_project_modal:false,
-                selID:null
+                current_project_modal: false,
+                selID: null,
+                search:{
+                    search:null,
+                    designer:null
+                }
             }
         },
-        computed:{
-            selected_projects(){
-                return this.projects.data.filter(x=>x.selected)
+        computed: {
+            selected_projects() {
+                return this.projects.data.filter(x => x.selected)
             }
         },
         mounted() {
@@ -149,10 +174,10 @@
         },
 
         methods: {
-             loadModal(id){
-              
+            loadModal(id) {
+
                 this.current_project_modal = true
-               this.$refs.detailModal.load_details(id)
+                this.$refs.detailModal.load_details(id)
             },
             openContext($event, proj) {
                 proj.selected = true
@@ -162,7 +187,7 @@
             delegate(data, user) {
                 this.loading.designersLoading = true
                 axios.put(`cors/delegate`, {
-                        finihserEmp: user?user.employee_id:null,
+                        finihserEmp: user ? user.employee_id : null,
                         proj: this.selected_projects.map(x => x.ID),
                         type: "delegate"
                     })
@@ -175,37 +200,36 @@
             getCreatives() {
 
                 this.loading.designersLoading = true
-                return axios.get(`cors/users/list?role=Creatives-Dept`).then(x => {
-                    this.loading.projectLoading = false
-                    return x
+                return axios.get(`cors/users/list?role=Creatives-Dept`).then(designers => {
+                    this.loading.designersLoading = false
+                    this.designers = designers.data;
+                    return designers
                 });
 
             },
             getProjects() {
                 this.loading.projectLoading = true
-                return axios.get(`cors/MyProject/all`).then(x => {
+                return axios.post(`cors/MyProject/all`,
+                    this.search
+                ).then(projects => {
                     this.loading.projectLoading = false
-                    return x
+                    this.projects = projects.data
+                    return projects
                 });
 
 
 
             },
             loadproject() {
-
-                axios.all([this.getCreatives(), this.getProjects()])
-                    .then(axios.spread((designers, projects) => {
-                        this.designers = designers.data;
-                        this.projects = projects.data
-
-                    }))
+                this.getCreatives()
+                this.getProjects()
             }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    @import '~vue-context/dist/css/vue-context.css';
+    @import 'vue-context/dist/css/vue-context.css';
 
     .context>li>a:hover {
         background-color: #dee2e6;

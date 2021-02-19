@@ -9,10 +9,18 @@
                 :disabled="btnIcon(Project.Status,'dis_en','pause')||false">
                 <b-icon-pause-fill></b-icon-pause-fill>
             </b-button>
-            <b-button variant="success" @click="updateStatus(Project,'Done')"
+            <b-button v-if="Project.project.TYPE =='LR'" variant="success" @click="$router.push({name:'lrsend',params:{id:Project.detailID}})"
+                :disabled="btnIcon(Project.Status,'dis_en','done')||false">
+                SP
+            </b-button>
+
+              <b-button v-else variant="success" @click="updateStatus(Project,'Done')"
                 :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                 <b-icon-flag-fill></b-icon-flag-fill>
+             
             </b-button>
+
+
         </b-button-group>
 
         <b-modal centered ok-only :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"

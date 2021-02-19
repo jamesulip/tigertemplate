@@ -30,21 +30,21 @@ const routes = [
 
       {
         path: "trail",
-       
+
         component: () => import("../pages/client/clients.vue"),
         meta: {
           requiresAuth: true
         },
         children: [{
           path: "",
-          name:'trail',
+          name: 'trail',
           component: () => import("../views/trail/trail"),
           meta: {
             requiresAuth: true
           },
         }, {
           path: ":id",
-          name:'view_trail',
+          name: 'view_trail',
           component: () => import("../views/trail/trail_view"),
           meta: {
             requiresAuth: true
@@ -57,6 +57,14 @@ const routes = [
         path: 'projects',
         name: "projects",
         component: () => import('../pages/projects.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
+        path: 'projects/lr/:id',
+        name: "lrsend",
+        component: () => import('../pages/lr/send.vue'),
         meta: {
           requiresAuth: true
         }

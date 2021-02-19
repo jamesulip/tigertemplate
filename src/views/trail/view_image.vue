@@ -1,6 +1,6 @@
 <template>
     <div style="display: none;">
-        <div class="images" v-viewer="{movable: true,navbar: false, title: false, toolbar: true, tooltip: false}">
+        <div ref="test" class="images" v-viewer="options">
             <img v-for="src in images" :src="src" :key="src">
         </div>
 
@@ -14,11 +14,15 @@
     export default {
         data() {
             return {
-                images: []
+                images: [],
+                options: {
+                 
+                }
             }
         },
+      
         methods: {
-            show(images,index=0) {
+            show(images, index = 0) {
                 this.images = images
                 const viewer = this.$el.querySelector('.images').$viewer
                 viewer.show()

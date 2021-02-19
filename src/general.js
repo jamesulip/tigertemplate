@@ -13,6 +13,7 @@ export function initialize(store,router){
         const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
         
         const currentUser = store.state.currentUser;
+        
         if(requiresAuth && !currentUser) {
             next('/login');
         } else if((to.path == '/login' || to.path == '/register') && currentUser) {

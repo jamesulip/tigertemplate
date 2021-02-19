@@ -114,7 +114,7 @@
                 // alert($s);
                 $s.loading = true
                 this.$forceUpdate();
-                axios.post(`/get_gerometry`, {
+                axios.post(`cors/file/get_geometry`, {
                         folder: $s.file
                     })
                     .then(res => {
@@ -125,6 +125,7 @@
                     })
                     .catch(err => {
                         console.error(err);
+                        $s.loading = false
                     })
             },
         },

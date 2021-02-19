@@ -16,7 +16,9 @@ export default new Vuex.Store({
     page_loading:true,
     current_job:[],
     selected_project:{},
-    my_projects:[]
+    my_projects:[],
+    users:[],
+    serUrl:''
   },
   mutations: {
     setServerUrl(state, payload) {
@@ -75,6 +77,9 @@ export default new Vuex.Store({
   },
   modules: {},
   getters: {
+    current_employee_id: state => {
+      return state.currentUser.employee_id;
+    },
     currentUser: state => {
       return state.currentUser
     },

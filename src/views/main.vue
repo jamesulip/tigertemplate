@@ -10,7 +10,7 @@
         </a>
         <div class="sidebar">
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                 <b-avatar button style="    width: 40px;height: 40px;" variant="primary" :text="getInitial($store.state.currentUser.name)" class="align-baseline"></b-avatar>
+                 <b-avatar :src="currentUser.img" button style="width: 40px;height: 40px;" variant="primary" :text="getInitial($store.state.currentUser.name)" class="align-baseline"></b-avatar>
            
             <div class="info">
               <a href="#" class="d-block">{{$store.state.currentUser.name}}</a>
@@ -20,12 +20,12 @@
         </div>
       </aside>
 
-      <div class="content-wrapper">
-        <div class="content">
+      <div class="content-wrapper h-screen" style="height:100vh!important">
+       
           <!-- <b-overlay :show="$store.getters.loadingState" rounded="sm"> -->
           <router-view/>
           <!-- </b-overlay> -->
-        </div>
+        
       </div>
   
 
@@ -35,13 +35,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 /* eslint-disable  */
 
 
 export default {
   mounted() {
        document.title = "Creatives!";
-    },
+  },
+  computed: {
+    ...mapGetters(['currentUser'])
+  },
   components:{
     sideMenu:()=>import('../components/menus/side-menu.vue'),
     topMenu:()=>import('../components/menus/top-menu.vue')
