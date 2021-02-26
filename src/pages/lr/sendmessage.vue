@@ -6,7 +6,7 @@
             </div>
             <div class="messge-body p-2  bg-white">
                 <div class="">
-                    <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="data.content" />
+                    <quillEditor  style="height:100%" ref="test" :options="customToolbar" v-model="data.content" />
 
 
 
@@ -53,20 +53,10 @@
                 <div class="clearfix">
                     <div class="row">
                         <div class="col-md-12 mt-2">
-
-                            <file-upload class="btn btn-primary"
-                                :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
-                                :post-action="`${server}/cors/file/attach/send`"  :multiple="true"
-                                :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
-                                @input-file="inputFile" ref="upload">
-                                <i class="fa fa-plus"></i>
-                                Select files
-                            </file-upload>
-
                             <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6" spinner-small spinner-variant="primary"
                                 class="d-inline-block float-right">
-                                <b-button @click="submit">
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>Send
+                                <b-button @click="submit" :disabled="disabled">
+                                    <i class="fa fa-paper-plane pr-3" aria-hidden="true"></i>Submit Proposal
                                 </b-button>
                             </b-overlay>
                         </div>
@@ -146,7 +136,7 @@
     });
 
     export default {
-        props: ['trailid'],
+        props: ['trailid','disabled'],
         components: {
             quillEditor,
             FileUpload
@@ -247,15 +237,14 @@
                     .then(res => {
                         // console.log(res)
                        
-
+                          this.$emit('sent',res.data)
                        this.update_temp(res.data.id);
-                          this.showNotification({title:'Message Sent',content:res.data.content})
+                        this.showNotification({title:'Message Sent',content:res.data.content})
                     })
                     .catch(err => {
                         console.error(err);
                     }).then(x=>{
                         
-                        this.$emit('sent')
                         this.data = {}
                         this.sending = false
 
@@ -289,7 +278,7 @@
                         ids: this.files.map(x => {
                             return x.response.id
                         }),
-                        type: "comment"
+                        type: "proposal"
                     })
                     .then(res => {
                         this.files = []

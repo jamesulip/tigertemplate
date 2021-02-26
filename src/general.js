@@ -36,7 +36,7 @@ export function initialize(store,router){
     if (store.getters.currentUser) {
         setAuthorization(store.getters.currentUser.token);
 
-        config_pusher(store.getters.currentUser.token)
+        // config_pusher(store.getters.currentUser.token)
     }
 }
 export function setAuthorization(token) {
