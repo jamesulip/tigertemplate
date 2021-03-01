@@ -10,9 +10,9 @@
                             <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
                         </div>
                         <div class="h-auto w-auto py-3 pr-4 flex flex-col justify-between">
-                            <h5>
-                                LR#21-00036 - SOLARWINDS - ECOPRIME BUILDOUT PROJECT OCTOBER 2020 (PHASE 2 STENCILS).pdf
-                            </h5>
+                            <span class="text-base md:text-md">
+                               {{f.name}}
+                            </span>
                             <b-progress v-model="f.progress" :precision="1" show-progress></b-progress>
                         </div>
                     </div>
@@ -148,7 +148,9 @@
 
                 })
                 .then(res => {
-                    console.log(res)
+                     this.$router.push({name:'view_trail',params:{id:d.id}})
+                    // console.log(res)
+                   
                 })
                 .catch(err => {
                     console.error(err); 

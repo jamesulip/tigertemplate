@@ -2,7 +2,7 @@
     <div>
         <div class="flex items-center">
             <b-avatar class="avatar mr-2 " :src="`${serUrl}${value.userl.img}`" size="md"></b-avatar>
-            <div class="ml-2">sssssssss
+            <div class="ml-2">
                 <div class="text-sm ">
                     <span class="font-semibold">{{value.userl?value.userl.name:'mumu'}}</span>
                 </div>
@@ -13,30 +13,20 @@
             </div>
         </div>
         <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="value.content"></p>
-        <div class="row text-sm" v-if="value.file">
-            <div class="col-md-12">
-                <hr>
-                <div class="row">
-                    <template v-for="(item, index) in value.file">
-                        <div class="col-md-3 p-2" :key="`f-${index}`">
-                            <div class="media media-attachment ">
+        <div class="row text-sm" v-if="Boolean(value.proposals.length)">
+            <div class="flex w-full max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-md dark:bg-gray-800">
+                <div class="flex items-center justify-center w-12 bg-blue-500">
+                    <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M20 3.33331C10.8 3.33331 3.33337 10.8 3.33337 20C3.33337 29.2 10.8 36.6666 20 36.6666C29.2 36.6666 36.6667 29.2 36.6667 20C36.6667 10.8 29.2 3.33331 20 3.33331ZM21.6667 28.3333H18.3334V25H21.6667V28.3333ZM21.6667 21.6666H18.3334V11.6666H21.6667V21.6666Z" />
+                    </svg>
+                </div>
 
-                                <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(value.file):null"
-                                    button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
-                                    icon="paperclip">
-
-                                </b-avatar>
-                                <div class="media-body  text-truncate">
-                                    <a role="button" v-b-tooltip="{ title: item.filename, placement: 'bottom' }"
-                                        @click="check_mime(item.file_meta.ext)?full_screen_image(value.file):null"
-                                        class=" text-truncate">{{item.filename}}</a>
-                                    <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
-                                            v-b-tooltip="'download'" :href="`${serUrl}/cors/downloadFile2/${item.id}`"
-                                            target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </template>
+                <div class="px-4 py-2 -mx-3">
+                    <div class="mx-3">
+                        <span class="font-semibold text-blue-500 dark:text-blue-400">Info</span>
+                        <p class="text-sm text-gray-600 dark:text-gray-200">This channel archived by the owner!</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,19 +43,19 @@
         },
         mounted() {
             // this.get_ins()
-              axios.get(`/cors/proposed_files/${this.value.id}`)
+            axios.get(`/cors/proposed_files/${this.value.id}`)
                 .then(res => {
                     console.log(res)
                 })
         },
         methods: {
-            get_inst(){
-             
+            get_inst() {
+
                 // axios.get(`/cors/proposed_files/${this.value.id}`)
                 // .then(res => {
                 //     console.log(res)
                 // })
-          
+
             }
         },
     }

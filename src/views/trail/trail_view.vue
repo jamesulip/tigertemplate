@@ -100,48 +100,50 @@
                     </li>
 
                     <li class="list-group-item  pb-4" v-for="(i,index) in messages" :key="i.id">
-                      
-                      <proposal v-if="i.Type=='proposal'" v-model="messages[index]"/>
-                      <div v-else class="flex items-center">
-                        <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
-                        <div class="ml-2">
-                          <div class="text-sm ">
-                            <span class="font-semibold">{{i.userl?i.userl.name:'mumu'}}</span>
-                          </div>
-                          <div class="text-gray-500 text-xs " v-html="i.userl?i.userl.role:'mumu'"></div>
-                          <div class="text-gray-500 text-xs flex">
-                            <span class="inline-block">{{i.created_at | formatDate('ago')}}</span>
+
+                      <proposal v-if="i.Type=='proposal'" v-model="messages[index]" />
+                      <template v-else>
+                        <div class="flex items-center">
+                          <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
+                          <div class="ml-2">
+                            <div class="text-sm ">
+                              <span class="font-semibold">{{i.userl?i.userl.name:'mumu'}}</span>
+                            </div>
+                            <div class="text-gray-500 text-xs " v-html="i.userl?i.userl.role:'mumu'"></div>
+                            <div class="text-gray-500 text-xs flex">
+                              <span class="inline-block">{{i.created_at | formatDate('ago')}}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="i.content"></p>
-                      <div class="row text-sm" v-if="i.file">
-                        <div class="col-md-12">
-                          <hr>
-                          <div class="row">
-                            <template v-for="(item, index) in i.file">
-                              <div class="col-md-3 p-2" :key="`f-${index}`">
-                                <div class="media media-attachment ">
+                        <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="i.content"></p>
+                        <div class="row text-sm" v-if="Boolean(i.file.length)">
+                          <div class="col-md-12">
+                            <hr>
+                            <div class="row">
+                              <template v-for="(item, index) in i.file">
+                                <div class="col-md-3 p-2" :key="`f-${index}`">
+                                  <div class="media media-attachment ">
 
-                                  <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
-                                    button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
-                                    icon="paperclip">
+                                    <b-avatar @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
+                                      button rounded="sm" size="2rem" :src="`${serUrl}${item.thumb}`" variant="primary"
+                                      icon="paperclip">
 
-                                  </b-avatar>
-                                  <div class="media-body  text-truncate">
-                                    <a role="button" v-b-tooltip="{ title: item.filename, placement: 'bottom' }"
-                                      @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
-                                      class=" text-truncate">{{item.filename}}</a>
-                                    <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
-                                        v-b-tooltip="'download'" :href="`${serUrl}/cors/downloadFile2/${item.id}`"
-                                        target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
+                                    </b-avatar>
+                                    <div class="media-body  text-truncate">
+                                      <a role="button" v-b-tooltip="{ title: item.filename, placement: 'bottom' }"
+                                        @click="check_mime(item.file_meta.ext)?full_screen_image(i.file):null"
+                                        class=" text-truncate">{{item.filename}}</a>
+                                      <span class="text-muted text-xs">{{item.file_meta.size | bytesToSize(2)}} <a
+                                          v-b-tooltip="'download'" :href="`${serUrl}/cors/downloadFile2/${item.id}`"
+                                          target="_blank"><i class="fa fa-download" aria-hidden="true"></i></a></span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </template>
+                              </template>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </template>
                     </li>
                     <li class="list-group-item w-full overflow-hidden">
                       <sendMessage @sent="get_messages()" :trailid="$route.params.id" />
