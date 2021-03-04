@@ -1,8 +1,10 @@
 <template>
-    <div>
-        <b-button pill @click="add_project_modal=true" variant="secondary" class="btn-flat ml-3" size="sm">
-            <b-icon-plus></b-icon-plus>
-        </b-button>
+    <div class="ml-3">
+        <div @click="add_project_modal=true"  class="transition-all delay-75 cursor-pointer hover:bg-green-400 rounded-full bg-green-500 h-10 w-10 text-center  flex items-center justify-center" size="sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+        </div>
         <b-modal @hide="retsetData()" size="sm" no-close-on-backdrop :title="`Add Project`" v-model="add_project_modal" @ok="add_project">
             <b-form>
                   <b-form-group
