@@ -20,7 +20,7 @@
         </div>
       </aside>
 
-      <div class="content-wrapper h-screen" style="height:100vh!important">
+      <div class="content-wrapper" >
        
           <!-- <b-overlay :show="$store.getters.loadingState" rounded="sm"> -->
           <router-view/>

@@ -1,11 +1,14 @@
 <template>
     <div class="pt-3 container-fluid row">
-        <div class="col-md-9 ">
+        <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">
                         Delegated Projects
                     </h3>
+                    <div class="float-right">
+                        <b-button @click="activities=!activities" variant="link">Activities</b-button>
+                    </div>
                 </div>
                 <div class="card-body" v-if="$store.getters.getCurrentJob.project">
                     Currently working on <span class="badge badge-primary p-1 badge-pill px-2"><a role="button"
@@ -74,28 +77,20 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title p-0">
-                        My Activity
-                    </h4>
-                </div>
-                <div class="card-body p-0">
-                    <table class="table table-sm table-striped table-valign-middle log">
-                        
-                        <tbody>
-                            <tr v-for="(l,i) in mylogs" :key="`o${i}`">
-                                <td >
-                                  <span v-html="l.text"></span><br>
-                                  <span class="text-muted">{{l.created_at}}</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <b-sidebar  id="sidebar-1" v-model="activities" title="Activity" shadow right >
+            <div class="px-1 py-2">
+                <table class="table table-striped text-xs">
+                    <tbody>
+                        <tr v-for="(l,i) in mylogs" :key="`o${i}`">
+                            <td>
+                                <span v-html="l.text"></span><br>
+                                <span class="text-muted">{{l.created_at}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div>
+        </b-sidebar>
 
 
         <b-modal v-model="send" hide-backdrop content-class="shadow">
@@ -108,9 +103,7 @@
     </div>
 </template>
 <style scoped>
-    .log td{
-        font-size: .750rem;
-    }
+   
 </style>
 <script>
     // import Loading1 from '../components/loaders/loading1.vue'
@@ -130,16 +123,16 @@
                 // current_job:this.$store.getters.getCurrentJob,
                 current_project_modal: false,
                 loading: true,
-                selected_view: {}
+                selected_view: {},
+                activities:true
             }
         },
         mounted() {
             this.loadProjects()
-            this.$store.dispatch('set_current_job').then(x => {
-            })
+            this.$store.dispatch('set_current_job').then(x => {})
         },
         computed: {
-       
+
         },
         methods: {
             loadLogs() {
@@ -157,13 +150,13 @@
                     .then(res => {
                         this.projects = res.data
                         this.loading = false
-                        this.$store.commit('set_my_projects',res.data)
+                        this.$store.commit('set_my_projects', res.data)
                     })
                     .catch(err => {
                         console.error(err);
                     })
 
-                    this.loadLogs()
+                this.loadLogs()
             },
             project_name(project) {
                 if (project.project)

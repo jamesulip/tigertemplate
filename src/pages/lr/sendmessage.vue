@@ -153,7 +153,7 @@
                 files: [],
                 sending: false,
                 data: {
-                    Type: "comment",
+                    Type: "proposal",
                     content: "",
                     user: this.current_employee_id,
                 },

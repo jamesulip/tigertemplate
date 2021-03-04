@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-20">
+    <div class="pt-20 min-h-screen">
         <div class="container-sm ">
             <div class="w-full">
                 <transition-group tag="div" name="fade">
@@ -55,20 +55,45 @@
             <h3 class="pl-3 text-gray-500">
                 Proposals Sent
             </h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Updated Date</th>
+                        <th>Version</th>
+                        <th>Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="sp in sent_proposal" :key="`sp-${sp.id}`">
+                        <td class="w-0">
+                              <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
+                        </td>
+                        <td class="text-truncate">
+                            <div class="w-48">
+                            <span>{{sp.files.filename}}</span>
+                            </div>
+                        </td>
+                        <td>{{sp.created_at | formatDate('L')}}</td>
+                        <td>{{sp.files.file_info.version}}</td>
+                        <td>{{sp.files.file_info.option}}</td>
+                    </tr>
+                </tbody>
+            </table>
             <transition-group tag="div" class="row" name="fade">
-                <div v-for="sp in sent_proposal" :key="`sp-${sp.id}`" class="col-md-6">
+                <!-- <div v-for="sp in sent_proposal" :key="`sp-${sp.id}`" class="col-md-6">
                     <div style="height:150px" class=" rounded-l-md border-2 rounded-md w-auto m-3 flex">
-                        <div class="h-full flex rounded-l-md" style="width:200px">
-                            <!-- <img src="https://img.icons8.com/officel/16/000000/pdf.png"/> -->
+                        <div class="flex-none h-full flex rounded-l-md" style="width:130px">
                             <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
                         </div>
-                        <div class="h-auto flex-grow w-auto py-3 pr-4 flex flex-col justify-between">
-                            <h5>
+                        <div class="h-auto flex-grow w-auto py-3 px-1 flex flex-col justify-between">
+                            <span class="">
                                 {{sp.files.filename}}
-                            </h5>
+                            </span>
 
                         </div>
-                        <div class="h-full  bg-red-50 flex rounded-r-md " style="max-width:130px;min-width:130px">
+                        <div class="flex-none h-full  bg-red-50 flex rounded-r-md " style="max-width:130px;min-width:130px">
                             <div class="m-auto flex flex-col">
                                 <div class="text-lg font-medium text-center">
                                     Version {{sp.files.file_info.version}}
@@ -79,7 +104,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </transition-group>
         </div>
     </div>
@@ -148,7 +173,16 @@
 
                 })
                 .then(res => {
-                     this.$router.push({name:'view_trail',params:{id:d.id}})
+                    axios.put(`/cors/finishers/${this.$route.query.project}`,{
+                        'Status':"Done"
+                    })
+                    .then(res => {
+                         this.$router.push({name:'view_trail',params:{id:d.parentID}})
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
+                    
                     // console.log(res)
                    
                 })

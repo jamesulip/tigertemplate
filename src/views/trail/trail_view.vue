@@ -118,7 +118,7 @@
                         <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="i.content"></p>
                         <div class="row text-sm" v-if="Boolean(i.file.length)">
                           <div class="col-md-12">
-                            <hr>
+                           
                             <div class="row">
                               <template v-for="(item, index) in i.file">
                                 <div class="col-md-3 p-2" :key="`f-${index}`">

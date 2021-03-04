@@ -9,7 +9,7 @@
                 :disabled="btnIcon(Project.Status,'dis_en','pause')||false">
                 <b-icon-pause-fill></b-icon-pause-fill>
             </b-button>
-            <b-button v-if="Project.project.TYPE =='LR'" variant="success" @click="$router.push({name:'lrsend',params:{id:Project.detailID}})"
+            <b-button v-if="Project.project.TYPE =='LR'" variant="success" @click="$router.push({name:'lrsend',params:{id:Project.detailID},query:{project:Project.ID}})"
                 :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                 SP
             </b-button>
@@ -23,7 +23,7 @@
 
         </b-button-group>
 
-        <b-modal centered ok-only :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
+        <b-modal centered ok-only :title="`Start Projecst ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
             @ok="updateStatusText()">
             <b-form-group>
                 <label for="">Message</label>
@@ -84,13 +84,15 @@
                 var xx = `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
                 this.message = {
                     Type: "log",
-                    content: `${xx}  ${status}`,
+                    content: `${xx}  ${status=='Paused'?'On Hold':status}`,
                     parentID: project.project.trailid,
                     state: status,
                     user: this.$store.getters.currentUser.employee_id,
                     project_id: project.ID,
                 }
                 this.loading = true
+                
+               
                 this.$store.dispatch('set_current_job').then(x => {
                     this.loading = false
                     if(status=='Done'){
@@ -146,10 +148,13 @@
                     })
             },
             updateStatusText(id, Status) {
+                // this.updateStatus(this.Project,Status)
+                axios.post(`/cors/trail/${this.Project.project.trailid}/send`,this.message)
                 return axios.patch(`cors/finishers/${this.message.project_id}`, {
                         Status: this.message.state
                     })
                     .then(res => {
+                        
                         this.$emit('saved', res.data)
                         this.$store.dispatch('set_current_job')
                         return res.data
