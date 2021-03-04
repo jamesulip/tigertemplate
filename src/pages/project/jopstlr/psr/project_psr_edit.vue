@@ -6,20 +6,44 @@
             </slot>
 
         </a>
-        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop v-if="data.projects" :title="`Edit PSR#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop v-if="data.projects" size="xl" @show="add"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @edited="x=>{
                 $emit('edited');open_jo_add_modal=false
             }" />
+            <template #modal-header="{ ok, close }">
+               
+                <div class="w-full">
+                    <div class="inline-block py-1 pr-4 text-lg">
+                        <span class="">
+                            <b>EDIT</b>{{`PSR#${data.projects.NUM} v.${data.projects.VERSION}`}}
+                        </span>
+                    </div>
+                    <div class="float-right">
+                        <b-button variant="danger" class=" mr-2" @click="close()">
+                        Cancel
+                        </b-button>
+                    
+                        <b-button :disabled="$refs.jo_form?$refs.jo_form.updating:false" variant="primary" class=""
+                            @click="ok()">
+                            <i class="fas fa-save"></i>
+                            Update
+                        </b-button>
+                    </div>
+                  </div>
+           
+            </template>
             <template #modal-footer="{ ok, close }">
                 <b-button variant="danger" class="float-right" @click="close()">
                     Cancel
                 </b-button>
-                <b-button :disabled="$refs.jo_form?$refs.jo_form.loading:false" variant="primary" class="float-right"
+                <b-overlay :show="$refs.jo_form?$refs.jo_form.updating:false">
+                <b-button :disabled="$refs.jo_form?$refs.jo_form.updating:false" variant="primary" class="float-right"
                     @click="ok()">
                     <i class="fas fa-save"></i>
                     Update
                 </b-button>
+                </b-overlay>
             </template>
         </b-modal>
     </li>

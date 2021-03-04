@@ -129,7 +129,7 @@ import { mapGetters, mapState } from 'vuex'
             submit() {
                 this.errors = {}
                 this.updating=true
-                axios.post(`cors/updateProject/${this.value.details.ID}`,
+                axios.post(`cors/newAddproject`,
                         this.value)
                     .then(res => {
 

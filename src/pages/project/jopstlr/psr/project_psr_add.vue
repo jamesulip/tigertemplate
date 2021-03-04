@@ -62,7 +62,7 @@
                 "projects": {
                     "SALESEXEC": this.current_employee_id,
                     "projectID": this.get_project.ID,
-                    "TYPE": "JO",
+                    "TYPE": "PSR",
                     "projecttype": 11
                 },
                 // items: []

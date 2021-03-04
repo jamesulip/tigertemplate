@@ -1,11 +1,16 @@
 <template>
-    <div class="media row">
+    <button @click="rev_modal=true" v-b-tooltip.hover title="Request Revision"
+        class="hover:bg-gray-900 p-1 rounded-sm cursor-pointer text-red-400 hover:text-red-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
 
-        <div class="media-body">
-            <div class="media-title" style="">
-            </div>
-            <div class="messge-body p-2 shadow bg-white">
-                <div class="">
+
+        <b-modal id="requestRev" size="lg" v-model="rev_modal" title="Request Changes">
+            <div class="clearfix">
+                <div>
                     <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="data.content" />
                     <div class="card card-body mt-1 p-1" v-if="files.length >0">
                         <table class="mt-2 table-hover table table-sm">
@@ -34,9 +39,9 @@
                                         <b-progress :value="item.progress"></b-progress>
                                     </td>
 
-                                    <td style="    text-align: center;" v-if="item.error">{{item.error}}</td>
-                                    <td style="    text-align: center;" v-else-if="item.success">success</td>
-                                    <td style="    text-align: center;" v-else-if="item.active">active</td>
+                                    <td style="text-align: center;" v-if="item.error">{{item.error}}</td>
+                                    <td style="text-align: center;" v-else-if="item.success">success</td>
+                                    <td style="text-align: center;" v-else-if="item.active">active</td>
 
                                     <td>
                                         <b-icon-x></b-icon-x>
@@ -46,33 +51,30 @@
                         </table>
                     </div>
                 </div>
-                <div class="clearfix">
-                    <div class="row">
-                        <div class="col-md-12 mt-2">
-
-                            <file-upload class="btn btn-primary"
-                                :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
-                                :post-action="`${server}/cors/file/attach/send`"  :multiple="false"
-                                :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
-                                @input-file="inputFile" ref="upload">
-                                <i class="fa fa-plus"></i>
-                                Select files
-                            </file-upload>
-
-                            <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6" spinner-small spinner-variant="primary"
-                                class="d-inline-block float-right">
-                                <b-button @click="submit">
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>Send
-                                </b-button>
-                            </b-overlay>
-                        </div>
-                    </div>
-                </div>
             </div>
+            <template #modal-footer>
+                <div class="w-full flex flex-row justify-between">
 
+                    <file-upload :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
+                        :post-action="`${server}/cors/file/attach/send`" :multiple="false" :size="1024 * 1024 * 20"
+                        v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
+                        <div class="bg-blue-500 px-3 text-white py-2 rounded-md  cursor-pointer">
+                            <i class="fa fa-plus"></i>
+                            <span class="cursor-pointer"> Attach File</span>
+                        </div>
+                    </file-upload>
+                    <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6"
+                        spinner-small spinner-variant="primary" class="d-inline-block">
+                        <b-button @click="submit">
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>Request Changes
+                        </b-button>
+                    </b-overlay>
 
-        </div>
-    </div>
+                </div>
+            </template>
+        </b-modal>
+    </button>
+
 </template>
 <script>
     /*eslint-disable*/
@@ -99,13 +101,9 @@
         "modules/imageResize": ImageResize,
         'modules/magicUrl': MagicUrl,
     })
-
-
-
-
     import {
-      mapActions,
-      mapGetters,
+        mapActions,
+        mapGetters,
         mapState
     } from 'vuex'
 
@@ -147,14 +145,15 @@
             quillEditor,
             FileUpload
         },
-        computed:{
+        computed: {
             ...mapState([
                 'users'
             ]),
-            ...mapGetters(['currentUser','current_employee_id'])
+            ...mapGetters(['currentUser', 'current_employee_id'])
         },
         data() {
             return {
+                rev_modal: false,
                 server: window.axios.defaults.baseURL,
                 files: [],
                 sending: false,
@@ -165,6 +164,7 @@
                 },
                 customToolbar: {
                     theme: 'snow',
+                    placeholder: 'Enter Changes Request',
                     modules: {
                         mention: {
                             allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
@@ -234,28 +234,31 @@
 
             },
             submit() {
-               
+
                 this.sending = true
                 axios.post(`cors/trail/${this.trailid}/send`, {
-                    ...this.data,
-                    user: this.current_employee_id,
-                })
+                        ...this.data,
+                        user: this.current_employee_id,
+                    })
                     .then(res => {
                         // console.log(res)
-                       
 
-                       this.update_temp(res.data.id);
-                          this.showNotification({title:'Message Sent',content:res.data.content})
+
+                        this.update_temp(res.data.id);
+                        this.showNotification({
+                            title: 'Message Sent',
+                            content: res.data.content
+                        })
                     })
                     .catch(err => {
                         console.error(err);
-                    }).then(x=>{
-                        
+                    }).then(x => {
+
                         this.$emit('sent')
                         this.data = {}
                         this.sending = false
 
-                       
+
 
                     })
             },
@@ -272,7 +275,7 @@
                         let url = result.data.url;
                         var quill = this.$refs.test.quill;
                         this.sending = false
-                        console.log('Editor',Editor)
+                        console.log('Editor', Editor)
                         quill.insertEmbed(quill.getSelection().index, 'imageBlot', {
                             src: url,
                         }, 'user');
@@ -280,7 +283,7 @@
                     })
             },
             update_temp(id) {
-                
+
                 axios.post(`cors/file/updateTemp/${id}`, {
                         ids: this.files.map(x => {
                             return x.response.id
@@ -306,7 +309,7 @@
             },
             inputFile(newFile, oldFile) {
                 this.$refs.upload.active = true
-               
+
             }
 
 

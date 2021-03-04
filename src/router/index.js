@@ -8,6 +8,7 @@ import register from "../views/Register.vue";
 import test from "../views/test.vue";
 
 import viewer from "../pages/project/jopstlr/lr/viewer.vue";
+import view_pdf from "../pages/project/jopstlr/lr/view_pdf.vue";
 
 
 Vue.use(VueRouter);
@@ -63,9 +64,21 @@ const routes = [{
               rerender:true,
               requiresAuth: true
             },
-          }
+          },
+        
         ]
       },
+      
+      {
+        path: "view/:file",
+        name: "view_porposed",
+        component: view_pdf,
+        meta: {
+          rerender:true,
+          requiresAuth: true
+        },
+      },
+
       {
         path: "clients",
         component: () => import("../pages/clients/clients.vue"),

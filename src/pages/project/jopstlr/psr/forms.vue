@@ -3,7 +3,7 @@
         <b-tabs card v-model="detail_tab">
             <b-tab active>
                 <template #title>
-                  Job Order Details  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${errors_count.info || 0}`" icon="exclamation-triangle"></b-avatar>
+                 PSR Details  <b-avatar size="26px" variant="light" badge-variant="danger" :badge="`${errors_count.info || 0}`" icon="exclamation-triangle"></b-avatar>
                 </template>
 
 

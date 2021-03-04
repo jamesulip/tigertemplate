@@ -160,7 +160,14 @@
                                                          Edit PSR
                                                       </div>
                                                    </edit_psr>
-                                                   <edit_jo @edited="edited()" :id="oj" v-else>
+                                                    <b-dropdown-divider></b-dropdown-divider>
+                                                    <revise_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='LR'">
+                                                      <div>
+                                                         <i class="fas fa-edit"></i>
+                                                         Revise
+                                                      </div>
+                                                   </revise_psr>
+                                                   <edit_jo @edited="edited()" :id="oj" v-if="oj.TYPE =='JO'">
                                                       <div>
                                                          <i class="fas fa-edit"></i>
                                                          Edit JO

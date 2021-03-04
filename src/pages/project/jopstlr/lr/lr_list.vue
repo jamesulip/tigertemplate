@@ -11,8 +11,11 @@
                         <th>Project Name</th>
                         <th>Designer</th>
                         <th>Approved</th>
-                        <th style="width:1%"></th>
-                        <th style="width:1%"></th>
+                        <th>Date Requested</th>
+                        <th>Date Submitted</th>
+                        <th>Version</th>
+                        <th>Files</th>
+                    
                     </tr>
                 </thead>
                 <tbody>
@@ -22,8 +25,7 @@
                         </td>
                         <td>
                             <div class="d-flex">
-                                <span>{{lp.project.TYPE}}#{{lp.project.NUM}}</span>
-                                <span>{{lp.client2.com_name}}</span>
+                                <span>{{lp.project.TYPE}}#{{lp.project.NUM}}</span>-<span>{{lp.client2.com_name}}</span>
                             </div>
                         </td>
                         <td>
@@ -35,20 +37,24 @@
                                 <b-avatar></b-avatar>
                             </b-avatar-group>
                         </td>
+                        <td></td>
+                        
                         <td>
-                              <span
-                                class="badge text-md">9/10</span>
+                            <span class="badge text-md">
+                                {{lp.created_at}}
+                                {{lp.dateCreated |formatDate('L')}}
+                            </span>
                         </td>
                         <td>
-                            <router-link :to="{name:'lrViewer',params:{id:lp.ID}}"><svg style="width:25px" className="w-6 h-6" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                                        d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
-                                    </svg></router-link>
+                           
                         </td>
                         <td>
-                            <span
-                                class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">9</span>
+                            <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">9</span>
+                        </td>
+                        <td>
+                             <router-link :to="{name:'lrViewer',params:{id:lp.ID}}">
+                                <i class="far fa-folder-open    "></i>
+                             </router-link>
                         </td>
                     </tr>
                 </tbody>

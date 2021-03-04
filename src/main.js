@@ -40,6 +40,10 @@ Vue.component('project_detail', require('./pages/project/project_detail.vue').de
 Vue.component('status_indicator', require('./components/custom/status_indicator.vue').default);
 Vue.component('confirm_delete', require('./components/custom/confirm_delete.vue').default);
 Vue.component('edit_psr', require('./pages/project/jopstlr/psr/project_psr_edit').default);
+Vue.component('revise_psr', require('./pages/project/jopstlr/psr/project_psr_revise').default);
+
+Vue.component('revise_lr', require('./pages/project/jopstlr/lr/revise_lr.vue').default);
+
 Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').default);
 Vue.component('send_project', require('./components/custom/send_project').default);
 
