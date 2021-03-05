@@ -18,7 +18,7 @@
             </nav>
 
             <div class="flex items-center px-4 -mx-2">
-                <b-img :src="`${serUrl}/${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-img>
+                <b-img :src="`${serUrl}${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-img>
                 <h4 class="mx-2 font-medium text-gray-800 dark:text-gray-200 hover:underline">{{currentUser.name}}</h4>
             </div>
         </div>

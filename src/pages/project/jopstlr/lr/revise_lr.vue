@@ -1,95 +1,33 @@
 <template>
-    <div class="container pt-4">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title">Request Layout Proposal</h4>
-                </div>
-                <div class="card-body pb-1" v-if="data.details">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <b-form-group id="fieldset-1" label="Enter your Project Name" label-for="input-1">
-                                <b-form-input id="input-1" v-model="data.details.s_projname" trim></b-form-input>
-                            </b-form-group>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th colspan="3">Layouts</th>
-                                <th style="width:100px">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in data.layout" :key="index">
-                                <td>
-                                       <b-form-input :state="state_check(errors[`layout.${index}.itemName`])"  id="input-1"
-                                    v-model="item.itemName" trim></b-form-input>    
-                                
-                                </td>
-                                <td><input 
-                                        v-model="item.Media" placeholder="Media" type="text"
-                                        class="form-control input-sm"></td>
-                                <td>
-                                    <textarea placeholder="Notes" v-model="item.Description" name="" id="" cols="30"
-                                        rows="3" class="form-control"></textarea>
-                                </td>
-                                <td>
-                                    <b-button variant="link" size="sm" @click="$delete(data.layout, index)"><i
-                                            class="fa fa-times text-danger" aria-hidden="true"></i></b-button>
-                                    <b-button variant="link" size="sm"
-                                        @click="data.layout.push(JSON.parse(JSON.stringify(item)))"> <i
-                                            class="fa fa-clone text-info" aria-hidden="true"></i></b-button>
-                                </td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td colspan="2">
-                                    <div class="float-right">
-                                        <b-button variant="link" size="sm"
-                                            @click="data.layout.push({Description:'',Height:'',Media:'',Width:'',itemName:''})">
-                                            <b-icon-plus />
-                                            Add Item
+    <button @click="rev_modal=true" v-b-tooltip.hover title="Request Revision"
+        class="hover:bg-gray-900 p-1 rounded-sm cursor-pointer text-red-400 hover:text-red-600">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
 
-                                        </b-button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <div class="card-body clearfix" style="height:auto">
-                    <message_textarea height="100%" v-model="content" @change="x=>{data.finishers[0].DETAILS=x.html}"/>
-                </div>
-                <div class="card-body clearfix" style="height:auto">
+
+        <b-modal id="requestRev" size="lg" v-model="rev_modal" title="Request Changes">
+            <div class="clearfix">
+                <div>
+                    <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="data.content" />
                     <div class="card card-body mt-1 p-1" v-if="files.length >0">
-                        <table class="mt-2 table-hover table table-sm" style=" table-layout: fixed;">
+                        <table class="mt-2 table-hover table table-sm">
                             <thead>
                                 <tr>
-                                    <th>Attachments</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th style="width:50px"></th>
-
+                                    <th style="width:1%;"></th>
+                                    <th style="width:50%"></th>
+                                    <th style="width:25%"></th>
+                                    <th style="width:25%"></th>
+                                    <th style="width:1%;"></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, index) in files" :key="index">
                                     <td>
-                                        <b-avatar rounded button @click="showImages(files)"
-                                            :src="`${server}${item.response.thumb}`">
-                                            <i v-if="fileIcon(item.name.split('.')[item.name.split('.').length-1],['gif','jpeg','jpg','png'])"
-                                                :class="`fa ${fileIcon(item.name.split('.')[item.name.split('.').length-1],['gif','jpeg','jpg','png'])}`"
-                                                aria-hidden="true"></i>
-                                        </b-avatar>
+                                        <b-icon-paperclip></b-icon-paperclip>
                                     </td>
-
                                     <td>
                                         <div class="text-truncate">
                                             <span class="text-truncate">
@@ -97,141 +35,255 @@
                                             </span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <b-progress :value="item.progress"></b-progress>
+                                    </td>
+
+                                    <td style="text-align: center;" v-if="item.error">{{item.error}}</td>
+                                    <td style="text-align: center;" v-else-if="item.success">success</td>
+                                    <td style="text-align: center;" v-else-if="item.active">active</td>
 
                                     <td>
-                                        <b-progress variant="success" :value="item.progress"></b-progress>
-                                    </td>
-                                    <td style="text-align: center;" v-if="item.error">{{item.error}}</td>
-                                    <td style="text-align: center;" v-else-if="item.success"><i
-                                            class="fa fa-check text-success" aria-hidden="true"></i></td>
-                                    <td style="text-align: center;" v-else-if="item.active">{{item.progress}}</td>
-                                    <td>
-                                        <b-button variant="link" size="sm">
-                                            <b-icon-x></b-icon-x>
-                                        </b-button>
+                                        <b-icon-x></b-icon-x>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div class="clearfix">
-                        <div class="row">
-                            <div class="col-md-12 mt-2">
-
-                                <file-upload class="btn btn-primary"
-                                    :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
-                                    :post-action="`${server}/cors/file/attach/send`" :multiple="true"
-                                    :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
-                                    @input-file="inputFile" ref="upload">
-                                    <i class="fa fa-plus"></i>
-                                    Select files
-                                </file-upload>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="col-md-4 float-right">
-                        <b-button @click="send_lr()" class=" float-right"><i class="fa fa-paper-plane"
-                                aria-hidden="true"></i> Send</b-button>
-                    </div>
                 </div>
             </div>
-        </div>
-        <view_image ref="viewer" />
-    </div>
+            <template #modal-footer>
+                <div class="w-full flex flex-row justify-between">
+
+                    <file-upload :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
+                        :post-action="`${server}/cors/file/attach/send`" :multiple="false" :size="1024 * 1024 * 20"
+                        v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
+                        <div class="bg-blue-500 px-3 text-white py-2 rounded-md  cursor-pointer">
+                            <i class="fa fa-plus"></i>
+                            <span class="cursor-pointer"> Attach File</span>
+                        </div>
+                    </file-upload>
+                    <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6"
+                        spinner-small spinner-variant="primary" class="d-inline-block">
+                        <b-button @click="submit">
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>Request Changes
+                        </b-button>
+                    </b-overlay>
+
+                </div>
+            </template>
+        </b-modal>
+    </button>
+
 </template>
-<style scoped>
-    .table.table-sm td {
-        vertical-align: middle;
-    }
-</style>
 <script>
     /*eslint-disable*/
+
+
+    import {
+        quillEditor,
+        Quill
+    } from 'vue-quill-editor'
+    import {
+        ImageUpload
+    } from 'quill-image-upload';
+    import QuillImageDropAndPaste from 'quill-image-drop-and-paste'
+    import ImageResize from 'quill-image-resize-vue';
+    import MagicUrl from 'quill-magic-url'
+    import "quill-mention";
+    import FileUpload from 'vue-upload-component'
+    var InlineBlot = Quill.import('blots/block');
+
+    Quill.register({
+        'modules/imageDropAndPaste': QuillImageDropAndPaste,
+        'modules/imageDropAndPaste': QuillImageDropAndPaste,
+        'modules/imageUpload': ImageUpload,
+        "modules/imageResize": ImageResize,
+        'modules/magicUrl': MagicUrl,
+    })
     import {
         mapActions,
         mapGetters,
-        mapMutations
+        mapState
     } from 'vuex'
-    import message_textarea from './message_textarea'
-    import FileUpload from 'vue-upload-component'
-    import view_image from '../../../../views/trail/view_image'
-    import _ from 'lodash'
+
+
+
+    class ImageBlot extends InlineBlot {
+        static create(data) {
+            const node = super.create(data);
+            node.setAttribute('src', data.src);
+            node.setAttribute('style', data.style);
+            node.style.maxWidth = "500px";
+            node.setAttribute('data-custom', data.custom);
+            console.log(node);
+            return node;
+        }
+        static value(domNode) {
+            const {
+                src,
+                custom
+            } = domNode.dataset;
+            return {
+                src,
+                custom
+            };
+        }
+    }
+    ImageBlot.blotName = 'imageBlot';
+    ImageBlot.className = 'image-blot';
+    ImageBlot.tagName = 'img';
+    ImageBlot.style = "background-color: red;"
+
+    Quill.register({
+        'formats/imageBlot': ImageBlot
+    });
+
     export default {
+        props: ['trailid'],
         components: {
-            message_textarea,
-            FileUpload,
-            view_image
+            quillEditor,
+            FileUpload
         },
-        
+        computed: {
+            ...mapState([
+                'users'
+            ]),
+            ...mapGetters(['currentUser', 'current_employee_id'])
+        },
         data() {
             return {
-                content: {
-                    content: ``,
-                    title: '',
-                    projects: ''
-                },
-                files: [],
+                rev_modal: false,
                 server: window.axios.defaults.baseURL,
+                files: [],
+                sending: false,
                 data: {
-
+                    Type: "comment",
+                    content: "",
+                    user: this.current_employee_id,
                 },
-                errors: []
+                customToolbar: {
+                    theme: 'snow',
+                    placeholder: 'Enter Changes Request',
+                    modules: {
+                        mention: {
+                            allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+                            mentionDenotationChars: ["@", "#"],
+                            listItemClass: 'list-group-item list-group-item-action',
+                            mentionListClass: 'list-group',
+
+                            source: async (searchTerm, renderList) => {
+                                const matchedPeople = this.suggestPeople(searchTerm);
+
+                                renderList(matchedPeople.map(x => {
+                                    return {
+                                        id: x.id,
+                                        value: x.name
+                                    }
+                                }));
+                            }
+                        },
+                        imageResize: {},
+                        magicUrl: true,
+                        imageDropAndPaste: {
+                            handler: this.imageHandler
+                        },
+                        imageUpload: {
+                            customUploader: (file, s) => this.handleImageAdded(file, s), // add custom uploader
+                        },
+                        toolbar: {
+
+                            container: [
+                                ["bold", "italic", "underline"],
+                                [{
+                                    list: "ordered"
+                                }, {
+                                    list: "bullet"
+                                }],
+                                ['image']
+                            ],
+                            handlers: {
+                                'image': function () {
+                                    document.getElementById('getFile').click()
+                                }
+                            }
+                        }
+                    }
+                },
+
             }
         },
+        mounted() {
+            this.update_users()
+        },
         methods: {
-            ...mapActions(['set_productstep']),
-            ...mapMutations(['set_projects']),
-            async load_project() {
-                await axios.get(`cors/wholeprojects/${this.$route.params.id}`).then(x => {
-                    this.set_projects(x.data)
-                })
+            ...mapActions(['update_users']),
+            suggestPeople(searchTerm) {
+                const allPeople = this.users;
+                return allPeople.filter(person => person.name.includes(searchTerm));
             },
-            inputFilter(newFile, oldFile, prevent) {
-                if (newFile && !oldFile) {
-                    if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
-                        return prevent()
-                    }
-                    if (/\.(php5?|html?|jsx?)$/i.test(newFile.name)) {
-                        return prevent()
-                    }
-                }
-            },
-            inputFile(newFile, oldFile) {
-                this.$refs.upload.active = true
-            },
-            showImages(f) {
-                console.log(f);
-                var $images = f.filter(x => {
-                    return /(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(x.response.file_meta.ext)
-                }).map(x => `${this.server}/${x.response.location}`)
-                this.$refs.viewer.show($images)
-            },
-
-            send_lr() {
-                this.errors = {}
-                axios.post(`cors/newLr`, this.data)
-                    .then(res => {
-                        console.log('d',res)
-                        var x = res.data
-                       
-
-                        axios.post(`cors/emails2`, {
-                            ...this.content,
-                            title:`${x.project.TYPE}#${x.project.NUM}-${this.get_project.client.com_name}-${this.get_project.ProjectName}`,
-                            projects: [x.project.ID]
-                        }).then(x=>{
-                            this.update_temp(x.data.id);
-                            this.$router.push({name:'view_trail',params:{id:x.data.id}})
+            imageHandler: function (imageDataUrl, type, imageData) {
+                fetch(imageDataUrl)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], "File name", {
+                            type: "image/png"
                         })
+                        this.handleImageAdded(file)
+                    })
 
+            },
+            submit() {
+
+                this.sending = true
+                axios.post(`cors/trail/${this.trailid}/send`, {
+                        ...this.data,
+                        user: this.current_employee_id,
+                    })
+                    .then(res => {
+                        // console.log(res)
+
+
+                        this.update_temp(res.data.id);
+                        this.showNotification({
+                            title: 'Message Sent',
+                            content: res.data.content
+                        })
                     })
                     .catch(err => {
-                        this.errors = err.response.data.errors
+                        console.error(err);
+                    }).then(x => {
+
+                        this.$emit('sent')
+                        this.data = {}
+                        this.sending = false
+
+
+
                     })
             },
-             update_temp(id) {
-                
+            handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
+                this.sending = true
+                var formData = new FormData();
+                formData.append("upload", file);
+                axios({
+                        url: "cors/UploadImage",
+                        method: "POST",
+                        data: formData
+                    })
+                    .then(result => {
+                        let url = result.data.url;
+                        var quill = this.$refs.test.quill;
+                        this.sending = false
+                        console.log('Editor', Editor)
+                        quill.insertEmbed(quill.getSelection().index, 'imageBlot', {
+                            src: url,
+                        }, 'user');
+
+                    })
+            },
+            update_temp(id) {
+
                 axios.post(`cors/file/updateTemp/${id}`, {
                         ids: this.files.map(x => {
                             return x.response.id
@@ -245,54 +297,22 @@
                         console.error(err);
                     })
             },
-        },
-        computed: {
-            ...mapGetters(['current_employee_id', 'get_project', 'currentUser']),
-
-
-        },
-        async mounted() {
-            
-            await this.load_project()
-            
-            this.data = {
-                "finishers": [
-
-                ],
-                "details": {
-                    "s_accountexec": this.current_employee_id,
-                    "s_projname": this.get_project.ProjectName,
-                    "s_company": this.get_project.Client,
-                    "size": ""
-                },
-                "projects": {
-                    "SALESEXEC": this.current_employee_id,
-                    "projectID": this.get_project.ID,
-                    "TYPE": "LR",
-                    "projecttype": 11
-                },
-                layout: []
-
-            },
-           
-            await this.set_productstep().then(x => {
-                 this.data.finishers = x.find(x => {
-                    return x.stepname == "LAYOUT PROPOSAL"
-                }).steps.map((s, i) => {
-                    return {
-                        DETAILS: s.detail,
-                        FINISHING: s.production.prodt_name,
-                        Num: i,
-                        department: s.production.prodt_dep,
-                        machine: s.sel_machine,
-                        machine_req: s.production.prodt_machine,
-                        processname: s.productionID,
-                        productionID: s.productID
+            inputFilter(newFile, oldFile, prevent) {
+                if (newFile && !oldFile) {
+                    if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
+                        return prevent()
                     }
-                })
-            })
+                    if (/\.(php5?|html?|jsx?)$/i.test(newFile.name)) {
+                        return prevent()
+                    }
+                }
+            },
+            inputFile(newFile, oldFile) {
+                this.$refs.upload.active = true
 
-            
+            }
+
+
         },
     }
 </script>

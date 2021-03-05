@@ -111,7 +111,7 @@
                               <td>
                                  <!-- <div class="p-0" style=""> -->
                                  <b-collapse visible :id="`collapse-${j.id}`" class="p-0">
-                                    <table class="table table-sm table-hover b-table b-table-fixed">
+                                    <table class="table table-sm table-hover b-table table-bordered">
                                        <draggable :list=" j.projects" tag="tbody" group="people"
                                           @change="change_group($event,j.id)" handle=".handle">
 
@@ -119,12 +119,12 @@
 
                                              <!-- <td :rowspan="j.projects.length" style="width:50px" v-if="i==0"></td> -->
 
-                                             <td style="width:200px;vertical-align: middle;">
+                                             <td style="width:250px;vertical-align: middle;">
                                                 <i class="fa fa-align-justify handle" role="button"></i>
                                                 {{oj.TYPE}}#{{oj.NUM}} <template v-if="oj.VERSION > 0">
                                                    V.{{oj.VERSION}}</template>
 
-                                                <i class="fa fa-envelope float-right text-primary" v-if="oj.trailid"
+                                                <i  v-b-tooltip.hover title="Sent to trail" class="fa fa-check float-right text-primary pt-1 pr-2" v-if="oj.trailid"
                                                    aria-hidden="true"></i>
 
                                              </td>
@@ -140,12 +140,49 @@
                                                    </div>
                                                 </div>
                                              </td>
-                                             <td class="text-truncate" style="width:150px">
-                                                <b-icon-file-earmark></b-icon-file-earmark> {{oj.detail2.s_media}}
+                                             <td class="text-truncate align-middle" style="width:150px">
+                                                <div v-if="oj.detail2.s_media" class="mx-auto">
+                                                   <b-icon-file-earmark></b-icon-file-earmark> {{oj.detail2.s_media}}
+                                                </div>
+                                                <div v-else>
+                                                   N/A
+                                                </div>
                                              </td>
-                                             <td style="width:130px">
-                                                <status_indicator v-model="oj.STATUS" pill />
+                                             <td   class="align-middle w-20">
+                                                <!-- <status_indicator v-model="oj.STATUS" pill /> -->
+                                                <div class="border-md max-w-max text-sm px-2 rounded-lg" :class="oj.STATUS | status_col">
+                                                   <b-icon-circle-fill class=" mr-2 inline-block"/>
+                                                   <span class="font-bold inline-block uppercase">{{(oj.STATUS || 'Pending').toLowerCase()}}</span>
+                                                </div>
                                              </td>
+                                             <!-- <td>
+                                                <edit_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='PSR'">
+                                                      <div>
+                                                         <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                                                         <span class=" inline-block">Edit</span>
+                                                      </div>
+                                                   </edit_psr>
+                                                    <revise_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='PSR'">
+                                                      <div>
+                                                       
+                                                         <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" /></svg>
+                                                         <span class=" inline-block">Revise</span>
+                                                      </div>
+                                                   </revise_psr>
+                                                    <revise_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='LR'">
+                                                      <div>
+                                                         <i class="fas fa-edit"></i>
+                                                         Revise
+                                                      </div>
+                                                   </revise_psr>
+                                                   <edit_jo @edited="edited()" :id="oj" v-if="oj.TYPE =='JO'">
+                                                      <div>
+                                                         <i class="fas fa-edit"></i>
+                                                         Edit JO
+                                                      </div>
+                                                   </edit_jo>
+                                                   <confirm_delete @deleted="$delete(j.projects,i)" ref="comfirm_delete" :project="oj" />
+                                             </td> -->
                                              <td style="width:50px">
 
                                                 <b-dropdown variant="link" toggle-class="text-decoration-none" no-caret
@@ -156,11 +193,19 @@
 
                                                    <edit_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='PSR'">
                                                       <div>
-                                                         <i class="fas fa-edit"></i>
-                                                         Edit PSR
+                                                         <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
+                                                         <span class=" inline-block">Edit</span>
                                                       </div>
                                                    </edit_psr>
                                                     <b-dropdown-divider></b-dropdown-divider>
+                                                    <revise_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='PSR'">
+                                                      <div>
+                                                         <!-- <i class="fas fa-edit"></i>
+                                                          -->
+                                                         <svg class="w-6 h-6 inline-block mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clipRule="evenodd" /></svg>
+                                                         <span class=" inline-block">Revise</span>
+                                                      </div>
+                                                   </revise_psr>
                                                     <revise_psr @edited="edited()" :id="oj" v-if="oj.TYPE =='LR'">
                                                       <div>
                                                          <i class="fas fa-edit"></i>

@@ -126,7 +126,22 @@ export default {
                 }
             },
         })
-
+        Vue.filter('status_col',function(Status){
+            
+                switch (Status) {
+                  case "Working on it":
+                    return "primary text-blue-600 bg-blue-100";
+                  case "Done":
+                    return "success text-green-600 bg-green-100";
+                  case "Paused":
+                    return "warning text-yellow-600 bg-yellow-100";
+                  case "REVISED":
+                    return "danger text-red-600 bg-red-100";
+                  default:
+                    return "warning text-yellow-600 bg-yellow-100";
+                }
+              
+        })
         Vue.filter('formatDate', function (value, format) {
             if (format == 'ago') {
                 var date = new Date(value)

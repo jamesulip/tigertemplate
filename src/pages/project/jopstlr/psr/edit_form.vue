@@ -52,7 +52,7 @@
         <div class="col-md-6">
                 <div class="col-md-12" v-for="(item, index) in value.finishers" :key="index">
 
-                    <div class="border-b-2">
+                    <div class="card">
                         <div class="card-header">
                             {{item.FINISHING}}
                         </div>
@@ -130,6 +130,23 @@ import { mapGetters, mapState } from 'vuex'
                 this.errors = {}
                 this.updating=true
                 axios.post(`cors/updateProject/${this.value.details.ID}`,
+                        this.value)
+                    .then(res => {
+
+                        this.$emit('edited', res.data)
+                        this.updating=false
+                    })
+                    .catch(err => {
+                        // console.error(err); 
+
+                        this.errors = err.response.data.errors
+                        this.updating=false
+                    })
+            },
+            revise() {
+                this.errors = {}
+                this.updating=true
+                axios.post(`cors/newAddproject`,
                         this.value)
                     .then(res => {
 

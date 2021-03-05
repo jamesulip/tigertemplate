@@ -5,7 +5,7 @@
 
          <div class="row mt-2">
             <div class="col-sm-6 p-0 back-button">
-               <h1> Projects</h1>
+               <span class="text-xl font-bold font-sans self-auto">Projects</span>
 
              <project_add @project_added="search()"/>
 
