@@ -1,4 +1,11 @@
+
 <template>
+<!-- sales
+	revise psr message
+	revise lr add new revision project and message
+	edit lr
+	revise lr component
+	 -->
   <b-overlay :show="loading">
     <div class="container pt-5" style="padding-bottom:50vh">
       <div class="row justify-content-center">
