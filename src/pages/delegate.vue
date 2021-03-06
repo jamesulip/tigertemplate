@@ -175,7 +175,6 @@
 
         methods: {
             loadModal(id) {
-
                 this.current_project_modal = true
                 this.$refs.detailModal.load_details(id)
             },

@@ -6,6 +6,7 @@ export default {
     install(Vue, options) {
         Vue.mixin({
             methods: {
+                $evaluate: param => eval('this.'+param),
                 showNotification(set={title:'title',subject:'subject',content:'content',variant:'default',toast:'b-toaster-bottom-left'}) {
                     function stripHtml(html)
                     {

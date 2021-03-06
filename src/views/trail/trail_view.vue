@@ -153,33 +153,31 @@
               </div>
             </b-tab>
             <b-tab title="Projects">
+              <template #title>
+                <div class=" text-primary">
+                  Projects <b-badge variant="danger">{{$evaluate('info.projects?.length')}}</b-badge>
+                </div>
+              </template>
                <div class="card-body  p-0 table-responsive" style="min-height:600px">
                     <table
-                        class="table table-hover  table-head-fixed table-striped table-condensed table-sm  table-valign-middle">
+                        class="table table-hover   table-striped table-condensed table-sm  table-valign-middle">
                         <thead>
                             <tr>
-                                <th></th>
                                 <th>TYPE</th>
                                 <th>Number</th>
                                 <th>Project Name</th>
                                 <th>Company</th>
                                 <th>Media</th>
                                 <th>Status</th>
-                                <th>ss</th>
+                                <th>View</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(Project, index) in info.projects" :key="index">
                                 <td>
-                                    <!-- <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project"
-                                       /> -->
-
-                                </td>
-                                <td>
                                     <p class="h3 font-weight-bold m-0">{{Project.TYPE}}</p>
                                 </td>
                                 <td>
-
                                     {{Project.NUM}} <span class="text-muted"
                                         v-if="parseInt(Project.VERSION)">Version:{{Project.VERSION}}</span>
                                 </td>
@@ -196,14 +194,11 @@
                                 <td>
                                     <span style="display:block">{{Project.Status}} </span>
                                 </td>
+                               
                                 <td>
-                                    <i class="fa fa-history" aria-hidden="true"></i>
-                                </td>
-                                <td>
-                                    <!-- <a role="button" class="text-info"
-                                        @click="x=>{selected_view =Project;current_project_modal=true}">
-                                        <b-icon-info-circle></b-icon-info-circle>
-                                    </a> -->
+                                   <b-button variant="link" size="sm"
+                                            @click.prevent="x=>{selID=Project.DETAILID;current_project_modal=true}">view
+                                      </b-button>
                                 </td>
                             </tr>
                         </tbody>
@@ -217,6 +212,9 @@
         </div>
       </div>
       <view_image ref="viewer" />
+      <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" content-class="shadow">
+            <project_detail ref="detailModal" :project_id="selID" :load="true" />
+        </b-modal>
     </div>
   </b-overlay>
 </template>
@@ -251,7 +249,9 @@
         show_pic: false,
         full_image: '',
         loading: true,
-        info: {}
+        info: {},
+        current_project_modal:false,
+        selID:null
       }
     },
 
@@ -264,6 +264,10 @@
         }))
     },
     methods: {
+      loadModal(id) {
+        this.current_project_modal = true
+        this.$refs.detailModal.load_details(id)
+      },
       check_mime(type) {
         return /(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(type);
       },
