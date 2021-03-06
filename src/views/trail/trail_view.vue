@@ -231,7 +231,7 @@
   } from 'vuex'
   import sendMessage from './sendmessage'
   import view_image from './view_image'
-  import proposal from '../../components/updatebutton.vue'
+  import proposal from './lr-view'
   import updateButton from '../../components/updatebutton'
   export default {
     components: {

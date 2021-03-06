@@ -20,7 +20,7 @@
             </div>
 
             <file-upload :size="(1024 * 1024) * 100" :headers="{'Authorization': `Bearer  ${currentUser.token}`}"
-                v-show="!Boolean(file.length)" accept="image/*" :post-action="`${serUrl}/cors/layout_proposal/create`"
+                v-show="!Boolean(file.length)" accept="application/pdf" :post-action="`${serUrl}/cors/layout_proposal/create`"
                 :multiple="true" :drop="true" :data="{
                         project_id:this.$route.params.id
                     }" @input-filter="inputFilter" @input-file="inputFile" :drop-directory="true" v-model="file"
