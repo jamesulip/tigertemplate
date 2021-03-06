@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12">
-
                 <b-alert dismissible @dismissed="x=>{show_errors=false,errors={}}"
                     :show="Boolean(Object.keys(errors).length) && show_errors" variant="danger" class="disabled">
                     Cant Proceed {{Object.keys(errors).length}} error<template
@@ -47,8 +46,6 @@
              
             </div>
         </div>
-
-    
         <div class="col-md-6">
                 <div class="col-md-12" v-for="(item, index) in value.finishers" :key="index">
 
@@ -71,10 +68,10 @@
                         </div>
                     </div>
                 </div>
+        </div>
 
-            </div>
 
-       
+      
     </div>
 </template>
 
@@ -129,19 +126,16 @@ import { mapGetters, mapState } from 'vuex'
             submit() {
                 this.errors = {}
                 this.updating=true
-                axios.post(`cors/newAddproject`,
-                        this.value)
-                    .then(res => {
 
-                        this.$emit('edited', res.data)
-                        this.updating=false
-                    })
-                    .catch(err => {
-                        // console.error(err); 
-
-                        this.errors = err.response.data.errors
-                        this.updating=false
-                    })
+                axios.post(`cors/newAddproject`,this.value)
+                .then(res => {
+                    this.$emit('edited', res.data)
+                    this.updating=false
+                })
+                .catch(err => {
+                    this.errors = err.response.data.errors
+                    this.updating=false
+                })
             }
         },
     }

@@ -14,8 +14,10 @@
                             Option {{file_info.project.VERSION}}
                         </span>
                     </div>
+                 
 
                 </div>
+                <div class="my-auto px-2 rounded-sm">{{file_info.Status || 'Pending'}}</div>
                 <div class="float-right pt-2">
                     <b-button variant="warning" href="" @click="show_comments=true">
                         
@@ -34,7 +36,7 @@
         <div class="container max-w-7xl ">
 
 
-            <div class="mb-2" v-for="(i) in numPages.page_count" :key="i" v-observe-visibility="{callback:(isVisible, entry) => visibilityChanged(isVisible, entry, i), once: true,throttle: 300,
+            <div class="my-1" v-for="(i) in numPages.page_count" :key="i" v-observe-visibility="{callback:(isVisible, entry) => visibilityChanged(isVisible, entry, i), once: true,throttle: 300,
                 throttleOptions: {
                     leading: 'visible',
                 },}">
@@ -101,7 +103,7 @@
                             clip-rule="evenodd" />
                     </svg>
                 </button>
-                <revise_psr />
+                <revise_lr :project_details="project_details"/>
             </div>
         </div>
         <b-sidebar v-model="show_comments" id="sidebar-right" title="Sidebar" right shadow>
@@ -137,7 +139,9 @@
                 loaded_pages: [],
                 zoom_i: 3,
                 zoom_percent: [25, 50, 75, 100, 150, 200, 300, 400],
-                show_comments:false
+                show_comments:false,
+                project_info:{},
+                project_details:{}
             }
         },
 
@@ -169,21 +173,29 @@
             }
         },
         mounted() {
-
-            this.src.promise.then(pdf => {
-                this.numPages = {
-                    page_count: pdf.numPages,
-                    isVisible: false
-                };
-            });
+          
             axios.get(`/cors/jarvisFileInfos/${this.$route.params.file}`)
+            .then(res => {
+                // console.log(res)
+                this.file_info = res.data
+
+                axios.get(`/cors/projectDetail/${res.data.project_id}`)
                 .then(res => {
-                    // console.log(res)
-                    this.file_info = res.data
+                    this.project_details = res.data
                 })
-                .catch(err => {
-                    console.error(err);
-                })
+                this.src.promise.then(pdf => {
+                    this.numPages = {
+                        page_count: pdf.numPages,
+                        isVisible: false
+                    };
+                });
+                
+            })
+            .catch(err => {
+                console.error(err);
+            })
+
+            
         },
     }
 </script>

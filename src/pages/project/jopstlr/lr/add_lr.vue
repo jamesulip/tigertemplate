@@ -214,8 +214,6 @@
                     .then(res => {
                         console.log('d',res)
                         var x = res.data
-                       
-
                         axios.post(`cors/emails2`, {
                             ...this.content,
                             title:`${x.project.TYPE}#${x.project.NUM}-${this.get_project.client.com_name}-${this.get_project.ProjectName}`,
