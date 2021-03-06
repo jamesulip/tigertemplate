@@ -5,10 +5,13 @@
 .no-underline {
    text-decoration:none !important;
 }
-body:not(.sidebar-mini-md) .content-wrapper,
-body:not(.sidebar-mini-md) .main-header{
-    margin-left: 255px;
+@media (min-width: 768px){
+    body:not(.sidebar-mini-md) .content-wrapper,
+    body:not(.sidebar-mini-md) .main-header{
+        margin-left: 255px;
+    }
 }
+
 .sidebar-collapse .main-sidebar{
     margin-left: -255px!important;
 }
@@ -21,6 +24,7 @@ body:not(.sidebar-mini-md) .main-header{
 .tw-side-nav{
     @apply flex flex-col w-64 h-screen px-4 py-8 bg-white border-r dark:bg-gray-800 dark:border-gray-600;
 }
+
 
 .side-button.router-link-active{
     @apply bg-yellow-400 text-black !important

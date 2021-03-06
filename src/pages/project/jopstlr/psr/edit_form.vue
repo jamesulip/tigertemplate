@@ -2,7 +2,6 @@
     <div class="row">
         <div class="col-md-6">
             <div class="col-md-12">
-
                 <b-alert dismissible @dismissed="x=>{show_errors=false,errors={}}"
                     :show="Boolean(Object.keys(errors).length) && show_errors" variant="danger" class="disabled">
                     Cant Proceed {{Object.keys(errors).length}} error<template

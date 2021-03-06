@@ -1,11 +1,10 @@
 <template #button-content>
-    <li role="presentation">
-        <a role="button" class="dropdown-item" @click="open_jo_add_modal = true">
+    <li role="presentation" disabled>
+        <button :disabled="disabled" role="button" class="dropdown-item" @click="open_jo_add_modal = true">
             <slot>
                 Add Job Order
             </slot>
-
-        </a>
+        </button>
         <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop v-if="data.projects" size="xl" @show="add"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @edited="x=>{
@@ -53,7 +52,7 @@ import { mapGetters } from 'vuex'
     /*eslint-disable*/
     import jo_form from './edit_form'
     export default {
-        props:['id'],
+        props:['id','disabled'],
         components: {
             jo_form
         },

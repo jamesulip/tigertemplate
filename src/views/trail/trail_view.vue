@@ -5,12 +5,10 @@
         <div class="col-lg-10 col-xl-8">
           <div class="page-header">
             <h4 class="h4">{{info.title}}</h4>
-
-
           </div>
           <hr>
 
-          <b-tabs pills fill variant="danger" nav-class="rounded bg-tab p-3" active-nav-item-class="bg-white">
+          <b-tabs pills fill variant="danger" nav-class="rounded bg-tab p-3  sticky top-0" active-nav-item-class="bg-white">
             <b-tab title="Trail" :title-link-class="`font-weight-normal`">
               <template #title>
                 <div class=" text-primary">
