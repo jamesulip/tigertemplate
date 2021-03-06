@@ -20,7 +20,7 @@
         </div>
       </aside>
 
-      <div class="content-wrapper" >
+      <div class="content-wrapper bg-white" >
        
           <!-- <b-overlay :show="$store.getters.loadingState" rounded="sm"> -->
           <router-view/>

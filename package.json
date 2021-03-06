@@ -38,6 +38,7 @@
     "quill-magic-url": "^2.1.5",
     "quill-mention": "^3.0.0",
     "regenerator-runtime": "^0.13.7",
+    "tailwind-scrollbar": "^1.0.2",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.1",
     "v-viewer": "^1.5.1",
     "viewerjs": "1.5.0",

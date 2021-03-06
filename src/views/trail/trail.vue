@@ -1,10 +1,7 @@
 <template>
-  <div class="content pt-4 p-0 ">
-    <div class="col-md-12">
-      <div class="card ">
+      <div class="h-full bg-white">
         <div class="card-header">
           <h3 class="card-title">Trail</h3>
-
           <div class="card-tools">
             <div class="input-group input-group-sm">
               <input v-model="search" @change="pageChange('search')" type="text" class="form-control" placeholder="Search Mail" />
@@ -15,32 +12,21 @@
               </div>
             </div>
           </div>
-          <!-- /.card-tools -->
         </div>
-        <!-- /.card-header -->
         <div class="card-body p-1">
           <trail-control v-model="page" @pageChange="x=>pageChange(x)" :loading="loading">
             <template #mailcontrol>
-              
                 <button type="button" class="btn btn-link btn-sm checkbox-toggle">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" /></svg>
                 </button>
-
-
                 <div class="btn-group">
                       <button type="button"  class="btn btn-link btn-sm">
                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" /></svg>
                   </button>
-
-
-
-                  
                 </div>
-           
             </template>
           </trail-control>
           <div class="table-responsive">
-                
             <div class="col-md-12 d-flex justify-content-center " v-if="page.data && !Boolean(page.data.length)">
               <div class="col-md-12 rounded border m-3   p-4 text-muted d-flex d-flex flex-column">
                 <div class="text-center">
@@ -49,19 +35,15 @@
                 <div class="text-center">
                   <span>No Trail</span>
                 </div>
-
               </div>
             </div>
-       
             <table v-else class="table table-hover table-md  table-striped" style="table-layout:fixed">
               <thead>
                 <tr>
                   <th style="width:60px"></th>
                   <th style="width:60px"></th>
-                
                   <th></th>
                   <th style="width:60px"></th>
-             
                   <th style="width:100px"></th>
                 </tr>
               </thead>
@@ -71,7 +53,6 @@
                     <td   @click.stop="x=>{$forceUpdate()}">
                        <b-form-checkbox
                       v-model="trail.selected"
-                   
                       :id="`checkbox-${index}`"
                       :name="`checkbox-${index}`"
                 
@@ -133,10 +114,7 @@
            <!-- <trail-control/> -->
         </div>
       </div>
-      <!-- /.card -->
-    </div>
-    <!-- /.col -->
-  </div>
+
 </template>
 <style scoped>
   .m-content {

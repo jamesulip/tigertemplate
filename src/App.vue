@@ -25,7 +25,7 @@ export default {
   components:{
   } ,  
   mounted() {
-    document.body.classList.add('sidebar-min', 'layout-fixed')
+    document.body.classList.add('sidebar-min', 'layout-fixed','scrollbar-thin','scrollbar-thumb-gray-500','scrollbar-track-yellow-50')
   },
 }
 </script>

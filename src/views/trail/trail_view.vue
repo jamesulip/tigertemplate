@@ -1,7 +1,7 @@
 <template>
   <b-overlay :show="loading">
-    <div class="container pt-5" style="padding-bottom:50vh">
-      <div class="row justify-content-center">
+    <div class="pt-5" style="padding-bottom:50vh">
+      <div class="flex justify-center">
         <div class="col-lg-10 col-xl-8">
           <div class="page-header">
             <h4 class="h4">{{info.title}}</h4>
@@ -153,7 +153,62 @@
               </div>
             </b-tab>
             <b-tab title="Projects">
-              <b-img :src="full_image"></b-img>
+               <div class="card-body  p-0 table-responsive" style="min-height:600px">
+                    <table
+                        class="table table-hover  table-head-fixed table-striped table-condensed table-sm  table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>TYPE</th>
+                                <th>Number</th>
+                                <th>Project Name</th>
+                                <th>Company</th>
+                                <th>Media</th>
+                                <th>Status</th>
+                                <th>ss</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(Project, index) in info.projects" :key="index">
+                                <td>
+                                    <!-- <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project"
+                                       /> -->
+
+                                </td>
+                                <td>
+                                    <p class="h3 font-weight-bold m-0">{{Project.TYPE}}</p>
+                                </td>
+                                <td>
+
+                                    {{Project.NUM}} <span class="text-muted"
+                                        v-if="parseInt(Project.VERSION)">Version:{{Project.VERSION}}</span>
+                                </td>
+                                <td>
+                                    <div class="text-truncate" style="width:150px">{{Project.detail2.client2.com_name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-truncate" style="width:150px">{{Project.detail2.s_projname}}</div>
+                                </td>
+                                <td class=" middle-align">
+                                    <span class="badge">{{Project.detail2.s_media}}</span>
+                                </td>
+                                <td>
+                                    <span style="display:block">{{Project.Status}} </span>
+                                </td>
+                                <td>
+                                    <i class="fa fa-history" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    <!-- <a role="button" class="text-info"
+                                        @click="x=>{selected_view =Project;current_project_modal=true}">
+                                        <b-icon-info-circle></b-icon-info-circle>
+                                    </a> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </b-tab>
             <b-tab title="Files">
 
@@ -178,12 +233,14 @@
   } from 'vuex'
   import sendMessage from './sendmessage'
   import view_image from './view_image'
-  import proposal from './lr-view.vue'
+  import proposal from '../../components/updatebutton.vue'
+  import updateButton from '../../components/updatebutton'
   export default {
     components: {
       sendMessage,
       view_image,
-      proposal
+      proposal,
+      updateButton
     },
     computed: mapState([
       'serUrl'

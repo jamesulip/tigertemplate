@@ -8,6 +8,7 @@ import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import moment from 'moment'
+
 Vue.prototype.moment = moment
 import vSelect from "vue-select";
 
