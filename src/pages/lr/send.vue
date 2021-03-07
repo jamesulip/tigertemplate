@@ -1,28 +1,46 @@
 <template>
     <div class="pt-20 min-h-screen">
         <div class="container-sm ">
-            <div class="w-full">
-                <transition-group tag="div" name="fade">
-                    <div v-for="f in file" :key="`${f.id}`" style="height:150px"
-                        class=" rounded-l-md border-2 rounded-md w-auto m-3 flex">
-                        <div class="h-full flex rounded-l-md" style="width:200px">
-                            <!-- <img src="https://img.icons8.com/officel/16/000000/pdf.png"/> -->
-                            <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
-                        </div>
-                        <div class="h-auto w-auto py-3 pr-4 flex flex-col justify-between">
-                            <span class="text-base md:text-md">
-                               {{f.name}}
-                            </span>
-                            <b-progress v-model="f.progress" :precision="1" show-progress></b-progress>
-                        </div>
+            <b-modal @hidden="file=[]" size="lg" v-model="upload_proposal_modal" @ok="submit_rev">
+                <template #modal-title>
+                    <div>
+                        Version {{project.project.VERSION}}
                     </div>
-                </transition-group>
-            </div>
-
-            <file-upload :size="(1024 * 1024) * 100" :headers="{'Authorization': `Bearer  ${currentUser.token}`}"
-                v-show="!Boolean(file.length)" accept="application/pdf" :post-action="`${serUrl}/cors/layout_proposal/create`"
-                :multiple="true" :drop="true" :data="{
-                        project_id:this.$route.params.id
+                </template>
+                <template #modal-footer={ok}>
+                    <div>
+                         <b-button @click="ok">Send Proposal</b-button>
+                    </div>
+                </template>
+                <div class="w-full">
+                    <transition-group tag="div" name="fade">
+                        <div v-for="(f,ind) in file" :key="`${f.id}`" style="height:150px"
+                            class=" rounded-l-md border-2 rounded-md w-auto m-3 flex">
+                            <div class="h-full flex rounded-l-md" style="width:200px">
+                                <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
+                            </div>
+                            <div class="h-auto w-full py-3 pr-4 flex flex-col justify-between">
+                                 <label class="float-right hidden" for="">Option {{f.data.option = ind}}</label>
+                                <span class="text-base md:text-md">
+                                    {{f.name}}
+                                </span>
+                                <b-progress v-model="f.progress" :precision="1" show-progress></b-progress>
+                            </div>
+                        </div>
+                    </transition-group>
+                    <div class="w-full p-4">
+                        <transition name="fade">
+                            <send_mes ref="submit_b" :hide-button="true" @sent="update_proposal" v-if="project.project" :trailid="project.project"
+                                :disabled="!Boolean(file.length)" v-show="Boolean(file.length)" />
+                        </transition>
+                    </div>
+                </div>
+            </b-modal>
+            <file-upload :add-index="true" :size="(1024 * 1024) * 100" :headers="{'Authorization': `Bearer  ${currentUser.token}`}"
+                v-show="!Boolean(file.length)" accept="application/pdf"
+                :post-action="`${serUrl}/cors/layout_proposal/create`" :multiple="false" :drop="true" :data="{
+                        project_id:this.$route.params.id,
+                        
                     }" @input-filter="inputFilter" @input-file="inputFile" :drop-directory="true" v-model="file"
                 class="w-full" ref="upload">
                 <div style="height:250px"
@@ -46,12 +64,7 @@
             </file-upload>
 
 
-            <div class="w-full p-4">
-                <transition name="fade">
-                    <send_mes @sent="update_proposal" v-if="project.project" :trailid="project.project.trailid"
-                        :disabled="!Boolean(file.length)" v-show="Boolean(file.length)" />
-                </transition>
-            </div>
+
             <h3 class="pl-3 text-gray-500">
                 Proposals Sent
             </h3>
@@ -68,11 +81,11 @@
                 <tbody>
                     <tr v-for="sp in sent_proposal" :key="`sp-${sp.id}`">
                         <td class="w-0">
-                              <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
+                            <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
                         </td>
                         <td class="text-truncate">
                             <div class="w-48">
-                            <span>{{sp.files.filename}}</span>
+                                <span>{{sp.files.filename}}</span>
                             </div>
                         </td>
                         <td>{{sp.created_at | formatDate('L')}}</td>
@@ -81,31 +94,6 @@
                     </tr>
                 </tbody>
             </table>
-            <transition-group tag="div" class="row" name="fade">
-                <!-- <div v-for="sp in sent_proposal" :key="`sp-${sp.id}`" class="col-md-6">
-                    <div style="height:150px" class=" rounded-l-md border-2 rounded-md w-auto m-3 flex">
-                        <div class="flex-none h-full flex rounded-l-md" style="width:130px">
-                            <i class="far fa-file-pdf m-auto text-7xl text-gray-300"></i>
-                        </div>
-                        <div class="h-auto flex-grow w-auto py-3 px-1 flex flex-col justify-between">
-                            <span class="">
-                                {{sp.files.filename}}
-                            </span>
-
-                        </div>
-                        <div class="flex-none h-full  bg-red-50 flex rounded-r-md " style="max-width:130px;min-width:130px">
-                            <div class="m-auto flex flex-col">
-                                <div class="text-lg font-medium text-center">
-                                    Version {{sp.files.file_info.version}}
-                                </div>
-                                <div class="text-md font-medium text-center">
-                                    Option {{sp.files.file_info.option}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-            </transition-group>
         </div>
     </div>
 </template>
@@ -124,6 +112,8 @@
     }
 </style>
 <script>
+    import _ from 'lodash';
+
     import FileUpload from 'vue-upload-component'
     import send_mes from './sendmessage.vue'
     import {
@@ -135,13 +125,28 @@
             send_mes
         },
         computed: {
-            ...mapState(['currentUser', 'serUrl'])
+            ...mapState(['currentUser', 'serUrl']),
+            f_options(){
+                return {
+                    selected_options:this.file.filter(x=>x.data.option !==undefined).map(x=>x.data.option),
+                    options:_.range(this.file.length)
+                }
+            },
+            test2(){
+                if(Boolean(this.file) && this.file.every(x=>x.success)){
+                    // alert('xx')
+                    
+                    return true
+                }
+                return false
+            }
         },
         data() {
             return {
                 file: [],
                 sent_proposal: [],
-                project: {}
+                project: {},
+                upload_proposal_modal: false
             }
         },
         mounted() {
@@ -161,37 +166,53 @@
                 })
         },
         methods: {
+            submit_rev(x){
+                x.preventDefault();
+                this.$refs.submit_b.submit()
+            },
+            test(x){
+                setInterval(() => {
+                    console.log('x',x);
+                    this.file[x].data.option = x
+                }, 500);
+            },
             update_proposal(d) {
-                console.log('d', d);
-                axios.post(`/cors/layout_proposalUpdateComment`,{
-                    comment_id:d.id,
-                    id:this.file.map(x=>{
-                        return x.response
-                    }).map(x=>{
-                        return x.file_info.id
-                    })
+                axios.post(`/cors/layout_proposalUpdateComment`, {
+                        comment_id: d.id,
+                        id: this.file.map(x => {
+                            return x.response
+                        }).map(x => {
+                            return x.file_info.id
+                        })
 
-                })
-                .then(res => {
-                    axios.put(`/cors/finishers/${this.$route.query.project}`,{
-                        'Status':"Done"
                     })
                     .then(res => {
-                         this.$router.push({name:'view_trail',params:{id:d.parentID}})
+                        axios.put(`/cors/finishers/${this.$route.query.project}`, {
+                                'Status': "Done"
+                            })
+                            .then(res => {
+                                this.$router.push({
+                                    name: 'view_trail',
+                                    params: {
+                                        id: d.parentID
+                                    }
+                                })
+                            })
+                            .catch(err => {
+                                console.error(err);
+                            })
+
                     })
                     .catch(err => {
-                        console.error(err); 
+                        console.error(err);
                     })
-                    
-                    // console.log(res)
-                   
-                })
-                .catch(err => {
-                    console.error(err); 
-                })
             },
             inputFile(newFile, oldFile) {
-                this.$refs.upload.active = true
+              if(newFile){
+                  this.$refs.upload.active = true
+                  this.upload_proposal_modal = true
+                  newFile.data.version = this.project.project.VERSION
+                }
 
                 if (newFile && oldFile) {
                     if (newFile.active && !oldFile.active) {
@@ -201,13 +222,10 @@
                             })
                         }
                     }
-                    // if (newFile.progress !== oldFile.progress) {
-                    // }
-                    // if (newFile.error && !oldFile.error) {
-                    // }
-                    // if (newFile.success && !oldFile.success) {
-                    //     console.log(newFile.response)
-                    // }
+
+                 
+
+
                 }
                 if (!newFile && oldFile) {
                     if (oldFile.success && oldFile.response.id) {
@@ -225,7 +243,7 @@
             inputFilter(newFile, oldFile, prevent) {
 
                 if (newFile && !oldFile) {
-                    var opt = 1;
+                    
                     console.log('newFile', newFile)
                     if (/(\/|^)(Thumbs\.db|desktop\.ini|\..+)$/.test(newFile.name)) {
                         return prevent()
@@ -261,6 +279,7 @@
                     if (!newFile.version) {
                         newFile.version = 0
                     }
+                    console.log('version',newFile.version);
                     newFile.version++
                 }
                 if (newFile && (!oldFile || newFile.file !== oldFile.file)) {

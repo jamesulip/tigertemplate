@@ -42,7 +42,10 @@
                 <div class="col-md-6">
                     <template v-for="(item, index) in projectDetails.project.finishers || projectDetails.finishers">
                         <div :key="index" class="col-md-12">
-                            <dt class="col-sm-4">{{item.FINISHING}}</dt>
+                            <dt class="col-12 row flex flex-row justify-between">
+                                <div>{{item.FINISHING}}</div>
+                                <div>{{item.Status}}</div>
+                            </dt>
                             <dd class="col-sm-12 card card-body bg-light p-3" v-html="item.DETAILS || 'N/A'">{{}}</dd>
                         </div>
 

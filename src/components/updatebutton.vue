@@ -23,7 +23,7 @@
 
         </b-button-group>
 
-        <b-modal centered ok-only :title="`Start Projecst ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
+        <b-modal centered ok-only :title="`Start Project ${message.content}`" v-model="modal.start" header-class="bg-info disabled" button-size="sm"
             @ok="updateStatusText()">
             <b-form-group>
                 <label for="">Message</label>
@@ -31,7 +31,7 @@
             </b-form-group>
             <div slot="modal-ok">
                 <b-icon-play-fill></b-icon-play-fill>
-                Start
+                Send
             </div>
         </b-modal>
         

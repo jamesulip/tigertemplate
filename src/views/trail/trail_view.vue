@@ -1,8 +1,7 @@
 <template>
   <b-overlay :show="loading">
-    <div class="pt-5" style="padding-bottom:50vh">
-      <div class="flex justify-center">
-        <div class="col-lg-10 col-xl-8">
+    <div class="pt-5 col-12" style="padding-bottom:50vh">
+      <div>
           <div class="page-header">
             <h4 class="h4">{{info.title}}</h4>
 
@@ -102,6 +101,7 @@
                     <li class="list-group-item  pb-4" v-for="(i,index) in messages" :key="i.id">
 
                       <proposal v-if="i.Type=='proposal'" v-model="messages[index]" />
+                      <request v-else-if="i.Type=='revision'" v-model="messages[index]" />
                       <template v-else>
                         <div class="flex items-center">
                           <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
@@ -209,7 +209,6 @@
 
             </b-tab>
           </b-tabs>
-        </div>
       </div>
       <view_image ref="viewer" />
       <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" content-class="shadow">
@@ -232,13 +231,15 @@
   import sendMessage from './sendmessage'
   import view_image from './view_image'
   import proposal from './lr-view'
+  import request from './lr-request'
   import updateButton from '../../components/updatebutton'
   export default {
     components: {
       sendMessage,
       view_image,
       proposal,
-      updateButton
+      updateButton,
+      request
     },
     computed: mapState([
       'serUrl'

@@ -48,9 +48,18 @@
                                 </tr>
                             </tbody>
                         </table>
+                        
                     </div>
+                     <file-upload class="btn btn-primary" :key="`up-file`"
+                                :headers="{'Authorization':`Bearer ${ currentUser.token}`}"
+                                :post-action="`${server}/cors/file/attach/send`"  :multiple="true"
+                                :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
+                                @input-file="inputFile" ref="upload">
+                                <i class="fa fa-plus"></i>
+                                Select files
+                            </file-upload>
                 </div>
-                <div class="clearfix">
+                <div class="clearfix" v-show="!hideButton">
                     <div class="row">
                         <div class="col-md-12 mt-2">
                             <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6" spinner-small spinner-variant="primary"
@@ -136,7 +145,7 @@
     });
 
     export default {
-        props: ['trailid','disabled'],
+        props: ['trailid','disabled','hide-button'],
         components: {
             quillEditor,
             FileUpload
@@ -230,9 +239,10 @@
             submit() {
                
                 this.sending = true
-                axios.post(`cors/trail/${this.trailid}/send`, {
+                axios.post(`cors/trail/${this.trailid.trailid}/send`, {
                     ...this.data,
                     user: this.current_employee_id,
+                    ref:this.trailid.DETAILID
                 })
                     .then(res => {
                         // console.log(res)
