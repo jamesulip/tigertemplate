@@ -71,6 +71,7 @@
                                     <thead>
                                        <th style="width:50px"></th>
                                        <th style="width:200px">Number</th>
+                                       <th style="width:200px">Version</th>
                                        <th class="text-truncate">Job Name</th>
                                        <th class="text-truncate" style="width:150px">Media</th>
                                        <th style="width:130px">Status</th>
@@ -121,12 +122,15 @@
 
                                              <td style="width:250px;vertical-align: middle;">
                                                 <i class="fa fa-align-justify handle" role="button"></i>
-                                                {{oj.TYPE}}#{{oj.NUM}} <template v-if="oj.VERSION > 0">
-                                                   V.{{oj.VERSION}}</template>
+                                                {{oj.TYPE}}#{{oj.NUM}} 
 
                                                 <i  v-b-tooltip.hover title="Sent to trail" class="fa fa-check float-right text-primary pt-1 pr-2" v-if="oj.trailid"
                                                    aria-hidden="true"></i>
 
+                                             </td>
+                                             <td>
+                                                <template v-if="oj.VERSION > 0">
+                                                   V.{{oj.VERSION}}</template>
                                              </td>
                                              <td>
                                                 <div class="d-flex flex-column text-truncate">

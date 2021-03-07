@@ -8,9 +8,9 @@
       <div class="content-wrapper">
 
         <b-overlay :show="loadingState" rounded="sm">
-        <keep-alive>
+        <!-- <keep-alive> -->
           <router-view />
-        </keep-alive>
+        <!-- </keep-alive> -->
         </b-overlay>
 
       </div>

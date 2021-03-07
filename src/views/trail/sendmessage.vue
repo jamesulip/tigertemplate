@@ -4,7 +4,7 @@
         <div class="media-body">
             <div class="media-title" style="">
             </div>
-            <div class="messge-body p-2 shadow bg-white">
+            <div class="messge-body p-2 ">
                 <div class="">
                     <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="data.content" />
                     <div class="card card-body mt-1 p-1" v-if="files.length >0">

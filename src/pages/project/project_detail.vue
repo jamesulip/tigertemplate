@@ -44,16 +44,11 @@
             class="col-sm-8 text-capitalize"
             v-if="Boolean(projectDetails.finishers)"
           >
-            <span class="badge badge-info">{{
-              projectDetails.finishers[projectDetails.finishers.length - 1]
-                .FINISHING
+            <span class="badge badge-info">{{projectDetails.finishers[projectDetails.finishers.length - 1].FINISHING
             }}</span>
           </dd>
           <dd v-else>
-            {{
-              projectDetails.project.finishers[
-                projectDetails.project.finishers.length - 1
-              ].FINISHING
+            {{projectDetails.project.finishers[projectDetails.project.finishers.length - 1].FINISHING
             }}
           </dd>
           <div class="col-md-12 clearfix ">

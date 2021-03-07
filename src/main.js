@@ -47,6 +47,7 @@ Vue.component('revise_lr', require('./pages/project/jopstlr/lr/revise_lr.vue').d
 
 Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').default);
 Vue.component('send_project', require('./components/custom/send_project').default);
+Vue.component('request_error', require('./components/request-error.vue').default);
 
 import plugin from './plugin.js'
 Vue.use(plugin)

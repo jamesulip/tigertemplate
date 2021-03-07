@@ -1,21 +1,14 @@
-
 <template>
-<!-- sales
-	revise psr message
-	revise lr add new revision project and message
-	edit lr
-	revise lr component
-	 -->
   <b-overlay :show="loading">
-    <div class="container pt-5" style="padding-bottom:50vh">
-      <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
+ 
+    <div class="col-12 pt-5" style="padding-bottom:50vh">
+        <div>
           <div class="page-header">
             <h4 class="h4">{{info.title}}</h4>
           </div>
           <hr>
 
-          <b-tabs pills fill variant="danger" nav-class="rounded bg-tab p-3  sticky top-0" active-nav-item-class="bg-white">
+          <b-tabs pills fill variant="danger" nav-class="rounded bg-tab p-3 mt-3" active-nav-item-class="bg-white">
             <b-tab title="Trail" :title-link-class="`font-weight-normal`">
               <template #title>
                 <div class=" text-primary">
@@ -107,12 +100,14 @@
                     <li class="list-group-item  pb-4" v-for="(i,index) in messages" :key="i.id">
 
                       <proposal v-if="i.Type=='proposal'" v-model="messages[index]" />
+                      <request v-else-if="i.Type=='revision' || i.Type=='proposal'" v-model="messages[index]" />
                       <template v-else>
                         <div class="flex items-center">
                           <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
                           <div class="ml-2">
                             <div class="text-sm ">
                               <span class="font-semibold">{{i.userl?i.userl.name:'mumu'}}</span>
+                              <b-badge pill variant="success"></b-badge>
                             </div>
                             <div class="text-gray-500 text-xs " v-html="i.userl?i.userl.role:'mumu'"></div>
                             <div class="text-gray-500 text-xs flex">
@@ -157,15 +152,67 @@
                 </div>
               </div>
             </b-tab>
-            <b-tab title="Projects">
-              <b-img :src="full_image"></b-img>
+           <b-tab title="Projects">
+              <template #title>
+                <div class=" text-primary">
+                  Projects <b-badge variant="danger">{{$evaluate('info.projects?.length')}}</b-badge>
+                </div>
+              </template>
+              <div class="col-12 py-2">
+                <request_error v-if="info" :projects="info.projects"/>
+              </div>
+               <div class="card-body  p-0 table-responsive" style="min-height:600px">
+                    <table
+                        class="table table-hover   table-striped table-condensed table-sm  table-valign-middle">
+                        <thead>
+                            <tr>
+                                <th>TYPE</th>
+                                <th>Number</th>
+                                <th>Project Name</th>
+                                <th>Company</th>
+                                <th>Media</th>
+                                <th>Status</th>
+                                <th>View</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(Project, index) in info.projects" :key="index">
+                                <td>
+                                    <p class="h3 font-weight-bold m-0">{{Project.TYPE}}</p>
+                                </td>
+                                <td>
+                                    {{Project.NUM}} <span class="text-muted"
+                                        v-if="parseInt(Project.VERSION)">Version:{{Project.VERSION}}</span>
+                                </td>
+                                <td>
+                                    <div class="text-truncate" style="width:150px">{{Project.detail2.client2.com_name}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-truncate" style="width:150px">{{Project.detail2.s_projname}}</div>
+                                </td>
+                                <td class=" middle-align">
+                                    <span class="badge">{{Project.detail2.s_media}}</span>
+                                </td>
+                                <td>
+                                    <span style="display:block">{{Project.Status}} </span>
+                                </td>
+                               
+                                <td>
+                                   <b-button variant="link" size="sm"
+                                            @click.prevent="x=>{selID=Project.DETAILID;current_project_modal=true}">view
+                                      </b-button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </b-tab>
             <b-tab title="Files">
 
             </b-tab>
           </b-tabs>
         </div>
-      </div>
       <view_image ref="viewer" />
     </div>
   </b-overlay>
@@ -184,11 +231,13 @@
   import sendMessage from './sendmessage'
   import view_image from './view_image'
   import proposal from './lr-view.vue'
+  import request from './lr-request.vue'
   export default {
     components: {
       sendMessage,
       view_image,
-      proposal
+      proposal,
+      request
     },
     computed: mapState([
       'serUrl'

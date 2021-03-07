@@ -6,6 +6,7 @@ export default {
     install(Vue, options) {
         Vue.mixin({
             methods: {
+                $evaluate: param => eval('this.'+param),
                 showNotification(set={title:'title',subject:'subject',content:'content',variant:'default',toast:'b-toaster-bottom-left'}) {
                     function stripHtml(html)
                     {
@@ -141,6 +142,20 @@ export default {
                     return "warning text-yellow-600 bg-yellow-100";
                 }
               
+        })
+        Vue.filter('lr_status',function(Status){
+                switch (Status) {
+                    case "Approved":
+                        return "primary text-blue-600 bg-blue-100";
+                    case "For Approval":
+                        return "success text-green-600 bg-green-100";
+                    case "Paused":
+                        return "warning text-yellow-600 bg-yellow-100";
+                    case "Rejected":
+                        return "danger text-red-600 bg-red-100";
+                    default:
+                        return "warning text-yellow-600 bg-yellow-100";
+                }
         })
         Vue.filter('formatDate', function (value, format) {
             if (format == 'ago') {

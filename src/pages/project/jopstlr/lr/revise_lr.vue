@@ -54,7 +54,6 @@
             </div>
             <template #modal-footer>
                 <div class="w-full flex flex-row justify-between">
-
                     <file-upload :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
                         :post-action="`${server}/cors/file/attach/send`" :multiple="false" :size="1024 * 1024 * 20"
                         v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
@@ -69,7 +68,6 @@
                             <i class="fa fa-paper-plane pr-2" aria-hidden="true"></i>Request Changes
                         </b-button>
                     </b-overlay>
-
                 </div>
             </template>
         </b-modal>
@@ -158,7 +156,7 @@
                 files: [],
                 sending: false,
                 data: {
-                    Type: "comment",
+                    Type: "revision",
                     content: "",
                     user: this.current_employee_id,
                 },
@@ -241,7 +239,8 @@
                     axios.post(`cors/trail/${this.project_details.project.trailid}/send`, {
                         ...this.data,
                         user: this.current_employee_id,
-                        ref:res.data.ID
+                        ref:res.data.ID,
+                        Type:'revision'
                     })
                     .then(res => {
                         this.update_temp(res.data.id);
@@ -249,13 +248,16 @@
                             title: 'Message Sent',
                             content: res.data.content
                         })
+                        this.$emit('sent')
+                        this.$router.push({name:'view_trail',params:{id:res.data.parentID}})
                     })
                     .catch(err => {
                         console.error(err);
                     }).then(x => {
-                        this.$emit('sent')
+                       
                         this.data = {}
                         this.sending = false
+                        
 
                     })
                 })

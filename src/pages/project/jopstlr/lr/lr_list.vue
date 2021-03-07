@@ -9,11 +9,11 @@
                     <tr>
                         <th></th>
                         <th>Project Name</th>
+                        <th>Version</th>
                         <th>Designer</th>
                         <th>Approved</th>
                         <th>Date Requested</th>
                         <th>Date Submitted</th>
-                        <th>Version</th>
                         <th>Files</th>
                     
                     </tr>
@@ -28,12 +28,13 @@
                                 <span>{{lp.project.TYPE}}#{{lp.project.NUM}}</span>-<span>{{lp.client2.com_name}}</span>
                             </div>
                         </td>
+                         
                         <td>
+                            <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{lp.project.VERSION}}</span>
+                        </td>
+                        <td>
+                       
                             <b-avatar-group size="2rem">
-                                <b-avatar></b-avatar>
-                                <b-avatar></b-avatar>
-                                <b-avatar></b-avatar>
-                                <b-avatar></b-avatar>
                                 <b-avatar></b-avatar>
                             </b-avatar-group>
                         </td>
@@ -45,12 +46,7 @@
                                 {{lp.dateCreated |formatDate('L')}}
                             </span>
                         </td>
-                        <td>
-                           
-                        </td>
-                        <td>
-                            <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">9</span>
-                        </td>
+                      
                         <td>
                              <router-link :to="{name:'lrViewer',params:{id:lp.ID}}">
                                 <i class="far fa-folder-open    "></i>

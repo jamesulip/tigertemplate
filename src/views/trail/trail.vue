@@ -53,7 +53,7 @@
               </div>
             </div>
        
-            <table v-else class="table table-hover table-md  table-striped" style="table-layout:fixed">
+            <table v-else class="table table-hover table-sm  table-striped" style="table-layout:fixed">
               <thead>
                 <tr>
                   <th style="width:60px"></th>
@@ -94,18 +94,10 @@
 
                           <b>{{ trail.email.title }}</b>
                           <span class="text-truncate">
-                            -
-                            {{
-                                strippedContent(
-                                  trail.email.lastcomment2,
-                                  "contents"
-                                ) || trail.from.name
-                              }}
+                            -{{strippedContent(trail.email.lastcomment2,"contents") || trail.from.name}}
                           </span>
                           
-                        </div>
-                               <span class="badge badge-secondary mx-1 text-truncate" v-for="(item, index) in trail.project"
-                        :key="index">{{ item.TYPE }}#{{ item.NUM }}</span>
+                        </div><span class="badge badge-secondary mx-1 text-truncate" v-for="(item, index) in filter_dup(trail.project)" :key="index">{{ item.TYPE }}#{{ item.NUM }}</span>
                       </div>
                     </td>
                     <td class="mailbox-attachment">
@@ -195,6 +187,9 @@
         })
     },
     methods: {
+      filter_dup(s){
+        return s.filter((v,i,a)=>a.findIndex(t=>(t.NUM === v.NUM))===i)
+      },
       pageChange(url){
           this.loading = true
             if(url =='refresh')

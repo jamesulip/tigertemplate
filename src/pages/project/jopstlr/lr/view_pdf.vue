@@ -17,7 +17,7 @@
                  
 
                 </div>
-                <div class="my-auto px-2 rounded-sm">{{file_info.Status || 'Pending'}}</div>
+                <div class="my-auto px-3 rounded-xl font-black text-2xl pb-1" :class="(file_info.Status || 'Pending') | lr_status">{{file_info.Status || 'Pending'}}</div>
                 <div class="float-right pt-2">
                     <b-button variant="warning" href="" @click="show_comments=true">
                         
@@ -93,7 +93,7 @@
 
 
                 <span class="px-3">|</span>
-                <button :disabled="!zoom_percent[zoom_i-1]" @click="change_zoom('out')"
+                <!-- <button :disabled="!zoom_percent[zoom_i-1]" @click="change_zoom('out')"
                     class="hover:bg-gray-900 p-1 rounded-sm cursor-pointer text-green-400 hover:text-green-600">
 
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" viewBox="0 0 20 20"
@@ -102,8 +102,8 @@
                             d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
                             clip-rule="evenodd" />
                     </svg>
-                </button>
-                <revise_lr :project_details="project_details"/>
+                </button> -->
+                <revise_lr @sent="update_file_info()" :project_details="project_details"/>
             </div>
         </div>
         <b-sidebar v-model="show_comments" id="sidebar-right" title="Sidebar" right shadow>
@@ -150,6 +150,18 @@
 
         },
         methods: {
+            update_file_info(){
+                axios.put(`/cors/jarvisFileInfos/${this.file_info.id}`,{
+                   ...this.file_info,
+                    Status:'Rejected'
+                })
+                .then(res => {
+                    console.log(res)
+                })
+                .catch(err => {
+                    console.error(err); 
+                })
+            },
             change_zoom(z) {
                 if (z == 'in')
                     this.zoom_i++
