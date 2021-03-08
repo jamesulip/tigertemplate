@@ -18,7 +18,19 @@
 
               <div class="mt-3">
 
-                <h3 class="text-muted text-lg py-3">Job Trail</h3>
+                <div class="py-3">
+                    <span class="text-muted text-lg ">Job Trail</span>
+                   <div class="float-right">
+                    <select @change="x=>load_messages(x)" class="bg-gray-100" id="">
+                      <option value="All">All</option>
+                      <option value="Logs">Logs</option>
+                      <option value="Comments">Messages</option>
+                      <option value="Proposal">Proposal</option>
+                      <option value="">Proposals</option>
+                    </select>
+                  </div>
+                </div>
+               
                 <div class="content-list-body">
 
 
@@ -281,8 +293,14 @@
             console.error(err);
           })
       },
-      get_messages() {
-        axios.post(`cors/trail/${this.$route.params.id}`)
+      load_messages(x){
+        // console.log('x',x);
+        this.get_messages(x.target.value)
+      },
+      get_messages(v) {
+        axios.post(`cors/trail/${this.$route.params.id}`,{
+          filter:v??null
+        })
           .then(res => {
             // console.log(res)
             this.messages = res.data

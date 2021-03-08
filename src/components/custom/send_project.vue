@@ -346,7 +346,6 @@ import { mapGetters } from 'vuex';
             },
             send(f) {
                 f.preventDefault();
-
                 axios.post(`cors/emails2`, {
                         ...this.content,
                         projects: this.sel.map(x => x.ID)
@@ -356,6 +355,7 @@ import { mapGetters } from 'vuex';
                         
                         this.send_to_trail = false
                         this.update_temp(res.data.id)
+                        this.$router.push({name:'view_trail',params:{id:re.data.id}})
                     })
                     .catch(err => {
                         console.error(err);
