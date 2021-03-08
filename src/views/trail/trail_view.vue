@@ -159,7 +159,7 @@
                 </div>
               </template>
               <div class="col-12 py-2">
-                <request_error v-if="info" :projects="info.projects"/>
+                <request_error v-if="info.projects" :projects="info.projects.map(x=>x.DETAILID)"/>
               </div>
                <div class="card-body  p-0 table-responsive" style="min-height:600px">
                     <table

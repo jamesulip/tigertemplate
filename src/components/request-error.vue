@@ -3,7 +3,7 @@
         <b-button @click="request_error=true">
             Request Error
         </b-button>
-        <b-modal no-close-on-backdrop @show="load_assets()" size="lg" v-model="request_error" hide-header>
+        <b-modal @ok="submit_error" no-close-on-backdrop @show="load_assets()" size="lg" v-model="request_error" hide-header>
 
             <b-tabs>
                 <b-tab>
@@ -14,20 +14,20 @@
                     </template>
                     <div class="p-2 pt-3">
                         <b-form-group id="input-group-1" label="Projects:" label-for="input-1">
-                            <v-select label="ID" multiple v-model="error_info.selected_projects" :options="projects">
-                                <template #selected-option="p">
+                            <v-select label="ID" multiple v-model="error_info.selected_projects" :options="p">
+                                <template #selected-option="{project}">
                                     <div>
-                                        {{p.TYPE}}#{{p.NUM}}
-                                        <template v-if="p.VERSION >0">
-                                            {{p.VERSION}}
+                                        {{project.TYPE}}#{{project.NUM}}
+                                        <template v-if="project.VERSION >0">
+                                            {{project.VERSION}}
                                         </template>
                                     </div>
                                 </template>
-                                <template #option="p">
+                                <template #option="{project}">
                                     <div>
-                                        {{p.TYPE}}#{{p.NUM}}
-                                        <template v-if="p.VERSION>0">
-                                            {{p.VERSION}}
+                                        {{project.TYPE}}#{{project.NUM}}
+                                        <template v-if="project.VERSION>0">
+                                            {{project.VERSION}}
                                         </template>
                                     </div>
                                 </template>
@@ -69,15 +69,16 @@
                         </table>
                     </div>
                 </b-tab>
-                <b-tab>
+                <b-tab :disabled="!Boolean(error_info.selected_projects.length)">
                     <template #title>
                         <div>
                             Error Information
                         </div>
                     </template>
                     <div class="p2 pt-3">
-                        <b-form-group @change="error_info.employees=[]" id="input-group-1" label="Error Description:" label-for="input-1">
-                            <v-select :options="error_process" v-model="error_info.error_process" label="name"
+                        <b-form-group @change="error_info.employees=[]" id="input-group-1" label="Error Description:"
+                            label-for="input-1">
+                            <v-select @input="select_error_process()" :options="error_process" v-model="error_info.error_process" label="name"
                                 :selectable="option => !option.hasOwnProperty('group')">
                                 <template #option="{ group, name }">
                                     <div v-if="group" class="group">
@@ -88,80 +89,198 @@
                             </v-select>
                         </b-form-group>
 
-                        <b-form-group id="input-group-1" label="Possible Error Type:" label-for="input-1">
-                            <v-select :multiple="false" v-if="error_info.error_process" v-model="error_info.error_type" :options="error_info.error_process.errors"
-                                label="name" :selectable="option => !option.hasOwnProperty('group')">
+                        <b-form-group id="input-group-1" label="Possible Error Type:" label-for="input-1"  v-if="error_info.error_process.id">
+                            <v-select :multiple="false" v-model="error_info.error_type"
+                                :options="error_info.error_process.errors" label=" u.name"
+                                :selectable="option => !option.hasOwnProperty('group')">
                                 <template #option="u">
-                                   <span class="capitalize">{{ u.name.toLowerCase() }}</span>
+                                    <span class="capitalize">{{ u.name.toLowerCase() }}</span>
                                 </template>
                                 <template #selected-option="u">
-                                     <span class="capitalize">{{ u.name.toLowerCase() }}</span>
+                                    <span class="capitalize">{{ u.name.toLowerCase() }}</span>
                                 </template>
                             </v-select>
                         </b-form-group>
 
-                        <b-form-group id="input-group-1" label="Plan:" label-for="input-1"  v-if="error_info.error_type">
-                            <v-select :multiple="false" v-model="error_info.plan" :options="error_info.error_type.possile_plans"
-                                label="name" :selectable="option => !option.hasOwnProperty('group')">
+                        <b-form-group id="input-group-1" @change="update_finishing()" label="Plan:" label-for="input-1" v-if="error_info.error_type">
+                            <v-select :multiple="false" v-model="error_info.plan"
+                                :options="filter_plans(error_info.error_type.possile_plans)" label="u.plan.name"
+                                :selectable="option => !option.hasOwnProperty('group')">
                                 <template #option="u">
-                                   <span class="capitalize">{{ u.plan.name }}</span>
+                                    <span class="capitalize">{{ u.plan.name }}</span>
                                 </template>
                                 <template #selected-option="u">
-                                     <span class="capitalize">{{ u.plan.name}}</span>
+                                    <span class="capitalize">{{ u.plan.name}}</span>
                                 </template>
                             </v-select>
                         </b-form-group>
 
-                        <b-form-group id="input-group-1" label="Possible Employee:" label-for="input-1">
-                            <v-select :multiple="true" v-if="error_info.error_process" v-model="error_info.employees" :options="possible_employees"
-                                label="name" :selectable="option => !option.hasOwnProperty('group')">
+                        <div class="row" v-if="error_info.error_process.id">
+                        <b-form-group id="input-group-1" label="Employee:" class="col-6" label-for="input-1" v-if="error_info.error_process">
+                            <v-select :multiple="true"  v-model="error_info.employees"
+                                :options="possible_employees" label="u.first_name"
+                                :selectable="option => !option.hasOwnProperty('group')">
                                 <template #option="u">
                                     <span class="capitalize">{{ u.first_name.toLowerCase() }}</span>
                                 </template>
                                 <template #selected-option="u">
-                                     <span class="capitalize">{{ u.first_name.toLowerCase() }}</span>
+                                    <span class="capitalize">{{ u.first_name.toLowerCase() }}</span>
                                 </template>
                             </v-select>
                         </b-form-group>
-                    </div>
+                        <b-form-group id="input-group-1" label="Machine:"  class="col-6" label-for="input-1" v-if="error_info.error_process && error_info.error_process.name =='MACHINE ERROR'">
+                            <v-select :multiple="true"  v-model="error_info.employees"
+                                :options="possible_employees" label="u.first_name"
+                                :selectable="option => !option.hasOwnProperty('group')">
+                                <template #option="u">
+                                    <span class="capitalize">{{ u.first_name.toLowerCase() }}</span>
+                                </template>
+                                <template #selected-option="u">
+                                    <span class="capitalize">{{ u.first_name.toLowerCase() }}</span>
+                                </template>
+                            </v-select>
+                        </b-form-group>
+                        </div>
+                        
+                        <div v-if="selected_project" class="row">
+                            <div class="col-md-6" v-for="x in skip_finishing" :key="`ss-${x.ID}`" >
+                                <div class="card" >
+                                    <div class="card-header" :class="{'bg-blue-200':x.Status}">
+                                        <h4 class="card-title">{{x.FINISHING}}</h4>
+                                       <span class="float-right">
+                                            {{x.Status?'Skipped':''}}
+                                       </span>
+                                    </div>
+                                    <div class="card-body">
+                                        <textarea name="" v-model="x.DETAILS" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
 
+                        </div>
+
+
+                    </div>
                 </b-tab>
             </b-tabs>
         </b-modal>
     </div>
 </template>
 <script>
+    import _ from 'lodash'
+import { mapState } from 'vuex'
     export default {
-        props: ['projects'],
+        props:['projects'],
         data() {
             return {
-                request_error: false,
-                
-
-
+                request_error: true,
+                steps:3,
+                step:2,
                 error_type: [],
                 error_process: [],
-                employees:[],
+                employees: [],
 
                 error_info: {
                     selected_projects: [],
+                    employees:[],
                     error_process: {
                         errors: []
-                    }
-                }
+                    },
+                    
+                },
+                p:[],
+                machines:[],
+                possibleMachine:[],
+                testsss:''
+                // projects:[]
             }
         },
+      
         computed: {
+            ...mapState(['currentUser']),
+            selected_project(){
+                return _.first(this.p)
+            },
             optgroup() {
                 return this.error_process
             },
-            possible_employees(){
-                return this.employees.filter(x=>{
+            possible_employees() {
+                return this.employees.filter(x => {
                     return x.department_code == this.error_info.error_process.department_id
                 })
+            },
+            
+            skip_finishing:{
+                get(){
+                    try {
+                        return _.first(this.p).finishers.map(x=>{
+                            return {
+                                ...x,
+                                Status:this.error_info.plan.plan.data.find(g=>x.FINISHING ==g.prodt_name)?null:'Done',
+                                Start:null,
+                                Stop:null
+                            }
+                        })
+                    } catch (error) {
+                    
+                        return []
+                    }
+                },
+                set: _.debounce(function(newValue) {
+                    this.$emit('input', newValue);
+                }, 100)
+               
             }
         },
+        mounted() {
+            axios.post(`/cors/projectDetail_multiple`,{
+                projects:this.projects
+            })
+            .then(res => {
+               this.p = res.data
+            }),
+            axios.get(`/cors/machines`)
+            .then(res => {
+              this.machines = res.data
+            })
+            .catch(err => {
+                console.error(err); 
+            })
+           
+        },
         methods: {
+            select_error_process(){
+                    var machine = this.skip_finishing.map(fin => {
+                        return fin.map(w => {
+                            console.log('x', w)
+                            return w
+                        })
+                    }).flat().map(m => {
+                        return m.folder
+                    }).filter(x => {
+                        return x != null
+                    })
+
+                    this.possibleMachine = this.machines.filter(x => {
+                        return machine.includes(x.id)
+                    }).flat()
+            },
+            checkShow(d) {
+                try {
+                    var ww = this.error_info.error_process.map(x => {
+                        return x.department.Name
+                    })
+                    console.log('ww',ww);
+                    return ww.includes(d);
+                } catch (error) {
+                    return false;
+                }
+            },
+            filter_plans() {
+                return this.error_info.error_type.possile_plans.filter(x => {
+                    return x.plan
+                })
+            },
             load_assets() {
                 axios.get(`/cors/error_types`)
                     .then(res => {
@@ -178,10 +297,36 @@
                     })
                     .catch(err => {
                         console.error(err);
-                })
+                    })
                 axios.get(`/cors/employees`)
+                    .then(res => {
+                        this.employees = res.data
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+            },
+            submit_error(mo){
+                mo.preventDefault();
+                const test = {
+                    error:{
+                        error_desc:[this.error_info.error_process.id],
+                        issued_by:this.currentUser.employee_id,
+                        plan_id:this.error_info.plan.plan_id
+                    },
+                    error_item:{
+                        project_id:this.error_info.selected_projects.map(x=>x.project.ID)
+                    },
+                    error_user:{
+                        user_id:this.error_info.employees.map(x=>x.ID)
+                    },
+                    ...this.selected_project,
+                    finishers:this.skip_finishing
+                }
+                console.log('test',test);
+                axios.post(`/cors/AddError`,test)
                 .then(res => {
-                    this.employees =res.data
+                    console.log(res)
                 })
                 .catch(err => {
                     console.error(err); 
