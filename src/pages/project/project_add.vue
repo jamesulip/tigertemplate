@@ -104,7 +104,7 @@ export default {
              axios.post(`cors/wholeprojects`,this.data)
              .then(res => {
                 //  console.log(res)
-                this.$emit('project_added')
+                this.$emit('project_added',res.data)
                 this.add_project_modal = false
 
                 this.$bvToast.toast(`Project ${res.data.ProjectName}`, {
