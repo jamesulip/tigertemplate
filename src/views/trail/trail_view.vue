@@ -113,6 +113,7 @@
 
                       <proposal v-if="i.Type=='proposal'" v-model="messages[index]" />
                       <request v-else-if="i.Type=='revision' || i.Type=='proposal'" v-model="messages[index]" />
+                      <errorView v-else-if="i.Type=='error' || i.Type=='error'" v-model="messages[index]" />
                       <template v-else>
                         <div class="flex items-center">
                           <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
@@ -244,12 +245,14 @@
   import view_image from './view_image'
   import proposal from './lr-view.vue'
   import request from './lr-request.vue'
+  import errorView from './error-view'
   export default {
     components: {
       sendMessage,
       view_image,
       proposal,
-      request
+      request,
+      errorView
     },
     computed: mapState([
       'serUrl'

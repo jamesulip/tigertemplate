@@ -1,9 +1,17 @@
 <template>
     <div>
-        <b-button pill @click="add_client=true" variant="info"><span>
+         <div v-if="side" @click.prevent="add_client=true"   :class="size?size:'h-10 w-10'" class="transition-all delay-75 cursor-pointer hover:bg-yellow-400 rounded-full bg-yellow-500  text-center  flex items-center justify-center" size="sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3/4 h-3/4 " :class="size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+        </div>
+
+        <b-button v-else pill @click="add_client=true" variant="info"><span>
                 <b-icon-plus size="lg"></b-icon-plus>Add Client
-            </span></b-button>
-          
+            </span>
+        </b-button>
+
+        
         <b-modal :title="`Add Client`" v-model="add_client" size="md" @ok="validate_client">
             <b-overlay  :show="loading">
             <div class="add_client_label">
@@ -69,8 +77,10 @@
 <script>
 import { mapGetters } from 'vuex'
   /* eslint-disable*/
-  
+    
+    
     export default {
+        props:['side','size'],
          computed: {
             ...mapGetters(['currentUser'])
         },

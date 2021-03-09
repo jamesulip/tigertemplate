@@ -355,7 +355,7 @@ import { mapGetters } from 'vuex';
                         
                         this.send_to_trail = false
                         this.update_temp(res.data.id)
-                        this.$router.push({name:'view_trail',params:{id:re.data.id}})
+                        this.$router.push({name:'view_trail',params:{id:res.data.id}})
                     })
                     .catch(err => {
                         console.error(err);

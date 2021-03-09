@@ -75,7 +75,7 @@
                             Error Information
                         </div>
                     </template>
-                    <div class="p2 pt-3">
+                    <div class="col-md-12 pt-3">
                         <b-form-group @change="error_info.employees=[]" id="input-group-1" label="Error Description:"
                             label-for="input-1">
                             <v-select @input="select_error_process()" :options="error_process" v-model="error_info.error_process" label="name"
@@ -163,17 +163,27 @@
                     </div>
                 </b-tab>
             </b-tabs>
+            <div class="col-md-12 pt-3">
+                    <quillEditor  :options="customToolbar" v-model="data.content" style="height:100%" ref="test" />
+            </div>
         </b-modal>
     </div>
 </template>
 <script>
     import _ from 'lodash'
+    import {
+        quillEditor,
+        Quill
+    } from 'vue-quill-editor'
 import { mapState } from 'vuex'
     export default {
         props:['projects'],
+        components:{
+            quillEditor
+        },
         data() {
             return {
-                request_error: true,
+                request_error: false,
                 steps:3,
                 step:2,
                 error_type: [],
@@ -187,6 +197,31 @@ import { mapState } from 'vuex'
                         errors: []
                     },
                     
+                },
+                customToolbar: {
+                    theme: 'snow',
+                    modules: {
+                        toolbar: {
+
+                            container: [
+                                ["bold", "italic", "underline"],
+                                [{
+                                    list: "ordered"
+                                }, {
+                                    list: "bullet"
+                                }],
+                                ['image']
+                            ],
+                            // handlers: {
+                            //     'image': function () {
+                            //         document.getElementById('getFile').click()
+                            //     }
+                            // }
+                        }
+                    }
+                },
+                data:{
+                    content:''
                 },
                 p:[],
                 machines:[],
@@ -320,13 +355,22 @@ import { mapState } from 'vuex'
                     error_user:{
                         user_id:this.error_info.employees.map(x=>x.ID)
                     },
+                    
                     ...this.selected_project,
+                    items:this.selected_project.items.filter(x=>x.selected),
                     finishers:this.skip_finishing
                 }
                 console.log('test',test);
                 axios.post(`/cors/AddError`,test)
                 .then(res => {
-                    console.log(res)
+                     axios.post(`cors/trail/${res.data.project.trailid}/send`, {
+                        ...this.data,
+                        user: this.current_employee_id,
+                        ref:res.data.ID,
+                        content:this.data.content
+                    }).then(res=>{
+
+                    })
                 })
                 .catch(err => {
                     console.error(err); 

@@ -1,7 +1,7 @@
 <template>
     <div class="ml-3">
-        <div @click="add_project_modal=true"  class="transition-all delay-75 cursor-pointer hover:bg-yellow-400 rounded-full bg-yellow-500 h-10 w-10 text-center  flex items-center justify-center" size="sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div @click.prevent="add_project_modal=true"   :class="size?size:'h-10 w-10'" class="transition-all delay-75 cursor-pointer hover:bg-yellow-400 rounded-full bg-yellow-500  text-center  flex items-center justify-center" size="sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-3/4 h-3/4 " :class="size" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path  stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
         </div>
@@ -48,6 +48,7 @@ import { mapGetters } from 'vuex'
 /*eslint-disable*/
 
 export default {
+    props:['size'],
     data() {
         return {
             add_project_modal:false,
