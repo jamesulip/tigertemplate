@@ -7,7 +7,11 @@ import store from "./store";
 import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
-
+import VueTimeago from 'vue-timeago'
+Vue.use(VueTimeago, {
+  name: 'Timeago',
+  locale: 'en',
+})
 import './assets/css/index.css';
 
 import vSelect from "vue-select";

@@ -14,8 +14,8 @@
         </div>
         <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="value.content"></p>
     
-        <div class="row text-sm" v-if="Boolean(value.proposals.length)" >
-            <div class="flex my-1 w-full max-w-xl overflow-hidden hover:shadow-md cursor-pointer bg-white rounded-lg shadow-sm dark:bg-gray-800" @click="$router.push({name:'view_porposed',params:{file:p.id}})" v-for="p in proposals" :key="`pf-${p.id}`">
+        <div class="row text-sm bg-blue-300" v-if="Boolean(value.proposals.length)" >
+            <div class="ml-1 flex my-1 w-full max-w-xl overflow-hidden hover:shadow-md cursor-pointer bg-white rounded-lg shadow-sm dark:bg-gray-800" @click="$router.push({name:'view_porposed',params:{file:p.id}})" v-for="p in proposals" :key="`pf-${p.id}`">
                 <div class="flex border-r items-center justify-center px-4 w-12 " :class="{'bg-red-500':p.files.file_info.Status=='rejected'}">
                      <i class="far fa-file-pdf m-auto text-3xl text-gray-300"></i>
                 </div>

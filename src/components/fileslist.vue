@@ -12,11 +12,8 @@
     <b-overlay :show="loading" style="min-height:200px">
       <template v-if="'files' in files && files.files.length < 1">
         <div class="clearfix">
-          <div class="col-md-12">
-            <small
-              style="padding-top:20px;text-align: center;"
-              class="col-md-12"
-            >
+          <div class="col-md-12 bg-red-100">
+            <small style="padding-top:20px;text-align: center;" class="col-md-12">
               No Files in folder <b>{{ files.dir }}</b>
             </small>
           </div>

@@ -18,7 +18,7 @@
           <svg style="width:25px" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
             <span class="mx-2  font-medium">Project</span>
           </div>
-           <project_add @project_added="x=>{$router.push({name:'name',params:{id:x.ID}})}" size="w-8 h-8"/>
+           <project_add @project_added="x=>{$router.push({name:'project_view',params:{id:x.ID}})}" size="w-8 h-8"/>
       </router-link>
 
         <router-link class="no-underline side-button  w-full flex justify-between" href="#"
