@@ -42,6 +42,7 @@ import { mapGetters } from 'vuex';
 export default {
   mounted() {
        document.title = "Creatives!";
+        this.$store.dispatch('set_current_job').then(x => {})
   },
   computed: {
     ...mapGetters(['currentUser'])

@@ -129,7 +129,7 @@
         },
         mounted() {
             this.loadProjects()
-            this.$store.dispatch('set_current_job').then(x => {})
+          
         },
         computed: {
 
