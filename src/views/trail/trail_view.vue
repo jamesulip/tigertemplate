@@ -113,7 +113,7 @@
 
                       <proposal v-if="i.Type=='proposal'" v-model="messages[index]" />
                       <request v-else-if="i.Type=='revision' || i.Type=='proposal'" v-model="messages[index]" />
-                      <errorView v-else-if="i.Type=='error' || i.Type=='error'" v-model="messages[index]" />
+                      <errorView @showdetails="x=>show_details(x)" v-else-if="i.Type=='error' || i.Type=='error'" v-model="messages[index]" />
                       <template v-else>
                         <div class="flex items-center">
                           <b-avatar class="avatar mr-2 " :src="`${serUrl}${i.userl.img}`" size="md"></b-avatar>
@@ -213,7 +213,7 @@
                                
                                 <td>
                                    <b-button variant="link" size="sm"
-                                            @click.prevent="x=>{selID=Project.DETAILID;current_project_modal=true}">view
+                                            @click.prevent="x=>{selected_view=Project.DETAILID;current_project_modal=true}">view
                                       </b-button>
                                 </td>
                             </tr>
@@ -228,6 +228,16 @@
         </div>
       <view_image ref="viewer" />
     </div>
+      <b-modal hide-footer hide-header size="xl" ok-only v-model="current_project_modal" content-class="shadow" body-class="p-0">
+            <project_detail @close="current_project_modal = false" :load="true" :project_id="selected_view">
+              <template #footer>
+                <request_error class="float-left ml-1" v-if="selected_view" :projects="[selected_view]"/>
+                <b-button @click="current_project_modal=false"  variant="danger" class="float-right">
+                    Close
+                </b-button>
+              </template>
+            </project_detail>
+        </b-modal>
   </b-overlay>
 </template>
 <style lang="scss">
@@ -263,7 +273,9 @@
         show_pic: false,
         full_image: '',
         loading: true,
-        info: {}
+        info: {},
+        current_project_modal:false,
+        selected_view:{}
       }
     },
 
@@ -276,6 +288,14 @@
         }))
     },
     methods: {
+      show_details(project){
+        this.selected_view  = project
+        this.current_project_modal = true
+      },
+      project_name(project) {
+                if (project.project)
+                    return `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
+            },
       check_mime(type) {
         return /(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(type);
       },

@@ -16,15 +16,12 @@
             </div>
         </div>
         <p class="text-gray-800 text-sm mt-2 leading-normal md:leading-relaxed" v-html="value.content"></p>
-    
         <div class="row text-sm bg-red-100"  >
-            <div class="ml-2 flex my-1 w-full max-w-xl overflow-hidden hover:shadow-md cursor-pointer bg-white rounded-lg shadow-sm dark:bg-gray-800">
-               
+            <div @click="get_inst()" class="ml-2 flex my-1 w-full max-w-xl overflow-hidden hover:shadow-md cursor-pointer bg-white rounded-lg shadow-sm dark:bg-gray-800">
                 <div class="flex border-r bg-red-500 items-center justify-center px-4 w-12 font-black text-gray-100" >
                     ERR
                 </div>
-
-                <div class="px-4 py-2 -mx-3 w-full" >
+                <div class="px-4 py-2 -mx-3 w-full " >
                     <div class="mx-3 flex justify-between">
                        <div>
                             <div class="block text-sm text-gray-600 dark:text-gray-200 text-truncate">
@@ -34,9 +31,9 @@
                                      {{value.error.error.created_at | formatDate('LL')}}
                             </div>
                        </div>
-                       <div>
+                       <!-- <div>
                                <span class="badge bg-danger"> {{value.error.error.Status}}</span>
-                       </div>
+                       </div> -->
                     </div>
                 </div>
                 
@@ -54,27 +51,9 @@
         computed: {
             ...mapState(['serUrl'])
         },
-        data() {
-            return {
-                proposals:[]
-            }
-        },
-        mounted() {
-            // this.get_ins()
-            axios.get(`/cors/proposed_files/${this.value.id}`)
-                .then(res => {
-                    // console.log(res)
-                    this.proposals = res.data
-                })
-        },
         methods: {
             get_inst() {
-
-                // axios.get(`/cors/proposed_files/${this.value.id}`)
-                // .then(res => {
-                //     console.log(res)
-                // })
-
+                this.$emit('showdetails',this.value.error.DETAILID)
             }
         },
     }

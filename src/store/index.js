@@ -22,7 +22,13 @@ export default new Vuex.Store({
     productiontypes:[],
     machines:[],
     users:[],
-    serUrl:""
+    serUrl:"",
+    trails:{
+      data:[]
+    },
+    lr_list:{
+      data:[]
+    }
   },
   mutations: {
     setServerUrl(state, payload) {
@@ -69,6 +75,12 @@ export default new Vuex.Store({
       
       state.machines = payload;
     },
+    set_trails_list(state, payload) {
+      state.trails = payload;
+    },
+    set_lr(state, payload) {
+      state.lr_list = payload;
+    },
     set_users(s,p){
       s.users = p
     }
@@ -80,6 +92,38 @@ export default new Vuex.Store({
         commit('set_users',res.data)
       })
     
+    },
+    set_trails({ commit }) {
+      return new Promise((resolutionFunc, rejectionFunc) => {
+        axios.post(`cors/notifications2`)
+        .then(res => {
+          commit('set_trails_list',res.data)
+        })
+        .catch(err => {
+
+        })
+
+
+      });
+    },
+    set_lr({ commit },url) {
+      return new Promise((resolutionFunc, rejectionFunc) => {
+        if (url == 'refresh')
+            url = this.current_url
+        else if (url == 'search')
+            url = this.page.path
+        this.current_url = url
+        axios.post(url, {search: this.search})
+            .then(res => {
+                this.lr = res.data
+                commit('set_lr',res.data)
+            })
+            .catch(err => {
+             
+            })
+
+
+      });
     },
 
     set_projecttypes_s({ commit }) {

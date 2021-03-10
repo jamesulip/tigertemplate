@@ -12,7 +12,6 @@ export default {
       methods: {
             keepAlive(){
                   return _.isEmpty(this.$route.params);
-                  // return Object.keys(this.$route.params).length === 0
             }
       },
 }

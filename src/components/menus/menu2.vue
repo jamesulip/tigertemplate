@@ -7,7 +7,7 @@
             <span class="mx-2  font-medium">Trail</span>
           </div>
           <span class="badge badge-danger float-right">
-            100
+            {{trails.data.length}}
           </span>
 
       </router-link>
@@ -34,7 +34,7 @@
 
       </router-link>
 
-        <router-link class="no-underline side-button w-full flex " href="#"
+        <router-link class="no-underline side-button w-full flex justify-between" href="#"
           :to="{name:'lr'}" :class="{'bg-yellow-400':$route.name=='lr'}">
            
           <div class="flex">
@@ -42,8 +42,8 @@
           <span class="mx-2  font-medium"> Layout Proposal</span>
 
           </div>
-          <span class="badge badge-danger float-right">
-            100
+          <span class="badge badge-danger">
+            {{lr_list.data.length}}
           </span>
 
       </router-link>
@@ -52,9 +52,13 @@
 <script>
 import project_add from '../../pages/project/project_add'
 import client_add from '../../pages/clients/client_add'
+import { mapState } from 'vuex'
 export default {
   components:{
     project_add,client_add
-  }
+  },
+  computed: {
+    ...mapState(['trails','lr_list'])
+  },
 }
 </script>

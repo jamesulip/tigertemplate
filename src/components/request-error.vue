@@ -38,8 +38,8 @@
                                 <tr>
                                     <td></td>
                                     <td>Item</td>
-                                    <td>W</td>
-                                    <td>H</td>
+                                    <td>Width</td>
+                                    <td>Height</td>
                                     <td>UoM</td>
                                     <td>Qty</td>
                                 </tr>
@@ -56,12 +56,12 @@
                                         <td>
                                             <b-form-checkbox v-model="item.selected" />
                                         </td>
-                                        <td>{{item.source}}</td>
-                                        <td>{{item.w}}</td>
-                                        <td>{{item.h}}</td>
-                                        <td>{{item.uom}}</td>
-                                        <td class="w-20">
-                                            <input class="form-control" type="text" name="" v-model="item.qty" id="">
+                                        <td><input type="text" class="tw-input py-1" name="" v-model="item.source" id=""></td>
+                                        <td><input type="text" class="tw-input py-1" name="" v-model="item.w" id=""></td>
+                                        <td><input type="text" class="tw-input py-1" name="" v-model="item.h" id=""></td>
+                                        <td><input type="text" class="tw-input py-1" name="" v-model="item.uom" id=""></td>
+                                        <td class="w-16">
+                                            <input type="text" class="tw-input  py-1" name="" v-model="item.qty" id="">
                                         </td>
                                     </tr>
                                 </template>
@@ -365,9 +365,10 @@ import { mapState } from 'vuex'
                 .then(res => {
                      axios.post(`cors/trail/${res.data.project.trailid}/send`, {
                         ...this.data,
-                        user: this.current_employee_id,
+                        user: this.currentUser.employee_id,
                         ref:res.data.ID,
-                        content:this.data.content
+                        content:this.data.content,
+                        Type:'error'
                     }).then(res=>{
 
                     })

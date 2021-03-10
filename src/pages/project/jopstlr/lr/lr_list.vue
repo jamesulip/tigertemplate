@@ -19,7 +19,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="lp in lr.data" :key="`key-${lp.ID}`">
+                    <tr v-for="lp in lr_list.data" :key="`key-${lp.ID}`">
                         <td>
                             <b-icon-check-circle></b-icon-check-circle>
                         </td>
@@ -60,8 +60,10 @@
 </template>
 <script>
     import {
+      mapActions,
         mapGetters,
-        mapMutations
+        mapMutations,
+        mapState
     } from 'vuex'
     export default {
         data() {
@@ -72,35 +74,16 @@
             }
         },
         mounted() {
-            this.getLr(`cors/layout_proposal`)
+            // this.getLr(`cors/layout_proposal`)
+            this.set_lr(`cors/layout_proposal`)
         },
-
+        computed: {
+            ...mapState(['lr_list'])
+        },
         methods: {
+            ...mapActions(['set_lr']),
             ...mapMutations(['setLoading']),
-            getLr(url) {
-
-                this.loading = true
-                if (url == 'refresh')
-                    url = this.current_url
-                else if (url == 'search')
-                    url = this.page.path
-
-
-                this.current_url = url
-
-
-                axios.post(url, {
-                        search: this.search
-                    })
-
-                    .then(res => {
-                        this.lr = res.data
-                        this.loading = false
-                    })
-                    .catch(err => {
-                        this.loading = false
-                    })
-            }
+           
         },
     }
 </script>
