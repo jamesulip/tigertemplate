@@ -93,17 +93,16 @@ export default new Vuex.Store({
       })
     
     },
-    set_trails({ commit }) {
+    set_trails({ commit },data) {
+      console.log(data);
       return new Promise((resolutionFunc, rejectionFunc) => {
-        axios.post(`cors/notifications2`)
+        axios.post(data.page,data.data)
         .then(res => {
           commit('set_trails_list',res.data)
+          resolutionFunc(res.data)
+        }).catch(x=>{
+          rejectionFunc(x.response.data)
         })
-        .catch(err => {
-
-        })
-
-
       });
     },
     set_lr({ commit },url) {

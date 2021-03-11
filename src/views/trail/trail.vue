@@ -17,24 +17,16 @@
         </div>
         <!-- /.card-header -->
         <div class="card-body p-1">
-          <trail-control v-model="page" @pageChange="x=>pageChange(x)" :loading="loading">
+          <trail-control v-model="trails" @pageChange="x=>pageChange(x)" :loading="loading">
             <template #mailcontrol>
-              
                 <button type="button" class="btn btn-link btn-sm checkbox-toggle">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" /></svg>
                 </button>
-
-
                 <div class="btn-group">
                       <button type="button"  class="btn btn-link btn-sm">
                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 19v-8.93a2 2 0 01.89-1.664l7-4.666a2 2 0 012.22 0l7 4.666A2 2 0 0121 10.07V19M3 19a2 2 0 002 2h14a2 2 0 002-2M3 19l6.75-4.5M21 19l-6.75-4.5M3 10l6.75 4.5M21 10l-6.75 4.5m0 0l-1.14.76a2 2 0 01-2.22 0l-1.14-.76" /></svg>
                   </button>
-
-
-
-                  
                 </div>
-           
             </template>
           </trail-control>
           <div class="table-responsive">
@@ -164,29 +156,22 @@ import { mapActions, mapState } from 'vuex'
         return s.filter((v,i,a)=>a.findIndex(t=>(t.NUM === v.NUM))===i)
       },
       pageChange(url){
+          console.log('url',url);
           this.loading = true
             if(url =='refresh')
               url = this.current_url
             else if(url=='search')
               url = this.trails.path
-
-
             this.current_url =url
-
-
-            axios.post(url,{
+            this.set_trails({page:url,data:{
               search:this.search
-            })
-        
+            }})
             .then(res => {
-                this.page = res.data
                 this.loading = false
             })
             .catch(err => {
                 this.loading = false
           })
-
-
       },
       openTrail(trail) {
         axios.post(`/cors/notifications/read/${trail.id}`)

@@ -7,7 +7,7 @@
             <span class="mx-2  font-medium">Trail</span>
           </div>
           <span class="badge badge-danger float-right">
-            {{trails.data.length}}
+            {{trails.total  || 0}}
           </span>
 
       </router-link>

@@ -22,7 +22,7 @@
     @apply flex items-center px-4 py-2 text-gray-700  rounded dark:text-gray-200 hover:text-gray-500;
 }
 .tw-side-nav{
-    @apply flex flex-col w-64 h-screen px-4 py-8 bg-white border-r dark:bg-gray-800 dark:border-gray-600;
+    @apply flex flex-col w-64 h-screen  bg-white border-r dark:bg-gray-800 dark:border-gray-600;
 }
 
 

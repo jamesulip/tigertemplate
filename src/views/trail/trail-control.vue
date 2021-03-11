@@ -33,17 +33,11 @@ export default {
         },
         pageChange: { type: Function },
         loading:false
-
     },
     data() {
         return {
             current_url:null,
-         
         }
-    },
-    methods: {
-        
-    
     },
 }
 </script>

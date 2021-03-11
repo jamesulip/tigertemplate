@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <b-button @click="request_error=true">
+        <b-button variant="danger" @click="request_error=true">
             Request Error
         </b-button>
         <b-modal @ok="submit_error" no-close-on-backdrop @show="load_assets()" size="lg" v-model="request_error" hide-header>
@@ -347,7 +347,8 @@ import { mapState } from 'vuex'
                     error:{
                         error_desc:[this.error_info.error_process.id],
                         issued_by:this.currentUser.employee_id,
-                        plan_id:this.error_info.plan.plan_id
+                        plan_id:this.error_info.plan.plan_id,
+                        Status:'Approved'
                     },
                     error_item:{
                         project_id:this.error_info.selected_projects.map(x=>x.project.ID)
@@ -355,7 +356,6 @@ import { mapState } from 'vuex'
                     error_user:{
                         user_id:this.error_info.employees.map(x=>x.ID)
                     },
-                    
                     ...this.selected_project,
                     items:this.selected_project.items.filter(x=>x.selected),
                     finishers:this.skip_finishing
@@ -363,6 +363,13 @@ import { mapState } from 'vuex'
                 console.log('test',test);
                 axios.post(`/cors/AddError`,test)
                 .then(res => {
+                    axios.post(`/cors/error/${res.data.error.id}/update`)
+                    .then(res => {
+                        console.log(res)
+                    })
+                    .catch(err => {
+                        console.error(err); 
+                    })
                      axios.post(`cors/trail/${res.data.project.trailid}/send`, {
                         ...this.data,
                         user: this.currentUser.employee_id,
@@ -370,7 +377,7 @@ import { mapState } from 'vuex'
                         content:this.data.content,
                         Type:'error'
                     }).then(res=>{
-
+                        window.location.reload()
                     })
                 })
                 .catch(err => {

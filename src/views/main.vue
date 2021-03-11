@@ -2,7 +2,7 @@
 
     <div class="wrapper">
       <topMenu />
-        <sideMenu class="main-sidebar"/>
+        <sideMenu/>
  
 
       <div class="content-wrapper">
@@ -38,7 +38,9 @@
     },
     mounted() {
       document.title = "Sales";
-      this.set_trails()
+      this.set_trails({
+        page:`cors/notifications2`
+      })
     },
     components: {
       sideMenu: () => import('../components/menus/side-menu2.vue'),
