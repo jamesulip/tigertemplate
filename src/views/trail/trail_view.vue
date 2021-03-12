@@ -309,7 +309,7 @@
           return /(jpg|gif|png|JPG|GIF|PNG|JPEG|jpeg)$/.test(x.file_meta.ext)
         }).map(x => `${this.serUrl}/${x.location}`)
         this.$refs.viewer.show($images)
-        console.log($images)
+      
       },
       get_trail_details() {
         axios.post(`cors/emails/details/${this.$route.params.id}`)

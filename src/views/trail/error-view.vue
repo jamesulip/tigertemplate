@@ -21,7 +21,7 @@
                 <div class="flex border-r bg-red-500 items-center justify-center px-4 w-12 font-black text-gray-100" >
                     ERR
                 </div>
-                <div class="px-4 py-2 -mx-3 w-full " >
+                <div class="px-4 py-2 -mx-3 w-full" >
                     <div class="mx-3 flex justify-between">
                        <div>
                             <div class="block text-sm text-gray-600 dark:text-gray-200 text-truncate">

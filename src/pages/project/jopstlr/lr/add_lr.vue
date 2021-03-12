@@ -68,7 +68,7 @@
                 </div>
                 <div class="card-body clearfix" style="height:auto">
                     <div class="card card-body mt-1 p-1" v-if="files.length >0">
-                        <table class="mt-2 table-hover table table-sm" style=" table-layout: fixed;">
+                        <!-- <table class="mt-2 table-hover table table-sm" style=" table-layout: fixed;">
                             <thead>
                                 <tr>
                                     <th>Attachments</th>
@@ -112,7 +112,42 @@
                                     </td>
                                 </tr>
                             </tbody>
-                        </table>
+                        </table> -->
+                          <ul class="border border-gray-200 rounded-sm divide-y divide-gray-200 lg:w-1/2 sm:w-10/12">
+                            <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in files" :key="`upload-${index}`">
+                                  <!-- error -->
+                                <template v-if="item.success">
+                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
+                                        <button class="text-gray-500 hover:text-red-600 float-right">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- success -->
+                                <template v-else-if="item.error">
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">Error</span>
+                                        <button class="text-gray-500 hover:text-blue-600 float-right">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- pending -->
+                                <template v-else>
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
+                                </template>
+                            </li>
+                        </ul>
                     </div>
                     <div class="clearfix">
                         <div class="row">
