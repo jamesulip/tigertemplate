@@ -36,7 +36,7 @@
                     </div>
                 </div>
             </b-modal>
-            <file-upload :add-index="true" :size="(1024 * 1024) * 100" :headers="{'Authorization': `Bearer  ${currentUser.token}`}"
+            <file-upload  :input-id="`x-${_uid}`" :add-index="true" :size="(1024 * 1024) * 100" :headers="{'Authorization': `Bearer  ${currentUser.token}`}"
                 v-show="!Boolean(file.length)" accept="application/pdf"
                 :post-action="`${serUrl}/cors/layout_proposal/create`" :multiple="false" :drop="true" :data="{
                         project_id:this.$route.params.id,
