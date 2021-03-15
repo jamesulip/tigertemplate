@@ -44,5 +44,5 @@
     padding-left: 0.75rem;
     font-size: 1rem;
     line-height: 1.5rem;
-    @apply focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
+    @apply block w-full shadow-sm sm:text-sm border-gray-300 rounded-md;
 }

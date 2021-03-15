@@ -6,7 +6,9 @@
             </slot>
 
         </a>
-        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add Job Order`" size="lg"
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add Job Order`" 
+        hide-footer hide-header size="xl" ok-only  content-class="shadow"
+      body-class="p-0"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @added="x=>{
                 $emit('added');open_jo_add_modal=false
