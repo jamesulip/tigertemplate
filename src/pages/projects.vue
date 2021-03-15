@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-3 container-fluid row">
+    <div class="pt-3 container row">
         <div class="col-md-12 ">
             <div class="card">
                 <div class="card-header">
@@ -31,7 +31,8 @@
                                 <th>Company</th>
                                 <th>Media</th>
                                 <th>Status</th>
-                                <th>ss</th>
+                              <th></th>
+                              <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,18 +78,9 @@
                 </div>
             </div>
         </div>
-        <b-sidebar  id="sidebar-1" v-model="activities" title="Activity" shadow right >
+        <b-sidebar  id="sidebar-1" v-model="activities" title="Daily Activity" width="500px" shadow lazy right >
             <div class="px-1 py-2">
-                <table class="table table-striped text-xs">
-                    <tbody>
-                        <tr v-for="(l,i) in mylogs" :key="`o${i}`">
-                            <td>
-                                <span v-html="l.text"></span><br>
-                                <span class="text-muted">{{l.created_at}}</span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+               <log/>
             </div>
         </b-sidebar>
 
@@ -108,12 +100,12 @@
 <script>
     // import Loading1 from '../components/loaders/loading1.vue'
     /* eslint-disable */
-
+    import log from './log'
     export default {
         components: {
             // project_detail: () => import('./project/project_detail.vue'),
-            updateButton: () => import('../components/updatebutton.vue')
-
+            updateButton: () => import('../components/updatebutton.vue'),
+            log
         },
         data() {
             return {
@@ -124,7 +116,7 @@
                 current_project_modal: false,
                 loading: true,
                 selected_view: {},
-                activities:true
+                activities:false
             }
         },
         mounted() {
@@ -135,15 +127,7 @@
 
         },
         methods: {
-            loadLogs() {
-                axios.get(`cors/jarvis_projectlog/current`)
-                    .then(res => {
-                        this.mylogs = res.data
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    })
-            },
+           
             loadProjects() {
                 this.loading = true
                 axios.get(`cors/MyProject?page=&type=all`)
@@ -156,7 +140,7 @@
                         console.error(err);
                     })
 
-                this.loadLogs()
+                
             },
             project_name(project) {
                 if (project.project)

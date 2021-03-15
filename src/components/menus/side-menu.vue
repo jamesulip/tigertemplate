@@ -12,13 +12,19 @@
        <menu_item :to="{name:'projects'}" :routeName="'projects'" >
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
-          Projects
+          Dashboard
         </div>
       </menu_item>
       <menu_item :to="{name:'delegate'}" :routeName="'delegate'" >
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
           Delegate Project
+        </div>
+      </menu_item>
+      <menu_item :to="{name:'timeline'}" :routeName="'timeline'" >
+        <div slot="title">
+          <i class="nav-icon fas fa-th"></i>
+          Timeline
         </div>
       </menu_item>
       <menu_item :to="{name:'history'}" :routeName="'history'" >

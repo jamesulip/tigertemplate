@@ -75,7 +75,7 @@
 
                                         </b-form-checkbox>
                                     </td>
-                                    <td scope="row">{{proj.project.TYPE}}#{{proj.project.NUM}}</td>
+                                    <td scope="row">{{proj.project.TYPE}}#{{proj.project.NUM}}v.{{proj.project.VERSION}}</td>
                                     <td>{{proj.details.s_projname}}</td>
                                     <td>{{proj.details.client2.com_name}} </td>
                                     <td>

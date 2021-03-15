@@ -62,6 +62,14 @@ const routes = [
         }
       },
       {
+        path: 'timeline',
+        name: "timeline",
+        component: () => import('../pages/stats/stat.vue'),
+        meta: {
+          requiresAuth: true
+        }
+      },
+      {
         path: 'projects/lr/:id',
         name: "lrsend",
         component: () => import('../pages/lr/send.vue'),
