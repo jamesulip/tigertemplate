@@ -40,9 +40,10 @@ import moment from 'moment'
           end.setHours(23,59,59,999);
 
 
-          var w = [`Date`,'Cur Date',moment(x.start).toDate(),moment(x.end).toDate()]
+          var w = [`Date`,'Cur Date',start,end]
 
-          return s.shift(w)
+          s.shift(w)
+          return s;
 
         } catch (error) {
           return error
