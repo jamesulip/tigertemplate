@@ -6,9 +6,9 @@
             </slot>
 
         </a>
-        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop :title="`Add Job Order`" 
-        hide-footer hide-header size="xl" ok-only  content-class="shadow"
-      body-class="p-0"
+        <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop @hidden="data.items=[]"   :title="`Add Job Order`" 
+                hide-header size="xl" ok-only  content-class="shadow"
+            body-class="p-0"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @added="x=>{
                 $emit('added');open_jo_add_modal=false
@@ -33,12 +33,13 @@ import { mapGetters } from 'vuex';
         components: {
             jo_form
         },
+        props:['ShopVoxID'],
         data() {
             return {
                 open_jo_add_modal: false,
                 data: {
                    
-
+                     items:[]
                 }
             }
         },
@@ -48,6 +49,7 @@ import { mapGetters } from 'vuex';
             ])
         },
         mounted() {
+          
             this.data = {
                  "finishers": [
                     ],
@@ -60,10 +62,12 @@ import { mapGetters } from 'vuex';
                         "SALESEXEC": this.current_employee_id,
                         "projectID": this.get_project.ID,
                         "TYPE": "JO",
-                        "projecttype": 11
+                        "projecttype": 11,
+                        ShopVoxID:this.ShopVoxID
                     },
                     items:[]
             }
+            console.log(this.data);
         },
         methods: {
             

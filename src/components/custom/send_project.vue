@@ -1,10 +1,11 @@
 <template>
+    
+    <b-button class="no-underline" :variant="variant" :size="size" @click="send_to_trail=true">
+        <slot name="button">
+            <i class="fa fa-paper-plane" aria-hidden="true"></i> Send to Trail
+        </slot>
 
-    <b-button :variant="variant" :size="size" @click="send_to_trail=true">
-        <i class="fa fa-paper-plane" aria-hidden="true"></i> Send to Trail
-
-
-        <b-modal v-model="send_to_trail" size="lg" @ok="send">
+        <b-modal hide-header v-model="send_to_trail" size="lg" @ok="send">
 
             <div class="col-md-12">
                 <b-form-group label="Subject:" label-for="input-2">
@@ -52,49 +53,56 @@
             </div>
             <div class="col-md-12">
                 <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="content.content" />
-                <div class="card card-body mt-1 p-1" v-if="files.length >0">
-                    <table class="mt-2 table-hover table table-sm">
-                        <thead>
-                            <tr>
-                                <th style="width:1%;"></th>
-                                <th style="width:50%"></th>
-                                <th style="width:25%"></th>
-                                <th style="width:25%"></th>
-                                <th style="width:1%;"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(item, index) in files" :key="index">
-                                <td>
-                                    <b-icon-paperclip></b-icon-paperclip>
-                                </td>
-                                <td>
-                                    <div class="text-truncate">
-                                        <span class="text-truncate">
-                                            {{item.name}}
-                                        </span>
+                 <div class="py-1" v-if="files.length >0">
+                        <ul class="border border-gray-200 rounded-sm divide-y divide-gray-200 lg:w-1/2 sm:w-10/12">
+                            <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in files" :key="`upload-${index}`">
+                                  <!-- error -->
+                                <template v-if="item.success">
+                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
+                                        <button class="text-gray-500 hover:text-red-600 float-right">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
                                     </div>
-                                </td>
-                                <td>
-                                    <b-progress :value="item.progress"></b-progress>
-                                </td>
-
-                                <td style="    text-align: center;" v-if="item.error">{{item.error}}</td>
-                                <td style="    text-align: center;" v-else-if="item.success">success</td>
-                                <td style="    text-align: center;" v-else-if="item.active">active</td>
-
-                                <td>
-                                    <b-icon-x></b-icon-x>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                </template>
+                                <!-- success -->
+                                <template v-else-if="item.error">
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">Error</span>
+                                        <button @click.prevent="$refs.upload.update(item, {active: true, error: '', progress: '0.00'})" class="text-gray-500 hover:text-blue-600 float-right">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- pending -->
+                                <template v-else>
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
+                                </template>
+                            </li>
+                        </ul>
+                    </div>
                 <div class="clearfix">
                     <div class="row">
                         <div class="col-md-12 mt-2">
 
-                            <file-upload class="btn btn-primary"
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <template #modal-footer="{ok,cancel}">
+                
+                <div class="w-full">     
+                      <file-upload class="btn btn-primary"
                                 :headers="{'Authorization':`Bearer ${ currentUser.token}`,'Accept':'application/json'}"
                                 :post-action="`${server}/cors/file/attach/send`" :multiple="true"
                                 :size="1024 * 1024 * 20" v-model="files" @input-filter="inputFilter"
@@ -102,10 +110,17 @@
                                 <i class="fa fa-plus"></i>
                                 Select files
                             </file-upload>
-                        </div>
+                            <div class="float-right">
+                    <b-button  variant="danger" class="mr-1" @click="cancel" >
+                        Cancel
+                    </b-button>
+                    <b-button  variant="primary" @click="ok" >
+                        <i class="fa fa-paper-plane pr-2" aria-hidden="true"></i>
+                        Send
+                    </b-button>
                     </div>
                 </div>
-            </div>
+            </template>
         </b-modal>
 
     </b-button>

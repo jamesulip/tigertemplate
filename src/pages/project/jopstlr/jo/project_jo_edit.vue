@@ -4,18 +4,22 @@
             <slot>
                 Add Job Order
             </slot>
-
         </a>
+
+        
         <b-modal lazy @ok="submit" no-close-on-esc no-close-on-backdrop v-if="data.projects"
-            :title="`Edit JO#${data.projects.NUM} v.${data.projects.VERSION}`" size="lg" @show="add"
+          hide-header size="xl" ok-only  content-class="shadow"
+            body-class="p-0"
+            :title="`Edit JO#${data.projects.NUM} v.${data.projects.VERSION}`"  @show="add"
             v-model="open_jo_add_modal">
             <jo_form ref="jo_form" v-model="data" @edited="x=>{
-                $emit('edited');open_jo_add_modal=false
+                $emit('edited');create_from_id(x.project)
             }" />
             <template #modal-footer="{ ok, close }">
                 <b-button variant="danger" class="float-right" @click="close()">
-                    Cancel
+                    Close
                 </b-button>
+               
                 <b-button :disabled="$refs.jo_form?$refs.jo_form.loading:false" variant="primary" class="float-right"
                     @click="ok()">
                     <i class="fas fa-save"></i>
@@ -77,6 +81,7 @@
                 if (this.id)
                     this.create_from_id(this.id)
             },
+
             create_from_id(id) {
                 axios.get(`cors/projectDetail/${id.DETAILID}`)
                     .then(res => {

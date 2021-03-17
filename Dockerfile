@@ -1,32 +1,16 @@
-# Multi-stage
-# 1) Node image for building frontend assets
-# 2) nginx stage to serve frontend assets
+# base image
+FROM node:12.2.0-alpine
 
-# Name the node stage "builder"
-FROM node:12 AS builder
-
-# Set working directory
+# set working directory
 WORKDIR /app
-# Copy all files from current directory to working dir in image
-COPY . .
 
-# install node modules and build assets
-RUN yarn install && yarn build
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
 
-# nginx state for serving content
-FROM nginx:alpine
-# COPY ./.nginx/nginx.conf /etc/nginx/nginx.conf
-# Set working directory to nginx asset directory
+# install and cache app dependencies
+COPY package.json /app/package.json
+RUN npm install
+RUN npm install @vue/cli@3.7.0 -g
 
-COPY nginx_config/nginx.conf /etc/nginx/nginx.conf
-COPY nginx_config/default.conf /etc/nginx/conf.d/default.conf
-
-WORKDIR /usr/share/nginx/html
-# Remove default nginx static assets
-RUN rm -rf ./*
-# Copy static assets from builder stage
-COPY --from=builder /app/dist .
-# Containers run nginx with global directives and daemon off
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
-
+# start app
+CMD ["npm", "run", "serve"]

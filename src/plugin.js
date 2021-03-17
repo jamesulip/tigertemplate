@@ -157,6 +157,20 @@ export default {
                         return "warning text-yellow-600 bg-yellow-100";
                 }
         })
+        Vue.filter('TYPE',function(Status){
+            switch (Status) {
+                case "PSR":
+                    return "border-l-4 border-yellow-500 group-hover:border-yellow-700";
+                case "JO":
+                    return "border-l-4 border-green-500 group-hover:border-green-700";
+                case "ERROR":
+                    return "border-l-4 border-red-500 group-hover:border-red-700";
+                case "LR":
+                    return "border-l-4 border-blue-500 group-hover:border-blue-700";
+                default:
+                    return "warning text-yellow-600 bg-yellow-100";
+            }
+    })
         Vue.filter('formatDate', function (value, format) {
             if (format == 'ago') {
                 var date = new Date(value)
@@ -193,5 +207,6 @@ export default {
             var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
             return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
         })
+        
     }
 }
