@@ -178,7 +178,7 @@
             
          
         </template>
-           <b-button  variant="primary">
+           <b-button @click="updateStat()" variant="primary">
                 Update
             </b-button>
 </div>
