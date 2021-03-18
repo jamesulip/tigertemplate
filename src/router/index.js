@@ -6,6 +6,8 @@ import main from "../views/main.vue";
 import Login from '../views/Login.vue'
 import register from '../views/Register.vue'
 
+import test from '../views/test.vue'
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,7 +28,14 @@ const routes = [
         }
       },
 
-
+      {
+        path: 'test/:detailid',
+        name: "test",
+        component: () => import('../views/test'),
+        meta: {
+          requiresAuth: true
+        }
+      },
 
       {
         path: "trail",

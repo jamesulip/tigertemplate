@@ -10,14 +10,7 @@
                         <b-button @click="activities=!activities" variant="link">Activities</b-button>
                     </div>
                 </div>
-                <div class="card-body" v-if="$store.getters.getCurrentJob.project">
-                    Currently working on <span class="badge badge-primary p-1 badge-pill px-2"><a role="button"
-                            @click="x=>{selected_view =$store.getters.getCurrentJob;current_project_modal=true}">{{$store.getters.getCurrentJob.project.TYPE}}#{{$store.getters.getCurrentJob.project.NUM}}</a></span>
-                    <div class="float-right">
-                        <updateButton :size="`xs`" :key="`btnupdate-${$store.getters.getCurrentJob.ID}`"
-                            :Project="$store.getters.getCurrentJob" @saved="loadProjects()" />
-                    </div>
-                </div>
+                
                 <loading1 v-if="loading" />
                 <div class="card-body  p-0 table-responsive" style="min-height:600px">
                     <table
@@ -88,7 +81,7 @@
         <b-modal v-model="send" hide-backdrop content-class="shadow">
 
         </b-modal>
-        <b-modal size="lg" ok-only v-model="current_project_modal" :title="`${project_name(selected_view)}`"
+        <b-modal size="lg" hide-header  ok-only v-model="current_project_modal" :title="`${project_name(selected_view)}`"
             content-class="shadow">
             <project_detail v-if="current_project_modal" :project="selected_view" />
         </b-modal>

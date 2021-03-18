@@ -211,7 +211,7 @@
           </b-tabs>
       </div>
       <view_image ref="viewer" />
-      <b-modal size="lg" @shown="loadModal(selID)" ok-only v-model="current_project_modal" content-class="shadow">
+      <b-modal size="lg"  @shown="loadModal(selID)" ok-only v-model="current_project_modal" content-class="shadow">
             <project_detail ref="detailModal" :project_id="selID" :load="true" />
         </b-modal>
     </div>

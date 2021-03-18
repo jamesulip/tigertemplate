@@ -18,7 +18,8 @@ export default new Vuex.Store({
     selected_project:{},
     my_projects:[],
     users:[],
-    serUrl:''
+    serUrl:'',
+    logs:[]
   },
   mutations: {
     setServerUrl(state, payload) {
@@ -48,7 +49,11 @@ export default new Vuex.Store({
      },
      set_users(s,p){
       s.users = p
+    },
+    set_logs(s,p){
+      s.logs = p
     }
+
   },
   actions: {
     update_users({commit}){
@@ -56,6 +61,17 @@ export default new Vuex.Store({
       .then(res => {
         commit('set_users',res.data)
       })
+    
+    },
+    update_logs({commit},filter){
+      return axios.get(`/cors/jarvis_logs`, {
+        params: filter
+    })
+    .then(res => {
+      commit('set_logs',res.data)
+        
+    })
+    
     
     },
     set_current_job(state){

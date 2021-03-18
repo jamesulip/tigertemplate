@@ -15,7 +15,11 @@
                     :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                     SP
                 </b-button>
-                <b-button v-else variant="success" @click="updateStatus(Project,'Done')"
+                <!-- <b-button v-else variant="success" @click="updateStatus(Project,'Done')"
+                    :disabled="btnIcon(Project.Status,'dis_en','done')||false">
+                    <b-icon-flag-fill></b-icon-flag-fill>
+                </b-button> -->
+                <b-button v-else variant="success" @click="$router.push({name:'test',params:{detailid:Project.detailID}})"
                     :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                     <b-icon-flag-fill></b-icon-flag-fill>
                 </b-button>
@@ -42,7 +46,7 @@
 
         <fileList @sent="x=>{updateStatusText(x,'Done')}" ref="filelist" v-model="modal.jo_done" />
 
-        <b-modal size="lg" ok-only v-model="current_project_modal" :title="`${project_name(Project)}`"
+        <b-modal size="lg" hide-header ok-only v-model="current_project_modal" :title="`${project_name(Project)}`"
             content-class="shadow">
             <project_detail v-if="current_project_modal" :project="Project" />
         </b-modal>
@@ -93,88 +97,11 @@
                 if (project.project)
                     return `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
             },
-            updateStatus(project, status) {
-                this.$store.commit('set_selected_project', project)
-                var xx = `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
-                this.message = {
-                    Type: "log",
-                    content: `${xx}  ${status=='Paused'?'On Hold':status}`,
-                    parentID: project.project.trailid,
-                    state: status,
-                    user: this.$store.getters.currentUser.employee_id,
-                    project_id: project.ID,
-                }
-                this.loading = true
-
-
-                this.$store.dispatch('set_current_job').then(x => {
-                    this.loading = false
-                    if (status == 'Done') {
-                        this.modal.jo_done = true
-                    } else if (x && x.ID == project.ID) {
-                        this.modal.start = true
-
-                    } else if (x && x.ID != project.ID) {
-
-                        this.confirmChangeJob(xx)
-                    } else if (!x) {
-                        this.modal.start = true
-                    }
-                })
-            },
-            btnIcon(Status, f, pp) {
-
-                return btnIcon(Status, f, pp)
-            },
-            confirmChangeJob(xx) {
-                var project = this.$store.getters.getCurrentJob
-                console.log('project', project)
-                var projectName = `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
-
-                const titleVNode = this.$createElement('span', {
-                    domProps: {
-                        innerHTML: `Project <b>${projectName}</b> is in progess, Do you want to Stop current project start <b>${xx}</b>`
-                    }
-                })
-                this.$bvModal.msgBoxConfirm(titleVNode, {
-                        title: `Do you want to Continue?`,
-                        size: 'md',
-                        buttonSize: 'md',
-                        okVariant: 'danger',
-                        okTitle: 'YES',
-                        cancelTitle: 'NO',
-                        footerClass: 'p-2',
-                        hideHeaderClose: false,
-                        centered: true
-                    })
-                    .then(value => {
-                        if (value) {
-
-                            axios.put('cors/finishers/' + project.ID, {
-                                "Status": 'Paused'
-                            }).then(x => this.modal.start = true)
-                        }
-                    })
-                    .catch(err => {
-                        // An error occurred
-                    })
-            },
-            updateStatusText(id, Status) {
-                // this.updateStatus(this.Project,Status)
-                axios.post(`/cors/trail/${this.Project.project.trailid}/send`, this.message)
-                return axios.patch(`cors/finishers/${this.message.project_id}`, {
-                        Status: this.message.state
-                    })
-                    .then(res => {
-
-                        this.$emit('saved', res.data)
-                        this.$store.dispatch('set_current_job')
-                        return res.data
-                    })
-                    .catch(err => {
-
-                    })
-            }
+             btnIcon(Status, f, pp) {
+    
+                    return btnIcon(Status, f, pp)
+                },
+            
         },
     }
 </script>
