@@ -19,7 +19,7 @@
 
             <div class="flex items-center px-4 -mx-2 py-3 bg-gray-200">
                 <div class="flex  items-center justify-between">
-                    <b-img :src="`${serUrl}${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-img>
+                    <b-avatar :src="`${serUrl}${currentUser.img}`" class="object-cover mx-2 rounded-full h-9 w-9"></b-avatar>
                     <div class="w-full ">
                         <p class="mx-2 truncate font-medium text-gray-800 dark:text-gray-200">{{currentUser.name}}</p>
                     </div>

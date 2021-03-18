@@ -55,7 +55,7 @@
                 <quillEditor style="height:100%" ref="test" :options="customToolbar" v-model="content.content" />
                  <div class="py-1" v-if="files.length >0">
                         <ul class="border border-gray-200 rounded-sm divide-y divide-gray-200 lg:w-1/2 sm:w-10/12">
-                            <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in files" :key="`upload-${index}`">
+                             <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in files" :key="`upload-${index}`">
                                   <!-- error -->
                                 <template v-if="item.success">
                                     <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">

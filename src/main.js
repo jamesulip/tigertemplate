@@ -53,6 +53,9 @@ Vue.component('edit_jo', require('./pages/project/jopstlr/jo/project_jo_edit').d
 Vue.component('send_project', require('./components/custom/send_project').default);
 Vue.component('request_error', require('./components/request-error.vue').default);
 
+Vue.component('tw-button', require('./components/custom/tw-button.vue').default);
+Vue.component('tw-badge', require('./components/custom/tw-badge.vue').default);
+
 import plugin from './plugin.js'
 Vue.use(plugin)
 

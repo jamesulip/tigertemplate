@@ -143,6 +143,22 @@ export default {
                 }
               
         })
+        Vue.filter('tw-badge',function(Status){
+            
+            switch (Status) {
+              case "Working on it":
+                return "green";
+              case "Done":
+                return "green";
+              case "Paused":
+                return "yellow";
+              case "REVISED":
+                return "gray";
+              default:
+                return "yellow";
+            }
+          
+    })
         Vue.filter('lr_status',function(Status){
                 switch (Status) {
                     case "Approved":
