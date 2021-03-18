@@ -132,14 +132,14 @@
                         </td>
                         <td class="p-2 w-14">
                            <div class="flex flex-row items-center">
-                              <span class="text-xs bg-red-100 py-0 px-1 rounded-md text-gray-400"
+                              <span class="text-xs bg-red-100 py-0 px-1 rounded-md text-gray-400 group-hover:bg-red-200"
                                  v-if="oj.VERSION>-1">{{oj.VERSION}}</span>
                            </div>
                         </td>
                         <td class="p-2 w-8">
                            <router-link v-b-tooltip.hover.bottom="oj.trail" v-if="oj.trailid"
                               :to="{name:'view_trail',params:{id:oj.trailid}}" class="flex flex-row items-center">
-                              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                              <svg class="w-4 h-4 text-gray-400 group-hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                  xmlns="http://www.w3.org/2000/svg">
                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                                     d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20" />
@@ -244,10 +244,6 @@
             </div>
          </div>
       </div>
-
-         <tw-button>
-               s
-         </tw-button>
       <b-modal size="sm" title="Create Group" v-model="create_group" @ok="create_new_project">
          <b-form-group id="input-group-1" label="Group Name:" label-for="input-1"
             description="Create grouping for projects.">
