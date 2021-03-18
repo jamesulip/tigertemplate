@@ -12,132 +12,7 @@
 
         <b-overlay :show="loading" style="min-height:200px">
             <template v-if="'files' in files && files.files.length<1">
-                <div class=" h-full " style="min-height:200px">
-                    <div class=" m-3 p-3 flex flex-col text-center  place-content-center">
-                        <span class="text-4xl">
-                            <b-icon icon="file-earmark-x"></b-icon>
-                        </span>
-                        <span>
-                            No Files in folder
-                        </span>
-                        <span>{{files.dir}}</span>
-                    </div>
-                    <div class="flex flex-row">
-                        <file-upload  @input-file="inputFile" input-id="file1" :key="`uploader-printing`" v-show="!Boolean(printing.length)"
-                            class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center"
-                            :post-action="`${serUrl}/cors/upload_project`" :data="{
-                                type:'printing',
-                                folder:`${files.dir}/print`
-                            }" 
-                            :headers="{
-                                Authorization:`Bearer ${currentUser.token}`
-                            }"
-                          
-                            :multiple="true" :drop="true" :drop-directory="true"
-                            v-model="printing" ref="upload_printing">
-                            <i class="fa fa-plus"></i>
-                            Drag <br>Printing File(s)
-                        </file-upload>
-                         <file-upload @input-file="inputFile" input-id="file2" :key="`uploader-cutting`" v-show="!Boolean(cutting.length)"
-                            class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center"
-                            :post-action="`${serUrl}/cors/upload_project`" :data="{
-                                type:'cutting',
-                                folder:`${files.dir}/cut`
-                            }" 
-                            :headers="{
-                                Authorization:`Bearer ${currentUser.token}`
-                            }"
-                            :multiple="true" :drop="true" :drop-directory="true"
-                            v-model="cutting" ref="upload_cutting">
-                            <i class="fa fa-plus"></i>
-                            Drag <br>Cutting File(s)
-                        </file-upload>
-                    </div>
-                    <div class="flex flex-row ">
-                        <ul v-if="Boolean(printing.length)" class="border border-gray-200 rounded-sm divide-y divide-gray-200 w-full    ">
-                         <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in printing" :key="`upload-${index}`">
-                                  <!-- error -->
-                                <template v-if="item.success">
-                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
-                                        {{item.name}}
-                                    </span>
-                                    <div class="w-3/12 text-center">
-                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
-                                        <button class="text-gray-500 hover:text-red-600 float-right">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </template>
-                                <!-- success -->
-                                <template v-else-if="item.error">
-                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
-                                        {{item.name}}
-                                    </span>
-                                    <div class="w-3/12 text-center">
-                                        <span class="font-medium text-gray-500">Error</span>
-                                        <button @click.prevent="$refs.upload_printing.update(item, {active: true, error: '', progress: '0.00'})" class="text-gray-500 hover:text-blue-600 float-right">
-                                            <i class="fa fa-undo" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </template>
-                                <!-- pending -->
-                                <template v-else>
-                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
-                                        {{item.name}}
-                                    </span>
-                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
-                                </template>
-                            </li>
-                        </ul>
-                       
-
-
-                        
-                          <ul v-if="Boolean(cutting.length)" class="border border-gray-200 rounded-sm divide-y divide-gray-200 w-full">
-                         <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in cutting" :key="`upload-${index}`">
-                                  <!-- error -->
-                                <template v-if="item.success">
-                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
-                                        {{item.name}}
-                                    </span>
-                                    <div class="w-3/12 text-center">
-                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
-                                        <button class="text-gray-500 hover:text-red-600 float-right">
-                                            <i class="fa fa-times" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </template>
-                                <!-- success -->
-                                <template v-else-if="item.error">
-                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
-                                        {{item.name}}
-                                    </span>
-                                    <div class="w-3/12 text-center">
-                                        <span class="font-medium text-gray-500">Error</span>
-                                        <button @click.prevent="$refs.upload_cutting.update(item, {active: true, error: '', progress: '0.00'})" class="text-gray-500 hover:text-blue-600 float-right">
-                                            <i class="fa fa-undo" aria-hidden="true"></i>
-                                        </button>
-                                    </div>
-                                </template>
-                                <!-- pending -->
-                                <template v-else>
-                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
-                                        {{item.name}}
-                                    </span>
-                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
-                                </template>
-                            </li>
-                        </ul>
-                    
-
-                    </div>
-                    <div class="col-md-12">
-                         <b-button class="float-right" @click="x=>{$refs.upload_printing.active=true;$refs.upload_cutting.active=true}" variant="primary" href="">
-                            Upload All
-                        </b-button>
-                    </div>
-
-                </div>
+                <test2/>
             </template>
 
             <template v-for="(group, key) in files_grouped" v-else>
@@ -180,12 +55,14 @@
 </template>
 <script>
     /* eslint-disable */
-    import FileUpload from 'vue-upload-component'
+import FileUpload from 'vue-upload-component'
+import test2 from '../views/test'
 import { mapState } from 'vuex'
     export default {
         props: ['value'],
         components:{
-            FileUpload
+            FileUpload,
+            test2
         },
         data() {
             return {

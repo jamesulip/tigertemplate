@@ -178,7 +178,7 @@
             
          
         </template>
-           <b-button @click="updateStat()" variant="primary">
+           <b-button  variant="primary">
                 Update
             </b-button>
 </div>
@@ -317,13 +317,7 @@
 
         },
         mounted() {
-            
-            axios.get(`cors/projectDetail/${this.$route.params.detailid}`)
-                .then(res => {
-                    this.set_selected_project(res.data)
-                    this.show()
-                })
-
+          
 
         },
     }

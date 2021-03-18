@@ -1,94 +1,17 @@
 import Vue from 'vue'
 import moment from 'moment'
 Vue.prototype.moment = moment
+import VueSweetalert2 from 'vue-sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
+Vue.use(VueSweetalert2);
+
 export default {
     // called by Vue.use(FirstPlugin)
     install(Vue, options) {
         Vue.mixin({
             methods: {
               
-                updateStatus(project, status) {
-                    this.$store.commit('set_selected_project', project)
-                    var xx = `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
-                    this.message = {
-                        Type: "log",
-                        content: `${xx}  ${status=='Paused'?'On Hold':status}`,
-                        parentID: project.project.trailid,
-                        state: status,
-                        user: this.$store.getters.currentUser.employee_id,
-                        project_id: project.ID,
-                    }
-                    this.loading = true
-    
-    
-                    this.$store.dispatch('set_current_job').then(x => {
-                        this.loading = false
-                        if (status == 'Done') {
-                            this.modal.jo_done = true
-                        } else if (x && x.ID == project.ID) {
-                            this.modal.start = true
-    
-                        } else if (x && x.ID != project.ID) {
-    
-                            this.confirmChangeJob(xx)
-                        } else if (!x) {
-                            this.modal.start = true
-                        }
-                    })
-                },
-                btnIcon(Status, f, pp) {
-    
-                    return btnIcon(Status, f, pp)
-                },
-                confirmChangeJob(xx) {
-                    var project = this.$store.getters.getCurrentJob
-                    console.log('project', project)
-                    var projectName = `${project.project.TYPE}#${project.project.NUM}v.${project.project.VERSION}`;
-    
-                    const titleVNode = this.$createElement('span', {
-                        domProps: {
-                            innerHTML: `Project <b>${projectName}</b> is in progess, Do you want to Stop current project start <b>${xx}</b>`
-                        }
-                    })
-                    this.$bvModal.msgBoxConfirm(titleVNode, {
-                            title: `Do you want to Continue?`,
-                            size: 'md',
-                            buttonSize: 'md',
-                            okVariant: 'danger',
-                            okTitle: 'YES',
-                            cancelTitle: 'NO',
-                            footerClass: 'p-2',
-                            hideHeaderClose: false,
-                            centered: true
-                        })
-                        .then(value => {
-                            if (value) {
-    
-                                axios.put('cors/finishers/' + project.ID, {
-                                    "Status": 'Paused'
-                                }).then(x => this.modal.start = true)
-                            }
-                        })
-                        .catch(err => {
-                            // An error occurred
-                        })
-                },
-                updateStatusText(id, Status) {
-                    // this.updateStatus(this.Project,Status)
-                    axios.post(`/cors/trail/${this.Project.project.trailid}/send`, this.message)
-                    return axios.patch(`cors/finishers/${this.message.project_id}`, {
-                            Status: this.message.state
-                        })
-                        .then(res => {
-    
-                            this.$emit('saved', res.data)
-                            this.$store.dispatch('set_current_job')
-                            return res.data
-                        })
-                        .catch(err => {
-    
-                        })
-                },
+                
                 $evaluate: param => eval('this.'+param),
                 showNotification(set={title:'title',subject:'subject',content:'content',variant:'default',toast:'b-toaster-bottom-left'}) {
                     function stripHtml(html)
