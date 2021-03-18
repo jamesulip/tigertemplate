@@ -8,7 +8,7 @@
       
       <b-navbar-nav>
             <div class="ml-3 flex items-center">
-                <updateButton :showView="true" class="my-auto" v-if="current_job.ID" :size="`xs`" :key="`btnupdate-${current_job.ID}`" :Project="current_job" @saved="loadProjects()" />
+                <updateButton :showView="true" class="my-auto" v-if="current_job.ID" :size="`xs`" :key="`btnupdate-${current_job.ID}`" :Project="current_job" @saved="set_my_projects()" />
 
                 
                 <div class="px-3">
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters, mapMutations, mapState } from 'vuex';
   /* eslint-disable */
   export default {
     computed: {
@@ -50,6 +50,7 @@ import { mapGetters, mapState } from 'vuex';
     },
     methods: {
       ...mapGetters(['getCurrentJob']),
+      ...mapMutations(['set_my_projects']),
       logout() {
         axios.post(`cors/auth/logout`)
           .then(res => {

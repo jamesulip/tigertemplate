@@ -22,10 +22,8 @@
                         </span>
                         <span>{{files.dir}}</span>
                     </div>
-                    <div class="flex flex-col ">
-                        <!-- <div class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center">Drag <br>Cutting File(s)</div> -->
-
-                        <file-upload input-id="file1" :key="`uploader-printing`" v-show="!Boolean(printing.length)"
+                    <div class="flex flex-row">
+                        <file-upload  @input-file="inputFile" input-id="file1" :key="`uploader-printing`" v-show="!Boolean(printing.length)"
                             class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center"
                             :post-action="`${serUrl}/cors/upload_project`" :data="{
                                 type:'printing',
@@ -34,24 +32,13 @@
                             :headers="{
                                 Authorization:`Bearer ${currentUser.token}`
                             }"
+                          
                             :multiple="true" :drop="true" :drop-directory="true"
                             v-model="printing" ref="upload_printing">
                             <i class="fa fa-plus"></i>
                             Drag <br>Printing File(s)
                         </file-upload>
-                        <div v-if="Boolean(printing.length)" class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center">
-                            printing
-                              <table class="table table-fixed">
-                                  <tbody>
-                                      <tr v-for="pr in printing" :key="`p-${pr.id}`">
-                                          <td>{{pr.name}}</td>
-                                          <td><b-progress v-model="pr.progress" :precision="1" show-progress animated></b-progress></td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                        </div>
-                       
-                        <file-upload input-id="file2" :key="`uploader-cutting`" v-show="!Boolean(cutting.length)"
+                         <file-upload @input-file="inputFile" input-id="file2" :key="`uploader-cutting`" v-show="!Boolean(cutting.length)"
                             class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center"
                             :post-action="`${serUrl}/cors/upload_project`" :data="{
                                 type:'cutting',
@@ -65,18 +52,82 @@
                             <i class="fa fa-plus"></i>
                             Drag <br>Cutting File(s)
                         </file-upload>
-                        <div v-if="Boolean(cutting.length)"   class="flex-grow m-3 p-3 bg-gray-100 border-4 border-dashed place-content-center text-center">
-                            cutting
-                            <table class="table table-fixed">
+                    </div>
+                    <div class="flex flex-row ">
+                        <ul v-if="Boolean(printing.length)" class="border border-gray-200 rounded-sm divide-y divide-gray-200 w-full    ">
+                         <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in printing" :key="`upload-${index}`">
+                                  <!-- error -->
+                                <template v-if="item.success">
+                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
+                                        <button class="text-gray-500 hover:text-red-600 float-right">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- success -->
+                                <template v-else-if="item.error">
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">Error</span>
+                                        <button @click.prevent="$refs.upload_printing.update(item, {active: true, error: '', progress: '0.00'})" class="text-gray-500 hover:text-blue-600 float-right">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- pending -->
+                                <template v-else>
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
+                                </template>
+                            </li>
+                        </ul>
+                       
 
-                                  <tbody>
-                                      <tr v-for="pr in cutting" :key="`p-${pr.id}`">
-                                          <td>{{pr.name}}</td>
-                                          <td><b-progress v-model="pr.progress" :precision="1" show-progress animated></b-progress></td>
-                                      </tr>
-                                  </tbody>
-                              </table>
-                        </div>
+
+                        
+                          <ul v-if="Boolean(cutting.length)" class="border border-gray-200 rounded-sm divide-y divide-gray-200 w-full">
+                         <li class="pl-3 pr-4 py-1 bg-gray-100 flex items-center justify-between text-sm" v-for="(item, index) in cutting" :key="`upload-${index}`">
+                                  <!-- error -->
+                                <template v-if="item.success">
+                                    <span  v-b-tooltip.hover :title="item.name" class="w-3/4 truncate font-medium text-blue-500 hover:underline cursor-pointer">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">({{item.size | bytesToSize(2)}})</span>
+                                        <button class="text-gray-500 hover:text-red-600 float-right">
+                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- success -->
+                                <template v-else-if="item.error">
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <div class="w-3/12 text-center">
+                                        <span class="font-medium text-gray-500">Error</span>
+                                        <button @click.prevent="$refs.upload_cutting.update(item, {active: true, error: '', progress: '0.00'})" class="text-gray-500 hover:text-blue-600 float-right">
+                                            <i class="fa fa-undo" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                                <!-- pending -->
+                                <template v-else>
+                                    <span v-b-tooltip.hover :title="item.name" class="w-3/4 truncate">
+                                        {{item.name}}
+                                    </span>
+                                    <b-progress class="w-3/12 rounded-md" :value="item.progress" :precision="1" show-progress></b-progress>
+                                </template>
+                            </li>
+                        </ul>
                     
 
                     </div>
@@ -223,6 +274,23 @@ import { mapState } from 'vuex'
                         $s.loading = false
                     })
             },
+            inputFile(newFile, oldFile) {
+            if (newFile && !oldFile) {
+                // add
+                console.log('add', newFile)
+            }
+            if (newFile && oldFile) {
+               
+                if(!Boolean(this.printing.filter(x=>!x.success).length) && !Boolean(this.cutting.filter(x=>!x.success).length))
+                    if(newFile.success)
+                        this.show()
+            }
+            if (!newFile && oldFile) {
+                // remove
+                console.log('remove', oldFile)
+            }
+            }
+
         },
         mounted() {
             this.open = this.value

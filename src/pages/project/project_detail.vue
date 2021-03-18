@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-6 pb-3">
               <div class="text-md flex">
-                <b-avatar :src="`${serUrl}${projectDetails.project.sales_exec_auth.img}`" class="w-6 h-6 mr-1"></b-avatar>
+                <!-- <b-avatar :src="`${serUrl}${projectDetails.project.sales_exec_auth.img}`" class="w-6 h-6 mr-1"></b-avatar> -->
                 <div>
                   <label for="comments" class="mb-0 font-medium text-gray-700">Account Exec</label>
                   <p class="text-gray-500 capitalize">
@@ -120,7 +120,7 @@
 
 
           </div>
-          <table class="table table-striped mt-5">
+          <table v-if="projectDetails.items && !Boolean(projectDetails.items.length)" class="table table-striped mt-5">
             <thead>
               <tr>
                 <td>Source</td>
@@ -139,7 +139,7 @@
                 <td>{{i.qty}}</td>
               </tr>
             </tbody>
-            <tbody v-if="!Boolean(projectDetails.items.length)">
+            <tbody >
               <tr>
                 <td colspan="5">
                   <div class="flex flex-col items-center">

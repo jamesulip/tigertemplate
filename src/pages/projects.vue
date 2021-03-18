@@ -138,9 +138,7 @@
                     })
                     .catch(err => {
                         console.error(err);
-                    })
-
-                
+                    })                
             },
             project_name(project) {
                 if (project.project)

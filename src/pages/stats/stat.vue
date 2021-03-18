@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <GChart :settings="{ packages: ['timeline'] }" type="Timeline" :data="logData" v-if="Boolean(logData.length)" :options="chartOptions" />
+  <div class="px-2">
+    <GChart @events="evt" :settings="{ packages: ['timeline'] }" type="Timeline" :data="logData" v-if="Boolean(logData.length)" :options="chartOptions" />
   </div>
 </template>
 <script>
@@ -26,6 +26,11 @@ import moment from 'moment'
         }
       }
     },
+    methods:{
+      evt:function (chart, google) {
+        console.log('chart',chart);
+      }
+    },
     computed: {
       logData(){
         try {
@@ -42,8 +47,8 @@ import moment from 'moment'
 
           var w = [`Date`,'Cur Date',start,end]
 
-          s.shift(w)
-          return s;
+
+            return s;
 
         } catch (error) {
           return error
