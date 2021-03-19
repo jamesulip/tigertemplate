@@ -64,7 +64,7 @@
                     </file-upload>
                     <b-overlay :show="sending || ($refs.upload && $refs.upload.active)" rounded opacity="0.6"
                         spinner-small spinner-variant="primary" class="d-inline-block">
-                        <b-button @click="submit">
+                        <b-button @click="submit" variant="success">
                             <i class="fa fa-paper-plane pr-2" aria-hidden="true"></i>Request Changes
                         </b-button>
                     </b-overlay>

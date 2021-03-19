@@ -1,32 +1,29 @@
 <template>
-
-    <div class="wrapper">
-      <topMenu />
-        <sideMenu/>
- 
-
-      <div class="content-wrapper">
-
-        <b-overlay :show="loadingState" rounded="sm" >
-        <!-- <keep-alive> -->
-          <router-view />
-        <!-- </keep-alive> -->
-        </b-overlay>
-
-      </div>
+  <div class="wrapper">
+    <topMenu />
+    <sideMenu />
+    <div class="content-wrapper">
+      <b-overlay :show="loadingState" rounded="sm">
+        <router-view />
+      </b-overlay>
     </div>
-
+        <portal to="destination" >
+          asd2
+        </portal>
+    <portal-target class="fixed right-0 bottom-0" name="destination"/>
+    </div>
+ 
 </template>
-
 <script>
-  /* eslint-disable  */
   import {
-    mapState,mapGetters, mapActions
+    mapState,
+    mapGetters,
+    mapActions
   } from 'vuex'
   export default {
     computed: {
       ...mapState([
-        'currentUser','serUrl'
+        'currentUser', 'serUrl'
       ]),
       ...mapGetters([
         'loadingState'
@@ -39,7 +36,7 @@
     mounted() {
       document.title = "Sales";
       this.set_trails({
-        page:`cors/notifications2`
+        page: `cors/notifications2`
       })
     },
     components: {

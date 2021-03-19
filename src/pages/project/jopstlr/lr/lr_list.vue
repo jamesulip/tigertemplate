@@ -11,7 +11,7 @@
                         <th>Project Name</th>
                         <th>Version</th>
                         <th>Designer</th>
-                        <th>Approved</th>
+                        <th>Status</th>
                         <th>Date Requested</th>
                         <th>Date Submitted</th>
                         <th>Files</th>
@@ -33,12 +33,12 @@
                             <span class="inline-flex items-center justify-center px-2 py-1 mr-2 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">{{lp.project.VERSION}}</span>
                         </td>
                         <td>
-                       
-                            <b-avatar-group size="2rem">
-                                <b-avatar></b-avatar>
-                            </b-avatar-group>
+                            <div class="flex bg-yellow-400 text-gray-600 px-2 py-1 rounded-full max-w-max">
+                                <b-avatar  class="w-6 h-6 mr-2" :src="`${serUrl}${lp.art.user.img}`"></b-avatar>
+                                <p class="truncate">{{lp.art.user.name}}</p>
+                            </div>
                         </td>
-                        <td></td>
+                        <td>{{lp.Status}}</td>
                         
                         <td>
                             <span class="badge text-md">
@@ -78,7 +78,7 @@
             this.set_lr(`cors/layout_proposal`)
         },
         computed: {
-            ...mapState(['lr_list'])
+            ...mapState(['lr_list','serUrl'])
         },
         methods: {
             ...mapActions(['set_lr']),

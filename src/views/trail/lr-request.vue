@@ -33,8 +33,6 @@
                        </div>
                        <div class="flex items-center">
 
-                               <!-- <span class="text-md">Revision Request</span>
-                               <span class="text-sm font-bold text-gray-400">Submit Rev</span> -->
                        </div>
                     </div>
                 </div>

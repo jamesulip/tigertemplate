@@ -26,8 +26,8 @@
                             <span class="">{{p.files.filename}}</span>
                         </div>
                         <div>
-                            <span class="font-semibold text-blue-500 dark:text-blue-400">Version
-                                {{value.attached_project.VERSION}}</span>
+                            <span class="font-semibold text-blue-500 dark:text-blue-400 pr-2">Version{{value.attached_project.VERSION}}</span>
+                            <span class="font-semibold text-gray-500 dark:text-gray-400">Version{{value.attached_project.VERSION}}</span>
                         </div>
                     </div>
                 </div>
@@ -35,6 +35,7 @@
             </div>
     
         </div>
+      
     </div>
 </template>
 <script>
@@ -52,7 +53,6 @@
             }
         },
         mounted() {
-            // this.get_ins()
             axios.get(`/cors/proposed_files/${this.value.id}`)
                 .then(res => {
                     // console.log(res)
@@ -62,10 +62,6 @@
         methods: {
             get_inst() {
 
-                // axios.get(`/cors/proposed_files/${this.value.id}`)
-                // .then(res => {
-                //     console.log(res)
-                // })
 
             }
         },

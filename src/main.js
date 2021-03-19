@@ -8,6 +8,11 @@ import Pusher from "pusher-js"
 import  VueEditor  from "vue2-editor";
 import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
 import VueTimeago from 'vue-timeago'
+
+import PortalVue from 'portal-vue'
+Vue.use(PortalVue)
+
+
 Vue.use(VueTimeago, {
   name: 'Timeago',
   locale: 'en',
