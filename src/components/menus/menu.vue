@@ -1,20 +1,32 @@
 <template>
-    <li class="nav-item " >
-     
-        <router-link :to="to" class="nav-link" :class="{'active':$route.name ==routeName}">
-          
-          <p>
-            <slot name="title">
-                {{routeName}}
-            </slot>
-            <!-- <span class="right badge badge-danger">New</span> -->
-          </p>
-        </router-link>
-   
-      </li>
+  <router-link tag="li" :to="to" class="nav-item" :class="{'active':$route.name ==routeName}" v-if="admin?currentUser.admin:true">
+    <a class="nav-link">
+      <slot name="title">
+        {{routeName}}Admin
+      </slot>
+    </a>
+  </router-link>
+
 </template>
 <script>
-export default {
-  props:['to','routeName']
-}
+import { mapState } from 'vuex'
+  export default {
+    // props: ['to', 'routeName'],
+    props:{
+      to:{
+        type:Object,
+      },
+      routeName:{
+          type:String
+      },
+      admin:{
+        type:Boolean,
+        default:false
+      }
+    },
+   computed: {
+     ...mapState(['currentUser'])
+   }, 
+  }
 </script>
+

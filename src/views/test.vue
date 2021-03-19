@@ -1,6 +1,5 @@
 <template>
 <b-overlay :show="loading">
-    <div class="container">
         <template v-if="'files' in files && files.files.length<1">
             <div class=" h-full " style="min-height:200px">
                 <div class=" m-3 p-3 flex flex-col text-center  place-content-center">
@@ -178,10 +177,7 @@
             
          
         </template>
-           <b-button  variant="primary">
-                Update
-            </b-button>
-</div>
+        
 </b-overlay>
 </template>
 <script>
@@ -197,7 +193,10 @@
     export default {
         props: {
             value: {
-                default: true
+                default: Array
+            },
+            project:{
+                type:Object
             }
         },
         components: {
@@ -216,14 +215,7 @@
         computed: {
             ...mapState(['currentUser', 'serUrl']),
             ...mapGetters(['getSelected_project']),
-            value_modal: {
-                get() {
-                    return this.value
-                },
-                set(val) {
-                    this.$emit('input', val)
-                }
-            },
+        
             files_grouped() {
                 let group = {}
                 try {
@@ -257,7 +249,7 @@
                 this.loading = true
 
                 axios.post('cors/insertTally', {
-                    projectID: this.getSelected_project.project.DETAILID,
+                    projectID: this.project.detailID,
                     tally: this.files.files
 
                 }).then(x => {
@@ -269,7 +261,7 @@
             show() {
                 this.loading = true
 
-                axios.get(`cors/filesList2/${this.getSelected_project.project.DETAILID}`)
+                axios.get(`cors/filesList2/${this.project.detailID}`)
                     .then(res => {
                         this.files = res.data
                         this.loading = false
@@ -317,8 +309,9 @@
 
         },
         mounted() {
-          
 
+     
+            this.show()
         },
     }
 </script>

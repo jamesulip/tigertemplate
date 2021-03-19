@@ -19,10 +19,10 @@
                     :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                     <b-icon-flag-fill></b-icon-flag-fill>
                 </b-button>
-                <b-button variant="success" @click="$router.push({name:'test',params:{detailid:Project.detailID}})"
+                <!-- <b-button variant="success" @click="$router.push({name:'test',params:{detailid:Project.detailID}})"
                     :disabled="btnIcon(Project.Status,'dis_en','done')||false">
                     <b-icon-flag-fill></b-icon-flag-fill>
-                </b-button>
+                </b-button> -->
             </b-button-group>
             <b-button-group class="pl-2" v-if="showView" :size="size">
                 <b-button variant="link" @click="current_project_modal=true">
@@ -44,7 +44,7 @@
 
 
 
-        <fileList @sent="x=>{updateStatusText(x,'Done')}" ref="filelist" v-model="modal.jo_done" />
+        <fileList @sent="x=>{updateStatusText(x,'Done')}" ref="filelist" v-model="modal.jo_done" :project="Project"/>
 
         <b-modal size="lg" hide-header ok-only v-model="current_project_modal" :title="`${project_name(Project)}`"
             content-class="shadow">
@@ -121,7 +121,7 @@
                         } else if (!x) {
                             this.modal.start = true
                         }
-                         this.$store.commit('set_selected_project', project)
+                       
                     })
                 },
                 btnIcon(Status, f, pp) {

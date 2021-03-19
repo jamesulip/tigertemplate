@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import moment from 'moment'
 Vue.prototype.moment = moment
-import VueSweetalert2 from 'vue-sweetalert2';
-import 'sweetalert2/dist/sweetalert2.min.css';
-Vue.use(VueSweetalert2);
+
 
 export default {
     // called by Vue.use(FirstPlugin)

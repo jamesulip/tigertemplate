@@ -29,7 +29,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(Project, index) in projects.data" :key="index">
+                            <tr v-for="(Project, index) in my_projects.data" :key="index">
                                 <td>
                                     <updateButton :key="`btnupdate-${Project.ID}`" :Project="Project"
                                         @saved="loadProjects()" />
@@ -91,12 +91,12 @@
    
 </style>
 <script>
+import { mapMutations, mapState } from 'vuex'
     // import Loading1 from '../components/loaders/loading1.vue'
     /* eslint-disable */
     import log from './log'
     export default {
         components: {
-            // project_detail: () => import('./project/project_detail.vue'),
             updateButton: () => import('../components/updatebutton.vue'),
             log
         },
@@ -117,21 +117,19 @@
           
         },
         computed: {
-
+                ...mapState(['my_projects'])
         },
         methods: {
-           
+            ...mapMutations(['set_my_projects']),
             loadProjects() {
                 this.loading = true
                 axios.get(`cors/MyProject?page=&type=all`)
                     .then(res => {
-                        this.projects = res.data
+                      
                         this.loading = false
                         this.$store.commit('set_my_projects', res.data)
                     })
-                    .catch(err => {
-                        console.error(err);
-                    })                
+                             
             },
             project_name(project) {
                 if (project.project)

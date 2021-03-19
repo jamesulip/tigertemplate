@@ -2,9 +2,12 @@
     <b-modal :title="`Start Project`" @ok="save()" @close="$emit('input',false)" @show="show()" size="lg"
         v-model="value_modal" header-class="bg-success disabled" button-size="sm">
 
-        <template #modal-footer={ok}>
+        <template #modal-footer={ok,cancel}>
             <div>
-                <b-button  variant="primary" @click="ok" :disabled="!Boolean(files_grouped)">
+                <b-button  variant="danger" class="mr-2" @click="cancel" :disabled="!Boolean(files_grouped)">
+                    Cancel
+                </b-button>
+                <b-button  variant="primary" @click="ok"  :disabled="!Boolean(files_grouped)">
                     Submit Files 
                 </b-button>
             </div>
@@ -12,7 +15,7 @@
 
         <b-overlay :show="loading" style="min-height:200px">
             <template v-if="'files' in files && files.files.length<1">
-                <test2/>
+              <projectUploader v-model="value" :project="project"/>
             </template>
 
             <template v-for="(group, key) in files_grouped" v-else>
@@ -56,13 +59,13 @@
 <script>
     /* eslint-disable */
 import FileUpload from 'vue-upload-component'
-import test2 from '../views/test'
+// import test1 from '../views/test'
 import { mapState } from 'vuex'
     export default {
-        props: ['value'],
+        props: ['value','project'],
         components:{
             FileUpload,
-            test2
+            // test1
         },
         data() {
             return {
@@ -109,9 +112,9 @@ import { mapState } from 'vuex'
         methods: {
             save() {
                 this.loading = true
-                var proj = this.$store.getters.getSelected_project
+               
                 axios.post('cors/insertTally', {
-                    projectID: proj.project.DETAILID,
+                    projectID: this.project.detailID,
                     tally: this.files.files
 
                 }).then(x => {
@@ -122,8 +125,8 @@ import { mapState } from 'vuex'
             },
             show() {
                 this.loading = true
-                var proj = this.$store.getters.getSelected_project
-                axios.get(`cors/filesList2/${proj.project.DETAILID}`)
+             
+                axios.get(`cors/filesList2/${this.project.detailID}`)
                     .then(res => {
                         this.files = res.data
                         this.loading = false

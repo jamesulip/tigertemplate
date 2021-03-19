@@ -10,12 +10,14 @@
         </div>
       </menu_item>
        <menu_item :to="{name:'projects'}" :routeName="'projects'" >
-        <div slot="title">
+        <template slot="title">
           <i class="nav-icon fas fa-th"></i>
           Dashboard
-        </div>
+          <span class="right badge badge-danger">{{my_projects.data?my_projects.data.length: 0}}</span>
+        </template>
+        
       </menu_item>
-      <menu_item :to="{name:'delegate'}" :routeName="'delegate'" >
+      <menu_item :to="{name:'delegate'}" :routeName="'delegate'" admin>
         <div slot="title">
           <i class="nav-icon fas fa-th"></i>
           Delegate Project
@@ -39,9 +41,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
   export default {
     components: {
       menu_item: () => import('./menu.vue'),
-    }
+    },
+    computed: {
+      ...mapState(['my_projects'])
+    },
   }
 </script>

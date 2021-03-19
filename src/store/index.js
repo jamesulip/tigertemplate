@@ -19,22 +19,9 @@ export default new Vuex.Store({
     my_projects:[],
     users:[],
     serUrl:'',
-    logs:[],
-
-
-
-
-
-
-    files: [],
+    logs:[]
   },
   mutations: {
-
-    updateFiles(state, files) {
-      state.files = files
-    },
-
-
     setServerUrl(state, payload) {
       state.serUrl = payload;
     },
