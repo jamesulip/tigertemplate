@@ -51,11 +51,11 @@
                   <tr v-for="(item, index) in projects.data" :key="index" > 
                      <td colspan="2">
                         <div class="d-flex flex-column">
-                           <router-link :to="{name:'project_view',params:{id:item.ID}}" class="text-capitalize">{{item.ProjectName.toLowerCase()}}</router-link>
+                           <router-link :to="{name:'project_view',params:{id:item.ID}}" class="text-capitalize no-underline font-semibold truncate">{{item.ProjectName.toLowerCase()}}</router-link>
 
-                           <div class="d-flex align-items-center">
+                           <div class="d-flex align-items-center text-xs">
                               <b-icon-building></b-icon-building>
-                              <a class="text-link text-muted">{{item.client.com_name}}</a>
+                              <a class="text-link text-muted no-underline cursor-pointer">{{item.client.com_name}}</a>
                            </div>
 
 
@@ -67,12 +67,24 @@
                            <!-- <div  class="badge mr-1 badge-success badge-pill">{{CountPro(item.project,'JO').length}}  JO</div>
                            <div  class="badge mr-1 badge-warning badge-pill">{{CountPro(item.project,'PSR').length}}  PSR</div>
                            <div  class="badge mr-1 badge-info badge-pill">{{CountPro(item.project,'LR').length}}  LR</div> -->
-                            <div>
-                            <b-avatar-group>
+                            <div class=" flex">
+                               <div  v-if="CountPro(item.project,'JO').length" class="rounded-full bg-green-300 flex p-1 mr-1 w-max text-sm">
+                                  <div class="bg-green-400 rounded-full w-5 h-5  text-center">{{CountPro(item.project,'JO').length.toString()}}</div>
+                                  <span class="text-xs self-center">LR</span>
+                               </div>
+                               <div v-if="CountPro(item.project,'PSR').length" class="rounded-full bg-yellow-300 flex p-1 mr-1 w-max text-sm">
+                                  <div class="bg-yellow-400 rounded-full w-5 h-5  text-center">{{CountPro(item.project,'PSR').length.toString()}}</div>
+                                  <span class="text-xs self-center">LR</span>
+                               </div>
+                               <div v-if="CountPro(item.project,'LR').length" class="rounded-full bg-blue-300 flex p-1 mr-1 w-max text-sm">
+                                  <div class="bg-blue-400 rounded-full w-5 h-5  text-center">{{CountPro(item.project,'LR').length.toString()}}</div>
+                                  <span class="text-xs self-center">LR</span>
+                               </div>
+                            <!-- <b-avatar-group>
                              <b-avatar  variant="success" badge="JO" v-if="CountPro(item.project,'JO').length" :text="CountPro(item.project,'JO').length.toString()" size="60px"/>
                              <b-avatar  variant="warning" badge="PSR" v-if="CountPro(item.project,'PSR').length" :text="CountPro(item.project,'PSR').length.toString()" size="60px"/>
                              <b-avatar  variant="info" badge="LR" v-if="CountPro(item.project,'LR').length" :text="CountPro(item.project,'LR').length.toString()" size="60px"/>
-                             </b-avatar-group>
+                             </b-avatar-group> -->
                             </div>
                         </div>
 

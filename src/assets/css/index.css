@@ -26,7 +26,7 @@
 }
 
 
-.side-button.router-link-active{
+.side-button.router-link-active {
     @apply bg-yellow-400 text-black !important
 }
 

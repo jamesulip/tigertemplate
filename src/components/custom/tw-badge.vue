@@ -1,9 +1,9 @@
 <template>
   <div
-    class="px-3 h-6 rounded-full text-xs font-semibold flex items-center cursor-pointer truncate"
+    class="px-3 h-6 rounded-full text-xs font-semibold flex items-center cursor-pointer "
     :class="`bg-${color}-100 text-${color}-700 group-hover:bg-${color}-500 group-hover:text-white`"
   >
-    <span v-if="showDot" class="w-2 h-2 rounded-full mr-1" :class="`bg-${color}-400`"></span>
+    <span v-if="showDot" class="w-2 h-2 rounded-full mr-1 max-w-xs truncate" :class="`bg-${color}-400`"></span>
     <slot></slot>
   </div>
 </template>
