@@ -8,7 +8,7 @@
                     </div>
                     <div class="card-body px-0">
                         <div class="table-responsive" id="proTeamScroll" tabindex="2"
-                            style="height: 400px; overflow: hidden; outline: none;">
+                         >
                             <table class="table table-striped table-sm table-condensed table-hover  ">
                                 <thead>
                                     <tr>
@@ -24,24 +24,33 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="(item, index) in projects.data" :key="index" role="button"  @click="x=>{selID=item.detailID;current_project_modal=true}">
-                                       
-                                        <td class="pl-2">
-                                            <span class="h3 font-weight-bold m-0"> {{item.project2.TYPE}}</span>
-                                           </td>
-                                        <td>{{item.project2.NUM}}</td>
-                                        <td>{{item.project2.VERSION}}</td>
-                                        <td>
-                                            <b>{{item.project2.detail2.s_projname}}</b>
-                                            <br/>
-                                            {{item.project2.detail2.client2.com_name}}
-                                        </td>
-                                        <td>{{item.Start | format_date('Y-M-D hh:m:d A')}}</td>
-                                        <td>{{item.Stop | format_date('Y-M-D hh:m:d A')}}</td>
-                                        <td>
-                                            {{date_duration()}}
-                                        </td>
-                                    </tr>
+                                    <template  v-for="(item, index) in projects.data">
+                                        <tr :key="`proj-${index}`" role="button"  @click="x=>{selID=item.detailID;current_project_modal=true}">
+                                        
+                                            <td class="pl-2">
+                                                <span class="h3 font-weight-bold m-0"> {{item.project2.TYPE}}</span>
+                                            </td>
+                                            <td>{{item.project2.NUM}}</td>
+                                            <td>{{item.project2.VERSION}}</td>
+                                            <td>
+                                                <b>{{item.project2.detail2.s_projname}}</b>
+                                                <br/>
+                                                {{item.project2.detail2.client2.com_name}}
+                                            </td>
+                                            <td>{{item.Start | format_date('Y-M-D hh:m:d A')}}</td>
+                                            <td>{{item.Stop | format_date('Y-M-D hh:m:d A')}}</td>
+                                            <td>
+                                                {{date_duration()}}
+                                            </td>
+                                        </tr>
+                                        <tr :key="`act-${index}`">
+                                            <td colspan="7">
+                                                <div class="ml-1 border shadow-sm">
+                                                    asdasd
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </template>
                                 </tbody>
                             </table>
                         </div>
@@ -68,6 +77,7 @@
 
 <script>
 import moment from 'moment'
+import activity from './activity.vue'
     /* eslint-disable */
     export default {
         data() {
